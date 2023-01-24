@@ -9,7 +9,7 @@ class fireboy {
     };
 
     draw(ctx) {
-        this.animator.drawFrame(this.game.clockTick, ctx, 0, 0, 1);
+        this.animator.drawFrame(this.game.clockTick, ctx, 500, 500, .3);
         // ctx.drawImage(ASSET_MANAGER.getAsset("./Assets/Fireboy/SpriteSheet.png"), 0, 0);
     }
 }

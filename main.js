@@ -9,8 +9,8 @@ ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");
 	const ctx = canvas.getContext("2d");
 
-	// gameEngine.addEntity(new background());
 	gameEngine.addEntity(new fireboy(gameEngine));
+	gameEngine.addEntity(new background());
 
 	gameEngine.init(ctx);
 
