@@ -8,6 +8,15 @@ class GameEngine {
 
         // Everything that will be updated and drawn each frame
         this.entities = [];
+        
+        this.IGLeft = false;
+        this.IGRight = false;
+        this.IGUp = false;
+        this.IGDown = false;
+        this.FBLeft = false;
+        this.FBRight = false;
+        this.FBUp = false;
+        this.FBDown = false;
 
         // Information on the input
         this.click = null;
@@ -37,43 +46,86 @@ class GameEngine {
     };
 
     startInput() {
-        const getXandY = e => ({
-            x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
-            y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
-        });
+        var that = this;
+        this.ctx.canvas.addEventListener("keydown", function (e) {
+            switch (e.code) {
+                case "Arrow" :
+                    that.IGLeft = true;
+                case "ArrowRight" :
+                    that.IGRight = true;
+                case "ArrowUp" :
+                    that.IGUp = true;
+                case "ArrowDown" :
+                    that.IGDown = true;
+                case "KeyA" :
+                    that.FBLeft = true;
+                case "KeyD" :
+                    that.FBRight = true;
+                case "KeyW" :
+                    that.FBUp = true;
+                case "KeyS" :
+                    that.FBDown = true;
+            }
+        })
+
+        this.ctx.canvas.addEventListener("keyup", function (e) {
+            switch (e.code) {
+                case "ArrowLeft" :
+                    that.IGLeft = false;
+                case "ArrowRight" :
+                    that.IGRight = false;
+                case "ArrowUp" :
+                    that.IGUp = false;
+                case "ArrowDown" :
+                    that.IGDown = false;
+                case "KeyA" :
+                    that.FBLeft = false;
+                case "KeyD" :
+                    that.FBRight = false;
+                case "KeyW" :
+                    that.FBUp = false;
+                case "KeyS" :
+                    that.FBDown = false;
+            }
+        })
+
+        // const getXandY = e => ({
+        //     x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
+        //     y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
+        // });
         
-        this.ctx.canvas.addEventListener("mousemove", e => {
-            if (this.options.debugging) {
-                console.log("MOUSE_MOVE", getXandY(e));
-            }
-            this.mouse = getXandY(e);
-        });
+        // this.ctx.canvas.addEventListener("mousemove", e => {
+        //     if (this.options.debugging) {
+        //         console.log("MOUSE_MOVE", getXandY(e));
+        //     }
+        //     this.mouse = getXandY(e);
+        // });
 
-        this.ctx.canvas.addEventListener("click", e => {
-            if (this.options.debugging) {
-                console.log("CLICK", getXandY(e));
-            }
-            this.click = getXandY(e);
-        });
+        // this.ctx.canvas.addEventListener("click", e => {
+        //     if (this.options.debugging) {
+        //         console.log("CLICK", getXandY(e));
+        //     }
+        //     this.click = getXandY(e);
+        // });
 
-        this.ctx.canvas.addEventListener("wheel", e => {
-            if (this.options.debugging) {
-                console.log("WHEEL", getXandY(e), e.wheelDelta);
-            }
-            e.preventDefault(); // Prevent Scrolling
-            this.wheel = e;
-        });
+        // this.ctx.canvas.addEventListener("wheel", e => {
+        //     if (this.options.debugging) {
+        //         console.log("WHEEL", getXandY(e), e.wheelDelta);
+        //     }
+        //     e.preventDefault(); // Prevent Scrolling
+        //     this.wheel = e;
+        // });
 
-        this.ctx.canvas.addEventListener("contextmenu", e => {
-            if (this.options.debugging) {
-                console.log("RIGHT_CLICK", getXandY(e));
-            }
-            e.preventDefault(); // Prevent Context Menu
-            this.rightclick = getXandY(e);
-        });
+        // this.ctx.canvas.addEventListener("contextmenu", e => {
+        //     if (this.options.debugging) {
+        //         console.log("RIGHT_CLICK", getXandY(e));
+        //     }
+        //     e.preventDefault(); // Prevent Context Menu
+        //     this.rightclick = getXandY(e);
+        // });
 
-        this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
-        this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
+        // this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
+        // this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
     };
 
     addEntity(entity) {
