@@ -49,22 +49,30 @@ class GameEngine {
         var that = this;
         this.ctx.canvas.addEventListener("keydown", function (e) {
             switch (e.code) {
-                case "Arrow" :
+                case "ArrowLeft" :
                     that.IGLeft = true;
+                    break;
                 case "ArrowRight" :
                     that.IGRight = true;
+                    break;
                 case "ArrowUp" :
                     that.IGUp = true;
+                    break;
                 case "ArrowDown" :
                     that.IGDown = true;
+                    break;
                 case "KeyA" :
                     that.FBLeft = true;
+                    break;
                 case "KeyD" :
                     that.FBRight = true;
+                    break;
                 case "KeyW" :
                     that.FBUp = true;
+                    break;
                 case "KeyS" :
                     that.FBDown = true;
+                    break;
             }
         })
 
@@ -72,20 +80,28 @@ class GameEngine {
             switch (e.code) {
                 case "ArrowLeft" :
                     that.IGLeft = false;
+                    break;
                 case "ArrowRight" :
                     that.IGRight = false;
+                    break;
                 case "ArrowUp" :
                     that.IGUp = false;
+                    break;
                 case "ArrowDown" :
                     that.IGDown = false;
+                    break;
                 case "KeyA" :
                     that.FBLeft = false;
+                    break;
                 case "KeyD" :
                     that.FBRight = false;
+                    break;
                 case "KeyW" :
                     that.FBUp = false;
+                    break;
                 case "KeyS" :
                     that.FBDown = false;
+                    break;
             }
         })
 
