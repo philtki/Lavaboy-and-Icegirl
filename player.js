@@ -1,6 +1,8 @@
 class player {
-    constructor (game, isIceGirl) {
+    constructor (game, x, y, isIceGirl) {
         this.game = game;
+        this.x = x;
+        this.y = y;
         this.isIceGirl = isIceGirl
         this.state = 0; // 0 = idle, 1 = falling, 2 = jumping, 3 = running
         this.moving = 0; // 0 = idle, 1 = left, 2 = right
@@ -10,6 +12,7 @@ class player {
         this.animations = [];
         this.loadAnimations();
         // this.animator = new animator(ASSET_MANAGER.getAsset("./Assets/Fireboy/SpriteSheet.png"), 0, 410, 214, 410, 5, 0.08);
+        this.updateBB();
     }
 
     loadAnimations() {
@@ -49,9 +52,20 @@ class player {
             this.state = 0;
             this.moving = 0;
         }
+
+        //TODO collison bug
+
+        // this.updateBB();
+        // this.collisionCheck();
+
+
         // console.log("State is: " + this.state);
         // console.log("Moving is: " + this.moving);
     };
+
+    updateBB() {
+        this.bb = new BoundingBox(this.x + 10, this.y + 15, 40, 90);
+    }
 
 
     draw(ctx) {
@@ -67,17 +81,32 @@ class player {
         }
         
         if (this.moving == 0 || this.moving == 1) {
-        this.animations[this.state].drawFrame(this.game.clockTick, ctx, 500 + this.Xoffset, 500 + this.Yoffset, .3);
+        this.animations[this.state].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
         } else {
             ctx.save();
             ctx.scale(-1, 1);
-            this.animations[this.state].drawFrame(this.game.clockTick, ctx, -500 - this.Xoffset, 500 + this.Yoffset, .3);
+            this.animations[this.state].drawFrame(this.game.clockTick, ctx, -this.x - this.Xoffset, this.y + this.Yoffset, .25);
             ctx.restore();
         }
+
+        //TODO idle position is diff from running
+        //to draw bounding box
+        //this.bb.draw(ctx)
 
         // this.animations[0].drawFrame(this.game.clockTick, ctx, 500, 500, .3);
         // this.animations[3].drawFrame(this.game.clockTick, ctx, 500  - 43, 500 + 42, .3);
 
         // ctx.drawImage(ASSET_MANAGER.getAsset("./Assets/Fireboy/SpriteSheet.png"), 0, 0);
+    }
+
+    collisionCheck() {
+        this.game.entities.forEach(entity => {
+            if (this.bb.collide(entity.bb)) {
+                // if (entity instanceof Ground) {
+                //     this.y = entity.bb.top - 72;
+                //     //fix to collide with walls
+                // }
+            }
+        });
     }
 }
