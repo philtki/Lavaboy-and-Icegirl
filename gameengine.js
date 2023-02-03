@@ -50,28 +50,28 @@ class GameEngine {
         this.ctx.canvas.addEventListener("keydown", function (e) {
             switch (e.code) {
                 case "ArrowLeft" :
-                    that.IGLeft = true;
-                    break;
-                case "ArrowRight" :
-                    that.IGRight = true;
-                    break;
-                case "ArrowUp" :
-                    that.IGUp = true;
-                    break;
-                case "ArrowDown" :
-                    that.IGDown = true;
-                    break;
-                case "KeyA" :
                     that.FBLeft = true;
                     break;
-                case "KeyD" :
+                case "ArrowRight" :
                     that.FBRight = true;
                     break;
-                case "KeyW" :
+                case "ArrowUp" :
                     that.FBUp = true;
                     break;
-                case "KeyS" :
+                case "ArrowDown" :
                     that.FBDown = true;
+                    break;
+                case "KeyA" :
+                    that.IGLeft = true;
+                    break;
+                case "KeyD" :
+                    that.IGRight = true;
+                    break;
+                case "KeyW" :
+                    that.IGUp = true;
+                    break;
+                case "KeyS" :
+                    that.IGDown = true;
                     break;
             }
         })
@@ -79,28 +79,28 @@ class GameEngine {
         this.ctx.canvas.addEventListener("keyup", function (e) {
             switch (e.code) {
                 case "ArrowLeft" :
-                    that.IGLeft = false;
-                    break;
-                case "ArrowRight" :
-                    that.IGRight = false;
-                    break;
-                case "ArrowUp" :
-                    that.IGUp = false;
-                    break;
-                case "ArrowDown" :
-                    that.IGDown = false;
-                    break;
-                case "KeyA" :
                     that.FBLeft = false;
                     break;
-                case "KeyD" :
+                case "ArrowRight" :
                     that.FBRight = false;
                     break;
-                case "KeyW" :
+                case "ArrowUp" :
                     that.FBUp = false;
                     break;
-                case "KeyS" :
+                case "ArrowDown" :
                     that.FBDown = false;
+                    break;
+                case "KeyA" :
+                    that.IGLeft = false;
+                    break;
+                case "KeyD" :
+                    that.IGRight = false;
+                    break;
+                case "KeyW" :
+                    that.IGUp = false;
+                    break;
+                case "KeyS" :
+                    that.IGDown = false;
                     break;
             }
         })
