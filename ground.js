@@ -14,8 +14,8 @@ class Ground {
 
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, this.w, this.h);
-        this.BB.draw(ctx)
-        this.leftBB.draw(ctx);
-        this.rightBB.draw(ctx);
+        // this.BB.draw(ctx)
+        // this.leftBB.draw(ctx);
+        // this.rightBB.draw(ctx);
     };
 }

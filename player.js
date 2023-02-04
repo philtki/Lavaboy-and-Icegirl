@@ -36,7 +36,7 @@ class player {
 
         const TICK = this.game.clockTick;
         const MIN_RUN = 5;
-        const MAX_RUN = 100;
+        const MAX_RUN = 150;
         const ACC_RUN = 200;
         const DEC_RUN = 40;
         const MAX_FALL = 270;
@@ -117,7 +117,7 @@ class player {
 
         //TODO idle position is diff from running
         //to draw bounding box
-        this.BB.draw(ctx)
+        // this.BB.draw(ctx)
 
         // this.animations[0].drawFrame(this.game.clockTick, ctx, 500, 500, .3);
         // this.animations[3].drawFrame(this.game.clockTick, ctx, 500  - 43, 500 + 42, .3);
@@ -149,14 +149,14 @@ class player {
                     if (this.velocity.x > 0) {
                         this.velocity.x = 0;
                     }
-                    this.x = entity.leftBB.left;
+                    this.x = entity.leftBB.left - 55;
                 }
                 // Collides with the right side of the ground
                 if (entity instanceof Ground && this.BB.collide(entity.rightBB)) {
                     if (this.velocity.x < 0) {
                         this.velocity.x = 0;
                     }
-                    this.x = entity.BB.right;
+                    this.x = entity.rightBB.right;
                 }
             }
         });
