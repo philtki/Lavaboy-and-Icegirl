@@ -3,7 +3,8 @@ const gameEngine = new GameEngine();
 const ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./Assets/background.png");
-ASSET_MANAGER.queueDownload("./Assets/Fireboy/SpriteSheet.png");
+ASSET_MANAGER.queueDownload("./Assets/FireboySpriteSheet.png");
+ASSET_MANAGER.queueDownload("./Assets/WatergirlSpriteSheet.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks.png");
 
 ASSET_MANAGER.downloadAll(() => {

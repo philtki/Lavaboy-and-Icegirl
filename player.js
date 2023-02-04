@@ -3,7 +3,7 @@ class player {
         this.game = game;
         this.x = x;
         this.y = y + 7;
-        this.isIceGirl = isIceGirl
+        this.isIceGirl = isIceGirl;
         this.state = 0; // 0 = idle, 1 = falling, 2 = jumping, 3 = running
         this.moving = 0; // 0 = idle, 1 = left, 2 = right
         this.dead = false;
@@ -11,24 +11,36 @@ class player {
         this.fallAcc = 562.5;
         this.animations = [];
         this.loadAnimations();
-        this.BB = new boundingbox(this.x + 10, this.y + 15, 40, 90, "Yellow");
+        if (this.isIceGirl) {
+            this.BB = new boundingbox(this.x + 10, this.y + 15, 40, 90, "Yellow");
+            this.name = "IG";
+        } else {
+            this.BB = new boundingbox(this.x + 10, this.y + 15, 40, 90, "Yellow");
+            this.name = "FB";
+        }
         this.lastBB = this.BB;
-        // this.animator = new animator(ASSET_MANAGER.getAsset("./Assets/Fireboy/SpriteSheet.png"), 0, 410, 214, 410, 5, 0.08);
         this.updateBB();
     }
 
     loadAnimations() {
         if (!this.isIceGirl) {
-        // Fireboy Idle
-        this.animations[0] = new animator(ASSET_MANAGER.getAsset("./Assets/Fireboy/SpriteSheet.png"), 0, 410, 214, 410, 5, 0.08);
-        // Fireboy Falling
-        this.animations[1] = new animator(ASSET_MANAGER.getAsset("./Assets/Fireboy/SpriteSheet.png"), 0, 0, 214, 410, 5, 0.08);
-        // Fireboy Jumping
-        this.animations[2] = new animator(ASSET_MANAGER.getAsset("./Assets/Fireboy/SpriteSheet.png"), 0, 820, 214, 410, 5, 0.08);
-        // Fireboy Running Right
-        this.animations[3] = new animator(ASSET_MANAGER.getAsset("./Assets/Fireboy/SpriteSheet.png"), 0, 1230, 341, 270, 8, 0.06);
+            // Fireboy Idle
+            this.animations[0] = new animator(ASSET_MANAGER.getAsset("./Assets/FireboySpriteSheet.png"), 0, 410, 214, 410, 5, 0.08);
+            // Fireboy Falling
+            this.animations[1] = new animator(ASSET_MANAGER.getAsset("./Assets/FireboySpriteSheet.png"), 0, 0, 214, 410, 5, 0.08);
+            // Fireboy Jumping
+            this.animations[2] = new animator(ASSET_MANAGER.getAsset("./Assets/FireboySpriteSheet.png"), 0, 820, 214, 410, 5, 0.08);
+            // Fireboy Running Right
+            this.animations[3] = new animator(ASSET_MANAGER.getAsset("./Assets/FireboySpriteSheet.png"), 0, 1230, 341, 270, 8, 0.06);
         } else {
-
+            // Watergirl Idle
+            this.animations[0] = new animator(ASSET_MANAGER.getAsset("./Assets/WatergirlSpriteSheet.png"), 0, 471, 205, 310, 11, 0.08);
+            // Watergirl Falling
+            this.animations[1] = new animator(ASSET_MANAGER.getAsset("./Assets/WatergirlSpriteSheet.png"), 0, 0, 202, 471, 11, 0.08);
+            // Watergirl Jumping
+            this.animations[2] = new animator(ASSET_MANAGER.getAsset("./Assets/WatergirlSpriteSheet.png"), 0, 781, 206, 310, 11, 0.08);
+            // Watergirl Running Right
+            this.animations[3] = new animator(ASSET_MANAGER.getAsset("./Assets/WatergirlSpriteSheet.png"), 0, 1091, 375, 291, 8, 0.08);
         }
     }
 
@@ -42,25 +54,33 @@ class player {
         const MAX_FALL = 270;
 
         // Running right
-        if (this.game.FBRight && !this.game.FBLeft) {
+        eval("this.left = this.game." + this.name + "Left;");
+        eval("this.right = this.game." + this.name + "Right;");
+        eval("this.up = this.game." + this.name + "Up;");
+        eval("this.down = this.game." + this.name + "Down;");
+        if(this.left && this.right) {
+            this.state = 0;
+            this.moving = 0;
+        } else if (this.right) {
+            console.log("hello");
             this.state = 3;
             this.moving = 1;
             this.velocity.x = MAX_RUN;
         // Running Left
-        } else if (this.game.FBLeft && !this.game.FBRight) {
+        } else if (this.left) {
             this.state = 3;
             this.moving = 2;
             this.velocity.x = -MAX_RUN;
         }
 
         // Jumping
-        if (this.game.FBUp) {
+        if (this.up) {
             this.state = 2;
         // Falling
-        } else if (this.game.FBDown) {
+        } else if (this.down) {
             this.state = 1;
         // Idle
-        } else if (((!this.game.FBLeft && !this.game.FBRight) || (this.game.FBLeft && this.game.FBRight)) && !this.game.FBUp) {
+        } else if (((!this.left && !this.right) || (this.left && this.right)) && !this.up) {
             this.state = 0;
             this.moving = 0;
             this.velocity.x = 0;
@@ -93,17 +113,45 @@ class player {
 
 
     draw(ctx) {
-        this.Xoffset = 0;
-        this.Yoffset = 0;
+        if (this.isIceGirl) {
+            this.Xoffset = 0;
+            this.Yoffset = 26;
+        } else {
+            this.Xoffset = 0;
+            this.Yoffset = 1;
+        }
         if (this.state == 2) {
-            this.Xoffset = 2;
-            this.Yoffset = 35;
+            if (this.isIceGirl) {
+                this.Xoffset = 1;
+                this.Yoffset = 31;
+            } else {
+                this.Xoffset = 2;
+                this.Yoffset = 35;
+            }
         } else if (this.state == 3 && this.moving == 1) {
-            this.Xoffset = -35;
-            this.Yoffset = 35;
+            if (this.isIceGirl) {
+                this.Xoffset = -45;
+                this.Yoffset = 31;
+            } else {
+                this.Xoffset = -35;
+                this.Yoffset = 35;
+            }
         } else if (this.state == 3 && this.moving == 2) {
-            this.Xoffset = 88;
-            this.Yoffset = 35;
+            if (this.isIceGirl) {
+                this.Xoffset = 93;
+                this.Yoffset = 31;
+            } else {
+                this.Xoffset = 88;
+                this.Yoffset = 35;
+            }
+        } else if (this.state == 1 && this.moving == 0) {
+            if (this.isIceGirl) {
+                this.Xoffset = 1;
+                this.Yoffset = -15;
+            } else {
+                this.Xoffset = 2;
+                this.Yoffset = 35;
+            }                
         }
         
         if (this.moving == 0 || this.moving == 1) {
@@ -149,14 +197,14 @@ class player {
                     if (this.velocity.x > 0) {
                         this.velocity.x = 0;
                     }
-                    this.x = entity.leftBB.left - 55;
+                    this.x = entity.BB.left - 52;
                 }
                 // Collides with the right side of the ground
                 if (entity instanceof Ground && this.BB.collide(entity.rightBB)) {
                     if (this.velocity.x < 0) {
                         this.velocity.x = 0;
                     }
-                    this.x = entity.rightBB.right;
+                    this.x = entity.BB.right - 1;
                 }
             }
         });
