@@ -197,14 +197,14 @@ class player {
                     if (this.velocity.x > 0) {
                         this.velocity.x = 0;
                     }
-                    this.x = entity.BB.left - 52;
+                    this.x = entity.leftBB.left - 50;
                 }
                 // Collides with the right side of the ground
                 if (entity instanceof Ground && this.BB.collide(entity.rightBB)) {
                     if (this.velocity.x < 0) {
                         this.velocity.x = 0;
                     }
-                    this.x = entity.BB.right - 1;
+                    this.x = entity.rightBB.right - 3;
                 }
             }
         });
