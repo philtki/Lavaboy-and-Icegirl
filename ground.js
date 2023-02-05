@@ -5,8 +5,8 @@ class Ground {
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks.png");
 
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Red");
-        this.leftBB = new boundingbox(this.x - 2, this.y, 51, 51, "Green")
-        this.rightBB = new boundingbox(this.x + this.w - 49, this.y, 51, 51, "Blue")
+        this.leftBB = new boundingbox(this.x - this.w, this.y, 51, 51, "Green")
+        this.rightBB = new boundingbox(this.x + this.w, this.y, 51, 51, "Blue")
     };
 
     update() {

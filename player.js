@@ -48,7 +48,7 @@ class player {
 
         const TICK = this.game.clockTick;
         const MIN_RUN = 5;
-        const MAX_RUN = 150;
+        const MAX_RUN = 750;
         const ACC_RUN = 200;
         const DEC_RUN = 40;
         const MAX_FALL = 270;
@@ -197,14 +197,14 @@ class player {
                     if (this.velocity.x > 0) {
                         this.velocity.x = 0;
                     }
-                    this.x = entity.leftBB.left - 50;
+                    this.x = entity.leftBB.left;
                 }
                 // Collides with the right side of the ground
                 if (entity instanceof Ground && this.BB.collide(entity.rightBB)) {
                     if (this.velocity.x < 0) {
                         this.velocity.x = 0;
                     }
-                    this.x = entity.rightBB.right - 3;
+                    this.x = entity.rightBB.right - 52;
                 }
             }
         });
