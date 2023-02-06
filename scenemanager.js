@@ -20,6 +20,12 @@ class sceneManager {
                     //fix pixel difference when scaling x and y with bricks.png
                     gameEngine.addEntity(new Ground(this.game, x * 50, y * 40, 51, 51));
                 }
+                if (this.level.data[temp] == 1) {
+                    gameEngine.addEntity(new Lava(this.game, x * 50, y * 40));
+                }
+                if (this.level.data[temp] == 2) {
+                    gameEngine.addEntity(new Water(this.game, x * 50, y * 40));
+                }
             }
         }
         gameEngine.addEntity(new background());

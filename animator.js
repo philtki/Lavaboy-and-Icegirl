@@ -20,6 +20,21 @@ class animator {
             this.width * scale, this.height * scale);
     };
 
+    //this is only for liquids since it needs frame padding
+    drawFrame2(tick, ctx, x, y, scale, framePadding) {
+        this.elapsedTime += tick;
+        if (this.elapsedTime > this.totalTime) {
+            this.elapsedTime -= this.totalTime;
+        }
+        const frame = this.currentFrame();
+
+        ctx.drawImage(this.spritesheet,
+            this.xStart + (this.width + framePadding) * frame, this.yStart,
+            this.width, this.height,
+            x, y,
+            this.width * scale, this.height * scale);
+    };
+
     currentFrame() {
         return Math.floor(this.elapsedTime / this.frameDuration)
     };
