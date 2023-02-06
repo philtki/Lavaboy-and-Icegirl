@@ -3,6 +3,7 @@ class Ground {
         Object.assign(this, { game, x, y, w, h });
 
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks.png");
+        //this.spritesheet = ASSET_MANAGER.getAsset("./Assets/brickTest.png");
 
         this.BB = new boundingbox(this.x - 3, this.y - 3, this.w + 3, this.h + 3, "Red");
         this.leftBB = new boundingbox(this.x - 3, this.y - 3, 2, this.h + 3, "Green");
