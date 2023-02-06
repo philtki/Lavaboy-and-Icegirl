@@ -12,8 +12,8 @@ class sceneManager {
             for (let x = 0; x < 20; x++) {
                 temp++;
                 if (this.level.data[temp] == 5) {
-                    gameEngine.addEntity(new player(this.game, x * 46.9, y * 38.2, false));
-                    gameEngine.addEntity(new player(this.game, x * 46.9 + 100, y * 38.2, true));
+                    gameEngine.addEntity(new player(this.game, x * 46.9, y * 38.2 - 2, false));
+                    gameEngine.addEntity(new player(this.game, x * 46.9 + 400, y * 38.2 - 2, true));
                 }
                 if (this.level.data[temp] == 3) {
                     //console.log("x:" + x + " y:" + y);
