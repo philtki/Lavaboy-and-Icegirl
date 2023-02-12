@@ -36,13 +36,16 @@ class sceneManager {
                 // if (this.level.data[temp] == 1) {
                 //     //console.log("x:" + x + " y:" + y);
                 //     //fix pixel difference when scaling x and y with bricks.png
-                //     gameEngine.addEntity(new Ground(this.game, x * 19, y * 20, 20, 20));
+                //     gameEngine.addEntity(new ground(this.game, x * 19, y * 20, 20, 20));
                 // }
                 // if (this.level.data[temp] == 2) {
-                //     gameEngine.addEntity(new Lava(this.game, x * 19, y * 20));
+                //     gameEngine.addEntity(new liquid(this.game, x * 19, y * 20, true));
                 // }
                 // if (this.level.data[temp] == 3) {
-                //     gameEngine.addEntity(new Water(this.game, x * 50, y * 40));
+                //     gameEngine.addEntity(new liquid(this.game, x * 50, y * 40, false));
+                // }
+                // if (this.level.data[temp] == 3) {
+                //     gameEngine.addEntity(new liquid(this.game, x * 50, y * 40, false));
                 // }
             }
         }

@@ -230,29 +230,41 @@ class player {
                 if (this.topBB.collide(entity.bottomBB)) {
                     if (this.velocity.y < 0) {
                         this.velocity.y = 0;
-                        console.log("Player has collided with the top of a block");
+                        console.log("Player has collided with the bottom of a block");
                     }
                 }
             }
 
             // If the player is colliding with a liquid tile
+            //TODO maybe when player is walking on liquid they are slower
+            //Also ask nathan if he wants to do the liquid bb on level or lower
             if (entity instanceof liquid && entity.BB) {
-                console.log("Player collided with a liquid");
-                if (this.isIceGirl == entity.isLava) {
-                    this.die();
-                } else {
-                    if (this.bottomBB.collide(entity.bottomBB)) {
+                if (this.bottomBB.collide(entity.BB)) {
+                    if (this.isIceGirl) {
+                        if (entity.isLava) {
+                            this.die();
+                        }
+                        if (this.velocity.y > 0) {
+                            this.velocity.y = 0;
+                        }
+                        this.grounded = true;
+                    } else {
+                        if (!entity.isLava) {
+                            this.die();
+                        }
                         if (this.velocity.y > 0) {
                             this.velocity.y = 0;
                         }
                         this.grounded = true;
                     }
+                    console.log("Player collided with a liquid");
                 }
             }    
         });
     }
 
     die() {
-        this.removeFromWorld = true;
+        location.reload();
+        //this.removeFromWorld = true;
     }
 }

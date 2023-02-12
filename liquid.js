@@ -1,7 +1,7 @@
 class liquid {
     constructor(game, x, y, isLava) {
-        Object.assign(this, { game, x, y});
-        this.BB = new boundingbox(this.x, this.y + 5, 31 * 1.6, 20, "White");
+        Object.assign(this, { game, x, y, isLava});
+        this.BB = new boundingbox(this.x, this.y + 10, 31 * 1.6, 20, "White");
         this.bottomBB = new boundingbox(this.x, this.y + 40, 31 * 1.6, 2, "Brown");
         if (isLava) {
             this.frames = 23;
