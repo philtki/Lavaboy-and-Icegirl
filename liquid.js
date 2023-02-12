@@ -17,8 +17,8 @@ class liquid {
     };
 
     draw(ctx) {
-        this.animation.drawFrame2(this.game.clockTick, ctx, this.x, this.y - 5, 1.6, this.frames);
-        this.BB.draw(ctx);
-        this.bottomBB.draw(ctx);
+        this.animation.drawFrame2(this.game.clockTick, ctx, this.x, this.y + 5, 1.57, this.frames);
+        //this.BB.draw(ctx);
+        //this.bottomBB.draw(ctx);
     };
 }
