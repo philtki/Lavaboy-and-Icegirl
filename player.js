@@ -1,8 +1,10 @@
 class player {
     constructor (game, x, y, isIceGirl) {
+        this.w = 50;
+        this.h = 90;
         this.game = game;
         this.x = x;
-        this.y = y + 7;
+        this.y = y;
         this.isIceGirl = isIceGirl;
         this.state = 0; // 0 = idle, 1 = falling, 2 = jumping, 3 = running
         this.moving = 0; // 0 = idle, 1 = left, 2 = right
@@ -12,13 +14,23 @@ class player {
         this.grounded = true;
         this.animations = [];
         this.loadAnimations();
+        this.collidedUp = false;
+        this.collidedDown = false;
+        this.collidedLeft = false;
+        this.collidedRight = false;
+        this.removeFromWorld = false;
         if (this.isIceGirl) {
-            this.BB = new boundingbox(this.x + 10, this.y + 10, 40, 90, "Yellow");
             this.name = "IG";
         } else {
-            this.BB = new boundingbox(this.x + 10, this.y + 10, 40, 90, "Yellow");
             this.name = "FB";
         }
+        this.BBx = this.x + 2;
+        this.BBy = this.y + 12;
+        this.BB = new boundingbox(this.BBx, this.BBy, this.w, this.h, "Yellow");
+        this.leftBB = new boundingbox(this.BBx, this.BBy, 2, this.h, "Green");
+        this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy, 2, this.h, "Blue");
+        this.topBB = new boundingbox(this.BBx, this.BBy, this.w, 2, "Purple");
+        this.bottomBB = new boundingbox(this.BBx, this.BBy + this.h, this.w, 2, "Brown");
         this.lastBB = this.BB;
         this.updateBB();
     }
@@ -49,12 +61,12 @@ class player {
 
         const TICK = this.game.clockTick;
         const MIN_RUN = 5;
-        const MAX_RUN = 750;
+        const MAX_RUN = 450;
         const ACC_RUN = 200;
         const DEC_RUN = 40;
         const DEC_AIR = 40;
         const MAX_FALL = 270;
-        const MAX_JUMP = 300;
+        const MAX_JUMP = 500;
 
         // Running right
         eval("this.left = this.game." + this.name + "Left;");
@@ -111,23 +123,25 @@ class player {
                 this.state = 1;
             }
         }
-        this.x += this.velocity.x * TICK;
-        this.y += this.velocity.y * TICK;
 
 
-        //TODO collison bug
-
+        //TODO collison bugs
+        this.grounded = false;
         this.updateBB();
         this.collisionCheck();
-
-
-        // console.log("State is: " + this.state);
-        // console.log("Moving is: " + this.moving);
+        this.x += this.velocity.x * TICK;
+        this.y += this.velocity.y * TICK;
     };
 
     updateBB() {
+        this.BBx = this.x + 2;
+        this.BBy = this.y + 12;
         this.lastBB = this.BB;
-        this.BB = new boundingbox(this.x + 5, this.y + 12, 40, 90, "Yellow");
+        this.BB = new boundingbox(this.BBx, this.BBy, this.w, this.h, "Yellow");
+        this.leftBB = new boundingbox(this.BBx, this.BBy, 2, this.h, "Green");
+        this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy, 2, this.h, "Blue");
+        this.topBB = new boundingbox(this.BBx + 2, this.BBy, this.w - 4, 2, "Purple");
+        this.bottomBB = new boundingbox(this.BBx + 2, this.BBy + this.h, this.w - 4, 2, "Brown");
     }
 
 
@@ -168,11 +182,10 @@ class player {
                 this.Xoffset = 1;
                 this.Yoffset = -15;
             } else {
-                this.Xoffset = 2;
-                this.Yoffset = 35;
+                this.Xoffset = 1;
+                this.Yoffset = 1;
             }                
         }
-        
         if (this.moving == 0 || this.moving == 1) {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
         } else {
@@ -185,53 +198,61 @@ class player {
         //TODO idle position is diff from running
         //to draw bounding box
         // this.BB.draw(ctx);
-
-        // this.animations[0].drawFrame(this.game.clockTick, ctx, 500, 500, .3);
-        // this.animations[3].drawFrame(this.game.clockTick, ctx, 500  - 43, 500 + 42, .3);
-
-        // ctx.drawImage(ASSET_MANAGER.getAsset("./Assets/Fireboy/SpriteSheet.png"), 0, 0);
-    }
+        this.leftBB.draw(ctx);
+        this.rightBB.draw(ctx);
+        this.topBB.draw(ctx);
+        this.bottomBB.draw(ctx);
+        }
 
     collisionCheck() {
         this.game.entities.forEach(entity => {
-            if (entity.BB && this.BB.collide(entity.BB)) {
-                if (this.velocity.y > 0) {
-                    // Landing on the ground
-                    this.grounded = false;
-                    if (entity instanceof Ground && this.lastBB.bottom < entity.BB.top && this.BB.collide(entity.topBB)) {
+            // If the player is colliding with a ground tile
+            if (entity instanceof ground && entity.BB) {
+                if (this.bottomBB.collide(entity.topBB)) {
+                    this.grounded = true;
+                    if (this.velocity.y > 0) {
                         this.velocity.y = 0;
-                        this.grounded = true;
-                        console.log("Player has collided with the top of a block");
-                    } else if (entity instanceof Ground && this.BB.collide(entity.topBB)) {
-                        this.grounded = true;
                     }
-                // Jumping
-                } else if (this.velocity.y < 0) {
-                    // Hitting ceiling
-                    if (entity instanceof Ground && this.lastBB.top >= entity.BB.bottom) {
-                        // this.y = entity.bottomBB.bottom - 2;
-                        this.velocity.y = 0;
-                        console.log("Player has collided with the bottom of a block");
-                    }
+                    console.log("Player is on top of a block");
                 }
-                
-                // Collides with left side of the ground
-                if (entity instanceof Ground && this.lastBB.right <= entity.BB.left && this.lastBB.bottom - 2 > entity.BB.top && this.BB.collide(entity.leftBB)) {
+                if (this.rightBB.collide(entity.leftBB)) {
                     if (this.velocity.x > 0) {
                         this.velocity.x = 0;
+                        console.log("Player has collided with the left side of a block");
                     }
-                    this.x = entity.leftBB.left - 50;
-                    console.log("Player has collided with the left side of a block");
-                    
-                    this.x = entity.leftBB.left;
-                } else if (entity instanceof Ground && this.lastBB.left >= entity.BB.right && this.lastBB.bottom - 2 > entity.BB.top && this.BB.collide(entity.rightBB)) {
+                }
+                if (this.leftBB.collide(entity.rightBB)) {
                     if (this.velocity.x < 0) {
                         this.velocity.x = 0;
+                        console.log("Player has collided with the right side of a block");
                     }
-                    this.x = entity.rightBB.right - 2;
-                    console.log("Player has collided with the right side of a block");
+                }
+                if (this.topBB.collide(entity.bottomBB)) {
+                    if (this.velocity.y < 0) {
+                        this.velocity.y = 0;
+                        console.log("Player has collided with the top of a block");
+                    }
                 }
             }
+
+            // If the player is colliding with a liquid tile
+            if (entity instanceof liquid && entity.BB) {
+                console.log("Player collided with a liquid");
+                if (this.isIceGirl == entity.isLava) {
+                    this.die();
+                } else {
+                    if (this.bottomBB.collide(entity.bottomBB)) {
+                        if (this.velocity.y > 0) {
+                            this.velocity.y = 0;
+                        }
+                        this.grounded = true;
+                    }
+                }
+            }    
         });
+    }
+
+    die() {
+        this.removeFromWorld = true;
     }
 }

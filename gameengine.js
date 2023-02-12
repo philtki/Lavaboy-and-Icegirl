@@ -104,44 +104,6 @@ class GameEngine {
                     break;
             }
         })
-
-        // const getXandY = e => ({
-        //     x: e.clientX - this.ctx.canvas.getBoundingClientRect().left,
-        //     y: e.clientY - this.ctx.canvas.getBoundingClientRect().top
-        // });
-        
-        // this.ctx.canvas.addEventListener("mousemove", e => {
-        //     if (this.options.debugging) {
-        //         console.log("MOUSE_MOVE", getXandY(e));
-        //     }
-        //     this.mouse = getXandY(e);
-        // });
-
-        // this.ctx.canvas.addEventListener("click", e => {
-        //     if (this.options.debugging) {
-        //         console.log("CLICK", getXandY(e));
-        //     }
-        //     this.click = getXandY(e);
-        // });
-
-        // this.ctx.canvas.addEventListener("wheel", e => {
-        //     if (this.options.debugging) {
-        //         console.log("WHEEL", getXandY(e), e.wheelDelta);
-        //     }
-        //     e.preventDefault(); // Prevent Scrolling
-        //     this.wheel = e;
-        // });
-
-        // this.ctx.canvas.addEventListener("contextmenu", e => {
-        //     if (this.options.debugging) {
-        //         console.log("RIGHT_CLICK", getXandY(e));
-        //     }
-        //     e.preventDefault(); // Prevent Context Menu
-        //     this.rightclick = getXandY(e);
-        // });
-
-        // this.ctx.canvas.addEventListener("keydown", event => this.keys[event.key] = true);
-        // this.ctx.canvas.addEventListener("keyup", event => this.keys[event.key] = false);
     };
 
     addEntity(entity) {

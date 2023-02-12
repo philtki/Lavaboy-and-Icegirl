@@ -13,18 +13,18 @@ class sceneManager {
                 temp++;
                 if (this.level.data[temp] == 5) {
                     gameEngine.addEntity(new player(this.game, x * 46.9, y * 38.2 - 2, false));
-                    gameEngine.addEntity(new player(this.game, x * 46.9 + 400, y * 38.2 - 2, true));
+                    gameEngine.addEntity(new player(this.game, x * 46.9 + 300, y * 38.2 - 2, true));
                 }
                 if (this.level.data[temp] == 3) {
                     //console.log("x:" + x + " y:" + y);
                     //fix pixel difference when scaling x and y with bricks.png
-                    gameEngine.addEntity(new Ground(this.game, x * 50, y * 40, 51, 51));
+                    gameEngine.addEntity(new ground(this.game, x * 50, y * 40, 51, 51));
                 }
                 if (this.level.data[temp] == 1) {
-                    gameEngine.addEntity(new Lava(this.game, x * 50, y * 40));
+                    gameEngine.addEntity(new liquid(this.game, x * 50, y * 40, true));
                 }
                 if (this.level.data[temp] == 2) {
-                    gameEngine.addEntity(new Water(this.game, x * 50, y * 40));
+                    gameEngine.addEntity(new liquid(this.game, x * 50, y * 40, false));
                 }
 
                 //TODO change for loop value to size, change liquid pixels, try 50x40
