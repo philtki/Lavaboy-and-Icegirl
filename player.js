@@ -245,17 +245,17 @@ class player {
                             if (entity.isLava) {
                                 this.die();
                             }
-                            if (this.velocity.y > 0) {
-                                this.velocity.y = 0;
-                            }
+                            // if (this.velocity.y > 0) {
+                            //     this.velocity.y = 0;
+                            // }
                             this.grounded = true;
                         } else {
                             if (!entity.isLava) {
                                 this.die();
                             }
-                            if (this.velocity.y > 0) {
-                                this.velocity.y = 0;
-                            }
+                            // if (this.velocity.y > 0) {
+                            //     this.velocity.y = 0;
+                            // }
                             this.grounded = true;
                         }
                     } else {
@@ -283,7 +283,7 @@ class player {
     }
 
     die() {
+        this.removeFromWorld = true;
         location.reload();
-        //this.removeFromWorld = true;
     }
 }
