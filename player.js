@@ -240,26 +240,45 @@ class player {
             //Also ask nathan if he wants to do the liquid bb on level or lower
             if (entity instanceof liquid && entity.BB) {
                 if (this.bottomBB.collide(entity.BB)) {
-                    if (this.isIceGirl) {
-                        if (entity.isLava) {
-                            this.die();
+                    if (!entity.isGreen) {
+                        if (this.isIceGirl) {
+                            if (entity.isLava) {
+                                this.die();
+                            }
+                            if (this.velocity.y > 0) {
+                                this.velocity.y = 0;
+                            }
+                            this.grounded = true;
+                        } else {
+                            if (!entity.isLava) {
+                                this.die();
+                            }
+                            if (this.velocity.y > 0) {
+                                this.velocity.y = 0;
+                            }
+                            this.grounded = true;
                         }
-                        if (this.velocity.y > 0) {
-                            this.velocity.y = 0;
-                        }
-                        this.grounded = true;
                     } else {
-                        if (!entity.isLava) {
-                            this.die();
-                        }
-                        if (this.velocity.y > 0) {
-                            this.velocity.y = 0;
-                        }
-                        this.grounded = true;
+                        this.die();
                     }
                     console.log("Player collided with a liquid");
                 }
-            }    
+            }
+            //gem collision
+            if (entity instanceof gem && entity.BB) {
+                if (this.BB.collide(entity.BB)) {
+                    if (this.isIceGirl) {
+                        if (!entity.isRed) {
+                            entity.removeFromWorld = true;
+                        }
+                    } else {
+                        if (entity.isRed) {
+                            entity.removeFromWorld = true;
+                        }
+                    }
+                    console.log("Player collided with a gem");
+                }
+            }
         });
     }
 

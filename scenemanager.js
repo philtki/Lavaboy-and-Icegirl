@@ -67,10 +67,19 @@ class sceneManager {
                     gameEngine.addEntity(new ground(this.game, x * 48, y * 48, 51, 51));
                 }
                 if (this.level.data[temp] == 2) {
-                    gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, true));
+                    gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, true, false));
                 }
                 if (this.level.data[temp] == 3) {
-                    gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, false));
+                    gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, false, false));
+                }
+                if (this.level.data[temp] == 6) {
+                    gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, false, true));
+                }
+                if (this.level.data[temp] == 4) {
+                    gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, true));
+                }
+                if (this.level.data[temp] == 5) {
+                    gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, false));
                 }
             }
         }
