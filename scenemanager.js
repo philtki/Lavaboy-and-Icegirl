@@ -81,6 +81,9 @@ class sceneManager {
                 if (this.level.data[temp] == 5) {
                     gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, false));
                 }
+                if (this.level.data[temp] == 7) {
+                    gameEngine.addEntity(new elevator(this.game, x * 24, y * 50));
+                }
             }
         }
         gameEngine.addEntity(new background());

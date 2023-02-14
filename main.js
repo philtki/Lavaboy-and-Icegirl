@@ -10,6 +10,7 @@ ASSET_MANAGER.queueDownload("./Assets/op.png");
 ASSET_MANAGER.queueDownload("./Assets/liquid.png");
 ASSET_MANAGER.queueDownload("./Assets/blueGem.png");
 ASSET_MANAGER.queueDownload("./Assets/redGem.png");
+ASSET_MANAGER.queueDownload("./Assets/elevator.png");
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");

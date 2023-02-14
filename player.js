@@ -61,12 +61,12 @@ class player {
 
         const TICK = this.game.clockTick;
         const MIN_RUN = 5;
-        const MAX_RUN = 450;
+        const MAX_RUN = 250; //450
         const ACC_RUN = 200;
         const DEC_RUN = 40;
         const DEC_AIR = 40;
         const MAX_FALL = 270;
-        const MAX_JUMP = 500;
+        const MAX_JUMP = 400;   //500
 
         // Running right
         eval("this.left = this.game." + this.name + "Left;");
@@ -198,10 +198,10 @@ class player {
         //TODO idle position is diff from running
         //to draw bounding box
         // this.BB.draw(ctx);
-        this.leftBB.draw(ctx);
-        this.rightBB.draw(ctx);
-        this.topBB.draw(ctx);
-        this.bottomBB.draw(ctx);
+        // this.leftBB.draw(ctx);
+        // this.rightBB.draw(ctx);
+        // this.topBB.draw(ctx);
+        // this.bottomBB.draw(ctx);
         }
 
     collisionCheck() {
@@ -279,9 +279,21 @@ class player {
                     console.log("Player collided with a gem");
                 }
             }
+
+            //elevator collision
+            if (entity instanceof elevator && entity.BB) {
+                if (this.BB.collide(entity.BB)) {
+                    this.grounded = true;
+                    if (this.velocity.y > 0) {
+                        this.velocity.y = 0;
+                    }
+                    console.log("Player is on top of a block");
+                }
+            }
         });
     }
 
+    //TODO add death animation smoke
     die() {
         this.removeFromWorld = true;
         location.reload();
