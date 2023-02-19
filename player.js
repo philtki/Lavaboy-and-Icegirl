@@ -71,7 +71,7 @@ class player {
         const DEC_RUN = 40;
         const DEC_AIR = 40;
         const FALL = 10;
-        const MAX_JUMP = 600;   //500
+        const MAX_JUMP = 400;   //500
 
         // Running right
         this.left = this.game[this.name + "Left"];
@@ -142,7 +142,6 @@ class player {
         }
 
 
-        //TODO collison bugs
         this.grounded = false;
         this.updateBB();
         this.collisionCheck();
@@ -224,8 +223,8 @@ class player {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, -this.x - this.Xoffset, this.y + this.Yoffset, .25);
             ctx.restore();
         }
-        console.log("Player state: " + this.state);
-        console.log("Player moving: " + this.moving);
+        // console.log("Player state: " + this.state);
+        // console.log("Player moving: " + this.moving);
         //TODO idle position is diff from running
         //to draw bounding box
         // this.BB.draw(ctx);
@@ -274,7 +273,7 @@ class player {
                     if (!entity.isGreen) {
                         if (this.isIceGirl) {
                             if (entity.isLava) {
-                                this.die();
+                                //this.die();
                             }
                             // if (this.velocity.y > 0) {
                             //     this.velocity.y = 0;
@@ -300,15 +299,22 @@ class player {
                 if (this.BB.collide(entity.BB)) {
                     if (this.isIceGirl) {
                         if (!entity.isRed) {
-                            entity.removeFromWorld = true;
+                            //entity.removeFromWorld = true;
+                            //entity.el.goDown = true;
+                            entity.el.setDown(true);
+                        } else {
+                            //entity.el.goDown = false;
+                            entity.el.setDown(false);
                         }
                     } else {
                         if (entity.isRed) {
                             entity.removeFromWorld = true;
                         }
                     }
-                    // console.log("Player collided with a gem");
+                    // console.log("Player collided with a gem" + entity.el.goDown);
                 }
+
+
             }
 
             //elevator collision

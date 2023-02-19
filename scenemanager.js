@@ -41,6 +41,7 @@ class sceneManager {
     loadTestLevel(level) {
         this.level = level;
         let temp = -1;
+        let el = new elevator(this.game, -100, -100 , false);
         this.clearEntities();
         for (let y = 0; y < 20; y++) {
             for (let x = 0; x < 23; x++) {
@@ -83,14 +84,16 @@ class sceneManager {
                 if (this.level.data[temp] == 6) {
                     gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, false, true));
                 }
+                if (this.level.data[temp] == 7) {
+                    el = new elevator(this.game, x * 24, y * 50);
+                    gameEngine.addEntity(el);
+                    //this.el = gameEngine.addEntity(new elevator(this.game, x * 24, y * 50));
+                }
                 if (this.level.data[temp] == 4) {
-                    gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, true));
+                    gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, true, el));
                 }
                 if (this.level.data[temp] == 5) {
-                    gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, false));
-                }
-                if (this.level.data[temp] == 7) {
-                    gameEngine.addEntity(new elevator(this.game, x * 24, y * 50));
+                    gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, false, el));
                 }
                 if (this.level.data[temp] == 10) {
                     gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, 45, 17))
