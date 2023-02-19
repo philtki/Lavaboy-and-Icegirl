@@ -66,7 +66,7 @@ class player {
         const DEC_RUN = 40;
         const DEC_AIR = 40;
         const MAX_FALL = 270;
-        const MAX_JUMP = 400;   //500
+        const MAX_JUMP = 600;   //500
 
         // Running right
         eval("this.left = this.game." + this.name + "Left;");
@@ -105,7 +105,7 @@ class player {
         }
 
         if (!this.grounded) {
-            if (this.velocity.y < 200) {
+            if (this.velocity.y < 300) {
                 this.velocity.y += 10;
             }
         }
@@ -295,7 +295,7 @@ class player {
 
     //TODO add death animation smoke
     die() {
-        this.removeFromWorld = true;
-        location.reload();
+        // this.removeFromWorld = true;
+        this.game.camera.loadTestLevel(levelOne2);
     }
 }

@@ -1,6 +1,7 @@
 class sceneManager {
     constructor(game) {
         this.game = game;
+        this.game.camera = this;
         //this.loadLevel(levelOne)
         this.loadTestLevel(levelOne2);  //23x20
     };
