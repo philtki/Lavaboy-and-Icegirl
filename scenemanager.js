@@ -6,6 +6,12 @@ class sceneManager {
         this.loadTestLevel(levelOne2);  //23x20
     };
 
+    clearEntities() {
+        this.game.entities.forEach(function (entity) {
+            entity.removeFromWorld = true;
+        });
+    };
+
     loadLevel(level) {
         this.level = level;
         let temp = -1;
@@ -35,6 +41,7 @@ class sceneManager {
     loadTestLevel(level) {
         this.level = level;
         let temp = -1;
+        this.clearEntities();
         for (let y = 0; y < 20; y++) {
             for (let x = 0; x < 23; x++) {
                 temp++;

@@ -58,13 +58,19 @@ class player {
     }
 
     update() {
+        const IDLE = 0;
+        const RIGHT = 1;
+        const LEFT = 2;
+        const JUMPING = 1;
+        const FALLING = 2;
+        const RUNNING = 3;
         const TICK = this.game.clockTick;
         const MIN_RUN = 5;
         const MAX_RUN = 250; //450
         const ACC_RUN = 200;
         const DEC_RUN = 40;
         const DEC_AIR = 40;
-        const MAX_FALL = 270;
+        const FALL = 10;
         const MAX_JUMP = 600;   //500
 
         // Running right
@@ -78,16 +84,16 @@ class player {
         }
         
         if(this.left && this.right) {
-            this.state = 0;
-            this.moving = 0;
+            this.state = IDLE;
+            this.moving = IDLE;
         } else if (this.right) {
-            this.state = 3;
-            this.moving = 1;
+            this.state = RUNNING;
+            this.moving = RIGHT;
             this.velocity.x = MAX_RUN;
         // Running Left
         } else if (this.left) {
-            this.state = 3;
-            this.moving = 2;
+            this.state = RUNNING;
+            this.moving = LEFT;
             this.velocity.x = -MAX_RUN;
         }
 
@@ -98,41 +104,40 @@ class player {
                 this.grounded = false;
             }
         } else if (((!this.left && !this.right) || (this.left && this.right)) && !this.up) {
-            this.state = 0;
-            this.moving = 0;
+            this.state = IDLE;
+            this.moving = IDLE;
             this.velocity.x = 0;
         }
 
+        // If the player isn't on the ground
         if (!this.grounded) {
             if (this.velocity.y < 300) {
                 this.velocity.y += 10;
             }
         }
 
+        // If the player is no longer holding left, but is still moving in that direction
         if (!this.left && this.velocity.x < 0) {
             this.velocity.x = 0;
             if (this.moving == 2) {
-                this.moving = 0;
+                this.moving = IDLE;
             }
         }
+
+        // If the player is no longer holding right, but is still moving in that direction
         if (!this.right && this.velocity.x > 0) {
             this.velocity.x = 0;
             if (this.moving == 1) {
-                this.moving = 0;
+                this.moving = IDLE;
             }
         }
-        
-        // if (!this.state == 1 && !this.state == 2) {
-        //     if (this.state == 3 && this.moving == 1) {
-        //         console.log("hello");
-        //         this.velocity.x = MAX_RUN;
-        //     }
-        // }
+
+        // 
         if (!this.right && !this.left) {
             if (this.velocity.y < 0) {
-                this.state = 2;
+                this.state = FALLING;
             } else if (this.velocity.y > 0) {
-                this.state = 1;
+                this.state = JUMPING;
             }
         }
 
@@ -158,6 +163,15 @@ class player {
 
 
     draw(ctx) {
+        // Moving
+        const IDLE = 0;
+        const RIGHT = 1;
+        const LEFT = 2;
+        // State
+        const JUMPING = 1;
+        const FALLING = 2;
+        const RUNNING = 3;
+
         if (this.isIceGirl) {
             this.Xoffset = 0;
             this.Yoffset = 26;
@@ -166,7 +180,7 @@ class player {
             this.Yoffset = 1;
         }
         // Jumping but not holding left or right
-        if (this.state == 2 && this.moving == 0) {
+        if (this.state == FALLING && this.moving == IDLE) {
             if (this.isIceGirl) {
                 this.Xoffset = 1;
                 this.Yoffset = 31;
@@ -175,7 +189,7 @@ class player {
                 this.Yoffset = 35;
             }
         // Running to the right    
-        } else if (this.state == 3 && this.moving == 1) {
+        } else if (this.state == RUNNING && this.moving == RIGHT) {
             if (this.isIceGirl) {
                 this.Xoffset = -45;
                 this.Yoffset = 31;
@@ -184,7 +198,7 @@ class player {
                 this.Yoffset = 35;
             }
         // Running to the left    
-        } else if (this.state == 3 && this.moving == 2) {
+        } else if (this.state == RUNNING && this.moving == LEFT) {
             if (this.isIceGirl) {
                 this.Xoffset = 93;
                 this.Yoffset = 31;
@@ -193,7 +207,7 @@ class player {
                 this.Yoffset = 35;
             }
         // Falling but not holding left or right    
-        } else if (this.state == 1 && this.moving == 0) {
+        } else if (this.state == JUMPING && this.moving == IDLE) {
             if (this.isIceGirl) {
                 this.Xoffset = 1;
                 this.Yoffset = -15;
@@ -202,7 +216,7 @@ class player {
                 this.Yoffset = 1;
             }                
         }
-        if (this.moving == 0 || this.moving == 1) {
+        if (this.moving == IDLE || this.moving == RIGHT) {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
         } else {
             ctx.save();
@@ -254,7 +268,7 @@ class player {
 
             // If the player is colliding with a liquid tile
             //TODO maybe when player is walking on liquid they are slower
-            //Also ask nathan if he wants to do the liquid bb on level or lower
+            // Also ask nathan if he wants to do the liquid bb on level or lower
             if (entity instanceof liquid && entity.BB) {
                 if (this.bottomBB.collide(entity.BB)) {
                     if (!entity.isGreen) {
