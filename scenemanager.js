@@ -85,6 +85,9 @@ class sceneManager {
                 if (this.level.data[temp] == 7) {
                     gameEngine.addEntity(new elevator(this.game, x * 24, y * 50));
                 }
+                if (this.level.data[temp] == 10) {
+                    gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, 45, 17))
+                }
             }
         }
         gameEngine.addEntity(new background());

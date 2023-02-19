@@ -58,7 +58,6 @@ class player {
     }
 
     update() {
-
         const TICK = this.game.clockTick;
         const MIN_RUN = 5;
         const MAX_RUN = 250; //450
@@ -69,10 +68,10 @@ class player {
         const MAX_JUMP = 600;   //500
 
         // Running right
-        eval("this.left = this.game." + this.name + "Left;");
-        eval("this.right = this.game." + this.name + "Right;");
-        eval("this.up = this.game." + this.name + "Up;");
-        eval("this.down = this.game." + this.name + "Down;");
+        this.left = this.game[this.name + "Left"];
+        this.right = this.game[this.name + "Right"];
+        this.up = this.game[this.name + "Up"];
+        this.down = this.game[this.name + "Down"];
         
         if (this.grounded) {
             this.velocity.y = 0;
@@ -107,6 +106,19 @@ class player {
         if (!this.grounded) {
             if (this.velocity.y < 300) {
                 this.velocity.y += 10;
+            }
+        }
+
+        if (!this.left && this.velocity.x < 0) {
+            this.velocity.x = 0;
+            if (this.moving == 2) {
+                this.moving = 0;
+            }
+        }
+        if (!this.right && this.velocity.x > 0) {
+            this.velocity.x = 0;
+            if (this.moving == 1) {
+                this.moving = 0;
             }
         }
         
@@ -153,6 +165,7 @@ class player {
             this.Xoffset = 0;
             this.Yoffset = 1;
         }
+        // Jumping but not holding left or right
         if (this.state == 2 && this.moving == 0) {
             if (this.isIceGirl) {
                 this.Xoffset = 1;
@@ -161,6 +174,7 @@ class player {
                 this.Xoffset = 2;
                 this.Yoffset = 35;
             }
+        // Running to the right    
         } else if (this.state == 3 && this.moving == 1) {
             if (this.isIceGirl) {
                 this.Xoffset = -45;
@@ -169,6 +183,7 @@ class player {
                 this.Xoffset = -35;
                 this.Yoffset = 35;
             }
+        // Running to the left    
         } else if (this.state == 3 && this.moving == 2) {
             if (this.isIceGirl) {
                 this.Xoffset = 93;
@@ -177,6 +192,7 @@ class player {
                 this.Xoffset = 88;
                 this.Yoffset = 35;
             }
+        // Falling but not holding left or right    
         } else if (this.state == 1 && this.moving == 0) {
             if (this.isIceGirl) {
                 this.Xoffset = 1;
@@ -194,7 +210,8 @@ class player {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, -this.x - this.Xoffset, this.y + this.Yoffset, .25);
             ctx.restore();
         }
-
+        console.log("Player state: " + this.state);
+        console.log("Player moving: " + this.moving);
         //TODO idle position is diff from running
         //to draw bounding box
         // this.BB.draw(ctx);
@@ -213,24 +230,24 @@ class player {
                     if (this.velocity.y > 0) {
                         this.velocity.y = 0;
                     }
-                    console.log("Player is on top of a block");
+                    // console.log("Player is on top of a block");
                 }
                 if (this.rightBB.collide(entity.leftBB)) {
                     if (this.velocity.x > 0) {
                         this.velocity.x = 0;
-                        console.log("Player has collided with the left side of a block");
+                        // console.log("Player has collided with the left side of a block");
                     }
                 }
                 if (this.leftBB.collide(entity.rightBB)) {
                     if (this.velocity.x < 0) {
                         this.velocity.x = 0;
-                        console.log("Player has collided with the right side of a block");
+                        // console.log("Player has collided with the right side of a block");
                     }
                 }
                 if (this.topBB.collide(entity.bottomBB)) {
                     if (this.velocity.y < 0) {
                         this.velocity.y = 0;
-                        console.log("Player has collided with the bottom of a block");
+                        // console.log("Player has collided with the bottom of a block");
                     }
                 }
             }
@@ -261,7 +278,7 @@ class player {
                     } else {
                         this.die();
                     }
-                    console.log("Player collided with a liquid");
+                    // console.log("Player collided with a liquid");
                 }
             }
             //gem collision
@@ -276,7 +293,7 @@ class player {
                             entity.removeFromWorld = true;
                         }
                     }
-                    console.log("Player collided with a gem");
+                    // console.log("Player collided with a gem");
                 }
             }
 
@@ -287,7 +304,7 @@ class player {
                     if (this.velocity.y > 0) {
                         this.velocity.y = 0;
                     }
-                    console.log("Player is on top of a block");
+                    // console.log("Player is on top of a block");
                 }
             }
         });

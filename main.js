@@ -7,6 +7,8 @@ ASSET_MANAGER.queueDownload("./Assets/FireboySpriteSheet.png");
 ASSET_MANAGER.queueDownload("./Assets/WatergirlSpriteSheet.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks.png");
 ASSET_MANAGER.queueDownload("./Assets/op.png");
+ASSET_MANAGER.queueDownload("./Assets/leverBase.png");
+ASSET_MANAGER.queueDownload("./Assets/leverHandle.png");
 ASSET_MANAGER.queueDownload("./Assets/liquid.png");
 ASSET_MANAGER.queueDownload("./Assets/blueGem.png");
 ASSET_MANAGER.queueDownload("./Assets/redGem.png");
