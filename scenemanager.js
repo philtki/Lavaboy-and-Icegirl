@@ -10,6 +10,15 @@ class sceneManager {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
         });
+
+    };
+
+    openDoor(character) {
+        if (character) {
+            this.DB = true;
+        } else {
+            this.DR = true;
+        }
     };
 
     loadLevel(level) {
@@ -41,6 +50,8 @@ class sceneManager {
     loadTestLevel(level) {
         this.level = level;
         let temp = -1;
+        this.DR = false;
+        this.DB = false;
         let el = new elevator(this.game, -100, -100 , false);
         this.clearEntities();
         for (let y = 0; y < 20; y++) {
@@ -73,7 +84,7 @@ class sceneManager {
                 if (this.level.data[temp] == 1) {
                     //console.log("x:" + x + " y:" + y);
                     //fix pixel difference when scaling x and y with bricks.png
-                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, 51, 51));
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, 48, 48));
                 }
                 if (this.level.data[temp] == 2) {
                     gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, true, false));
@@ -94,6 +105,12 @@ class sceneManager {
                 }
                 if (this.level.data[temp] == 5) {
                     gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, false, el));
+                }
+                if (this.level.data[temp] == 11) {
+                    gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, true));
+                }
+                if (this.level.data[temp] == 12) {
+                    gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, false));
                 }
                 if (this.level.data[temp] == 10) {
                     gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, 45, 17))

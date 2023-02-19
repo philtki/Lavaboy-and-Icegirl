@@ -12,6 +12,8 @@ ASSET_MANAGER.queueDownload("./Assets/leverHandle.png");
 ASSET_MANAGER.queueDownload("./Assets/liquid.png");
 ASSET_MANAGER.queueDownload("./Assets/blueGem.png");
 ASSET_MANAGER.queueDownload("./Assets/redGem.png");
+ASSET_MANAGER.queueDownload("./Assets/doorRed.png");
+ASSET_MANAGER.queueDownload("./Assets/doorBlue.png");
 ASSET_MANAGER.queueDownload("./Assets/elevator.png");
 
 ASSET_MANAGER.downloadAll(() => {

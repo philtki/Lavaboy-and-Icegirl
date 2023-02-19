@@ -281,7 +281,7 @@ class player {
                             this.grounded = true;
                         } else {
                             if (!entity.isLava) {
-                                this.die();
+                                //this.die();
                             }
                             // if (this.velocity.y > 0) {
                             //     this.velocity.y = 0;
@@ -300,21 +300,24 @@ class player {
                     if (this.isIceGirl) {
                         if (!entity.isRed) {
                             //entity.removeFromWorld = true;
-                            //entity.el.goDown = true;
-                            entity.el.setDown(true);
-                        } else {
-                            //entity.el.goDown = false;
                             entity.el.setDown(false);
+                            //TODO transfer this mechanics to lever
+                            // also uncomment all the setDown and make
+                            // gems removeFromWorld
+                            // Red gem makes elevator go down and vice versa
+                        } else {
+                            entity.el.setDown(true);
                         }
                     } else {
                         if (entity.isRed) {
-                            entity.removeFromWorld = true;
+                            //entity.removeFromWorld = true;
+                            entity.el.setDown(true);
+                        } else {
+                            entity.el.setDown(false);
                         }
                     }
                     // console.log("Player collided with a gem" + entity.el.goDown);
                 }
-
-
             }
 
             //elevator collision
@@ -324,7 +327,28 @@ class player {
                     if (this.velocity.y > 0) {
                         this.velocity.y = 0;
                     }
-                    // console.log("Player is on top of a block");
+                    if (this.grounded && entity.isMoving) {
+                        this.y= entity.y - this.h - 10; //makes player move with the elevator
+                    }
+                    //console.log("Player is on top of a block");
+                }
+            }
+
+            //door collision
+            if (entity instanceof door && entity.BB) {
+                if (this.BB.collide(entity.BB) && !entity.isRed && this.isIceGirl) {
+                    this.game.camera.openDoor(this.isIceGirl)
+                    if (this.game.camera.DR) {
+                        this.die();
+                    }
+                    //console.log("Player is on doorBlue" + " DB " + this.game.camera.DB + " DR " + this.game.camera.DR);
+                }
+                if (this.BB.collide(entity.BB) && entity.isRed && !this.isIceGirl) {
+                    this.game.camera.openDoor(this.isIceGirl)
+                    if (this.game.camera.DB) {
+                        this.die();
+                    }
+                    //console.log("Player is on doorBlue" + " DB " + this.game.camera.DB + " DR " + this.game.camera.DR);
                 }
             }
         });
@@ -333,6 +357,11 @@ class player {
     //TODO add death animation smoke
     die() {
         // this.removeFromWorld = true;
+        const start = Date.now();
+        let now = start;
+        while (now - start < 200) { //waits .2 secs before dying
+            now = Date.now();
+        }
         this.game.camera.loadTestLevel(levelOne2);
     }
 }
