@@ -273,7 +273,7 @@ class player {
                     if (!entity.isGreen) {
                         if (this.isIceGirl) {
                             if (entity.isLava) {
-                                //this.die();
+                                this.die();
                             }
                             // if (this.velocity.y > 0) {
                             //     this.velocity.y = 0;
@@ -281,7 +281,7 @@ class player {
                             this.grounded = true;
                         } else {
                             if (!entity.isLava) {
-                                //this.die();
+                                this.die();
                             }
                             // if (this.velocity.y > 0) {
                             //     this.velocity.y = 0;
@@ -299,21 +299,21 @@ class player {
                 if (this.BB.collide(entity.BB)) {
                     if (this.isIceGirl) {
                         if (!entity.isRed) {
-                            //entity.removeFromWorld = true;
-                            entity.el.setDown(false);
+                            entity.removeFromWorld = true;
+                            //entity.el.setDown(false);
                             //TODO transfer this mechanics to lever
                             // also uncomment all the setDown and make
                             // gems removeFromWorld
                             // Red gem makes elevator go down and vice versa
-                        } else {
-                            entity.el.setDown(true);
+                        // } else {
+                        //     entity.el.setDown(true);
                         }
                     } else {
                         if (entity.isRed) {
-                            //entity.removeFromWorld = true;
-                            entity.el.setDown(true);
-                        } else {
-                            entity.el.setDown(false);
+                            entity.removeFromWorld = true;
+                            //entity.el.setDown(true);
+                        // } else {
+                        //     entity.el.setDown(false);
                         }
                     }
                     // console.log("Player collided with a gem" + entity.el.goDown);
@@ -322,7 +322,7 @@ class player {
 
             //elevator collision
             if (entity instanceof elevator && entity.BB) {
-                if (this.BB.collide(entity.BB)) {
+                if (this.bottomBB.collide(entity.BB)) {
                     this.grounded = true;
                     if (this.velocity.y > 0) {
                         this.velocity.y = 0;
@@ -342,13 +342,15 @@ class player {
                         this.die();
                     }
                     //console.log("Player is on doorBlue" + " DB " + this.game.camera.DB + " DR " + this.game.camera.DR);
-                }
-                if (this.BB.collide(entity.BB) && entity.isRed && !this.isIceGirl) {
+                } else if (this.BB.collide(entity.BB) && entity.isRed && !this.isIceGirl) {
                     this.game.camera.openDoor(this.isIceGirl)
                     if (this.game.camera.DB) {
                         this.die();
                     }
-                    //console.log("Player is on doorBlue" + " DB " + this.game.camera.DB + " DR " + this.game.camera.DR);
+                    //console.log("Player is on doorRed" + " DB " + this.game.camera.DB + " DR " + this.game.camera.DR);
+                } else {
+                    this.game.camera.DR = false;
+                    this.game.camera.DB = false;
                 }
             }
         });
