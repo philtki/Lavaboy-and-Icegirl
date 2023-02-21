@@ -1,6 +1,6 @@
 class lever {
-    constructor (game, x, y, w, h) {
-        Object.assign(this, { game, x, y, w, h });
+    constructor (game, x, y, w, h, ele) {
+        Object.assign(this, { game, x, y, w, h, ele});
 
         this.spritesheet = [];
         this.base = ASSET_MANAGER.getAsset("./Assets/leverBase.png");
@@ -22,8 +22,10 @@ class lever {
         }
         if (this.angle == Math.PI / 4) {
             // console.log("Lever is all the way to the right");
+            this.ele.setDown(true);
         } else if (this.angle == (7 * Math.PI) / 4) {
             // console.log("Lever is all the way to the left");
+            this.ele.setDown(false);
         }
     };
 

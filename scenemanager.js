@@ -113,7 +113,7 @@ class sceneManager {
                     gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, false));
                 }
                 if (this.level.data[temp] == 10) {
-                    gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, 45, 17))
+                    gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, 45, 17, el))
                 }
             }
         }
