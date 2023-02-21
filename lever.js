@@ -5,7 +5,7 @@ class lever {
         this.spritesheet = [];
         this.base = ASSET_MANAGER.getAsset("./Assets/leverBase.png");
         this.handle = ASSET_MANAGER.getAsset("./Assets/leverHandle.png");
-        this.BB = new boundingbox(this.x, this.y + this.h + 2, this.w, this.h, "Red");
+        this.BB = new boundingbox(this.x + this.w / 2, this.y + (42 - this.h), 5, 5, "Red");
         this.removeFromWorld = false;
         this.currentAngle = 0;
         this.angle = (7 * Math.PI) / 4;
@@ -27,6 +27,15 @@ class lever {
             // console.log("Lever is all the way to the left");
             this.ele.setDown(false);
         }
+        this.updateBB();
+    };
+
+    updateBB() {
+        this.xOffset = 16 * Math.sin(Math.PI * 2 * (this.angle * (180 / Math.PI)) / 360);
+        this.yOffset = 16 * Math.cos(Math.PI * 2 * (this.angle * (180 / Math.PI)) / 360);
+        console.log("xOffset = " + this.xOffset);
+        // console.log("yOffset = " + this.yOffset);
+        this.BB = new boundingbox(this.x + this.w / 2 + this.xOffset, this.y + (42 - this.h) - this.yOffset, 5, 5, "Red");
     };
 
     rotateClockwise() {
@@ -39,7 +48,7 @@ class lever {
             this.angle = Math.PI / 4;
         }
         this.lastRotate = 0;
-    }
+    };
 
     rotateCounterClockwise() {
         if (this.angle - 0.01 <= Math.PI / 4 || this.angle - 0.01 >= (7 * Math.PI) / 4) {
@@ -51,7 +60,7 @@ class lever {
             this.angle = (7 * Math.PI) / 4;
         }
         this.lastRotate = 1;
-    }
+    };
 
     draw(ctx) {
         var offScreenCanvas = document.createElement('canvas');
@@ -70,6 +79,6 @@ class lever {
         ctx.drawImage(offScreenCanvas, this.x + this.w / 2 - 30, this.y, 64, 64);
         ctx.drawImage(this.base, this.x, this.y + (42 - this.h), this.w, this.h);
         // this.BB.draw(ctx);
-        console.log("Current angle: " + this.angle);
+        // console.log("Current angle: " + this.angle);
     }
 }
