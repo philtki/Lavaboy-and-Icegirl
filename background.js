@@ -8,6 +8,7 @@ class background {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.backgroundImage, 1, 1, 1104, 960);
+        //ctx.drawImage(this.backgroundImage, 1, 1, 1104, 960);
+        ctx.drawImage(this.backgroundImage, 1, 1, 1656, 1440);
     };
 }
