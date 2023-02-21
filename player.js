@@ -224,8 +224,8 @@ class player {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, -this.x - this.Xoffset, this.y + this.Yoffset, .25);
             ctx.restore();
         }
-        console.log("Player state: " + this.state);
-        console.log("Player moving: " + this.moving);
+        // console.log("Player state: " + this.state);
+        // console.log("Player moving: " + this.moving);
         //TODO idle position is diff from running
         //to draw bounding box
         // this.BB.draw(ctx);
@@ -320,6 +320,30 @@ class player {
                     }
                     // console.log("Player is on top of a block");
                 }
+            }
+
+            if (entity instanceof lever && entity.BB) {
+                // console.log("Entity is a lever");
+                if(this.leftBB.collide(entity.BB)) {
+                    entity.rotateCounterClockwise();
+                    if (this.velocity.x < 0) {
+                        this.velocity.x = 0;
+                    }
+                    // if (this.velocity.x < -50) {
+                    //     this.velocity.x = -50;
+                    // }
+                    console.log("Player colliding with lever from the right");
+                } else if (this.rightBB.collide(entity.BB)) {
+                    entity.rotateClockwise();
+                    if (this.velocity.x > 0) {
+                        this.velocity.x = 0;
+                    }
+                    // if (this.velocity.x > 50) {
+                    //     this.velocity.x = 50;
+                    // }
+                    console.log("Player colliding with lever from the left");
+                }
+
             }
         });
     }
