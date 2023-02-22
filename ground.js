@@ -1,7 +1,8 @@
 class ground {
-    constructor(game, x, y, w, h) {
-        Object.assign(this, { game, x, y, w, h });
-
+    constructor(game, x, y) {
+        Object.assign(this, { game, x, y });
+        this.h = 48
+        this.w = 48
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks.png");
         //this.spritesheet = ASSET_MANAGER.getAsset("./Assets/op.png");
 
@@ -18,7 +19,7 @@ class ground {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.x, this.y, 48, 48);
+        ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);
         // this.BB.draw(ctx);
         // this.leftBB.draw(ctx);
         // this.rightBB.draw(ctx);

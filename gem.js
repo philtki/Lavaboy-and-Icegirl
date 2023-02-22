@@ -1,33 +1,32 @@
 class gem {
-    constructor(game, x, y, isRed, el) {
-        Object.assign(this, { game, x, y, isRed, el});
-        this.BB = new boundingbox(this.x, this.y, 31, 27, "White");
-        this.startingPosY = this.y;
-        this.speed = 6;
-        if (isRed) {
-            this.spritesheet = ASSET_MANAGER.getAsset("./Assets/redGem.png");
-        } else {
-            this.spritesheet = ASSET_MANAGER.getAsset("./Assets/blueGem.png");
+    constructor(game, x, y, gemColor) {
+        Object.assign(this, { game, x, y, gemColor});
+        this.h = 31;
+        this.w = 27;
+        this.BB = new boundingbox(this.x, this.y, this.h, this.w, "White");
+        const REDGEM = 4;
+        const BLUEGEM = 5;
+        this.gemColor = gemColor;
+        switch (this.gemColor) {
+            case REDGEM:
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/redGem.png");
+                break;
+            case BLUEGEM:
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/blueGem.png");
+                break;
         }
         this.removeFromWorld = false;
     };
 
     update() {
-        this.y += this.speed * this.game.clockTick;
-        if (this.y >= this.startingPosY + 5) {
-            this.speed = -6;
-        } else if (this.y <= this.startingPosY - 5) {
-            this.speed = 6;
-        }
-        this.updateBB();
     };
 
     updateBB() {
-        this.BB = new boundingbox(this.x, this.y, 31, 27, "White");
+        this.BB = new boundingbox(this.x, this.y, this.h, this.w, "White");
     }
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.x, this.y, 31, 27);
+        ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);
         //this.BB.draw(ctx);
     };
 }

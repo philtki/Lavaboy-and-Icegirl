@@ -1,11 +1,17 @@
 class door {
-    constructor(game, x, y, isRed) {
-        Object.assign(this, { game, x, y, isRed});
+    constructor(game, x, y, doorType) {
+        Object.assign(this, { game, x, y, doorType});
+        this.doorType = doorType;
+        const REDDOOR = 8;
+        const BLUEDOOR = 9;
         this.BB = new boundingbox(this.x, this.y + 40, 60, 60, "White");
-        if (isRed) {
-            this.spritesheet = ASSET_MANAGER.getAsset("./Assets/doorRed.png");
-        } else {
-            this.spritesheet = ASSET_MANAGER.getAsset("./Assets/doorBlue.png");
+        switch (this.doorType) {
+            case REDDOOR:
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/doorRed.png");
+                break;
+            case BLUEDOOR:
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/doorBlue.png");
+                break;
         }
     };
 

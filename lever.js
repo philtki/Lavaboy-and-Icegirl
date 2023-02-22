@@ -1,7 +1,10 @@
 class lever {
-    constructor (game, x, y, w, h, ele) {
-        Object.assign(this, { game, x, y, w, h, ele});
-
+    constructor (game, x, y, ele) {
+        Object.assign(this, { game, x, y, ele});
+        this.baseH = 17;
+        this.baseW = 45;
+        this.handleH = 32;
+        this.handleW = 11;
         this.spritesheet = [];
         this.base = ASSET_MANAGER.getAsset("./Assets/leverBase.png");
         this.handle = ASSET_MANAGER.getAsset("./Assets/leverHandle.png");
@@ -33,8 +36,6 @@ class lever {
     updateBB() {
         this.xOffset = 16 * Math.sin(Math.PI * 2 * (this.angle * (180 / Math.PI)) / 360);
         this.yOffset = 16 * Math.cos(Math.PI * 2 * (this.angle * (180 / Math.PI)) / 360);
-        console.log("xOffset = " + this.xOffset);
-        // console.log("yOffset = " + this.yOffset);
         this.BB = new boundingbox(this.x + this.w / 2 + this.xOffset, this.y + (42 - this.h) - this.yOffset, 5, 5, "Red");
     };
 
@@ -64,19 +65,19 @@ class lever {
 
     draw(ctx) {
         var offScreenCanvas = document.createElement('canvas');
-        offScreenCanvas.width = 64;
-        offScreenCanvas.height = 64;
+        offScreenCanvas.width = this.handleH * 2;
+        offScreenCanvas.height = this.handleH * 2;
         var offScreenCtx = offScreenCanvas.getContext('2d');
         offScreenCtx.save();
-        offScreenCtx.translate(32, 32);
+        offScreenCtx.translate(this.handleH, this.handleH);
         offScreenCtx.rotate(this.angle);
-        offScreenCtx.translate(-32, -32);
-        offScreenCtx.drawImage(this.handle, 26.5, 0, 11, 32);
-        this.fakeBB = new boundingbox(26.5, 0, 11, 32, "Blue");
+        offScreenCtx.translate(-this.handleH, -this.handleH);
+        offScreenCtx.drawImage(this.handle, this.handleH - this.handleW / 2, 0, this.handleW, this.handleH);
+        this.fakeBB = new boundingbox(this.handleH - this.handleW / 2, 0, this.handleW, this.handleH, "Blue");
         // this.fakeBB.draw(offScreenCtx);
         offScreenCtx.restore();
 
-        ctx.drawImage(offScreenCanvas, this.x + this.w / 2 - 30, this.y, 64, 64);
+        ctx.drawImage(offScreenCanvas, this.x + this.w / 2 - 30, this.y, this.handleH * 2, this.handleH * 2);
         ctx.drawImage(this.base, this.x, this.y + (42 - this.h), this.w, this.h);
         // this.BB.draw(ctx);
         // console.log("Current angle: " + this.angle);

@@ -9,10 +9,10 @@ class GameEngine {
         // Everything that will be updated and drawn each frame
         this.entities = [];
         
-        this.IGLeft = false;
-        this.IGRight = false;
-        this.IGUp = false;
-        this.IGDown = false;
+        this.WGLeft = false;
+        this.WGRight = false;
+        this.WGUp = false;
+        this.WGDown = false;
         this.FBLeft = false;
         this.FBRight = false;
         this.FBUp = false;
@@ -62,16 +62,16 @@ class GameEngine {
                     that.FBDown = true;
                     break;
                 case "KeyA" :
-                    that.IGLeft = true;
+                    that.WGLeft = true;
                     break;
                 case "KeyD" :
-                    that.IGRight = true;
+                    that.WGRight = true;
                     break;
                 case "KeyW" :
-                    that.IGUp = true;
+                    that.WGUp = true;
                     break;
                 case "KeyS" :
-                    that.IGDown = true;
+                    that.WGDown = true;
                     break;
             }
         })
@@ -91,16 +91,16 @@ class GameEngine {
                     that.FBDown = false;
                     break;
                 case "KeyA" :
-                    that.IGLeft = false;
+                    that.WGLeft = false;
                     break;
                 case "KeyD" :
-                    that.IGRight = false;
+                    that.WGRight = false;
                     break;
                 case "KeyW" :
-                    that.IGUp = false;
+                    that.WGUp = false;
                     break;
                 case "KeyS" :
-                    that.IGDown = false;
+                    that.WGDown = false;
                     break;
             }
         })
