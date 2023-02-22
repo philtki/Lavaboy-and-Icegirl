@@ -23,7 +23,7 @@ class gem {
 
     updateBB() {
         this.BB = new boundingbox(this.x, this.y, this.h, this.w, "White");
-    }
+    };
 
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);

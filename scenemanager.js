@@ -75,49 +75,43 @@ class sceneManager {
                 const LEVER = 10;
                 const FIREBOYDOOR = 11;
                 const WATERGIRLDOOR = 12;
+                const BOX = 13;
 
 
                 if (this.level.data[temp] == GROUND) {
                     //console.log("x:" + x + " y:" + y);
                     //fix pixel difference when scaling x and y with bricks.png
                     gameEngine.addEntity(new ground(this.game, x * 48, y * 48));
-                }
-                if (this.level.data[temp] == LAVA) {
+                } else if (this.level.data[temp] == LAVA) {
                     gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, LAVA));
-                }
-                if (this.level.data[temp] == WATER) {
+                } else if (this.level.data[temp] == WATER) {
                     gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, WATER));
-                }
-                if (this.level.data[temp] == REDGEM) {
+                } else if (this.level.data[temp] == REDGEM) {
                     gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, REDGEM));
-                }
-                if (this.level.data[temp] == BLUEGEM) {
+                } else if (this.level.data[temp] == BLUEGEM) {
                     gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, BLUEGEM));
-                }
-                if (this.level.data[temp] == GREENGOO) {
+                } else if (this.level.data[temp] == GREENGOO) {
                     gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, GREENGOO));
-                }
-                if (this.level.data[temp] == ELEVATOR) {
+                } else if (this.level.data[temp] == ELEVATOR) {
                     myElevator = new elevator(this.game, x * 24, y * 50);
                     gameEngine.addEntity(myElevator);
-                }
-                if (this.level.data[temp] == FIREBOY) {
+                } else if (this.level.data[temp] == FIREBOY) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5, FIREBOY));
-                }
-                if (this.level.data[temp] == WATERGIRL) {
+                } else if (this.level.data[temp] == WATERGIRL) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 2, WATERGIRL));
-                }     
-                if (this.level.data[temp] == LEVER) {
+                } else if (this.level.data[temp] == LEVER) {
                     gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, myElevator))
-                }
-                if (this.level.data[temp] == FIREBOYDOOR) {
+                } else if (this.level.data[temp] == FIREBOYDOOR) {
                     gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, FIREBOY));
-                }
-                if (this.level.data[temp] == WATERGIRLDOOR) {
+                } else if (this.level.data[temp] == WATERGIRLDOOR) {
                     gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, WATERGIRL));
                 }
+                //  else if (this.level.data[temp] == BOX) {
+                //     gameEngine.addEntity(new box(this.game, x * 47.5, y * 31, WATERGIRL));
+                // }
+
             }
         }
         gameEngine.addEntity(new background());
-    }
+    };
 }

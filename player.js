@@ -113,6 +113,13 @@ class player {
                 this.velocity.y = -MAX_JUMP;
                 this.grounded = false;
             }
+            if((this.left && this.right) || (!this.left && !this.right)) {
+                if (this.velocity.y < 0) {
+                    this.state = JUMPING;
+                } else if (this.velocity.y > 0) {
+                    this.state = FALLING;
+                }
+            }
         // Not holding left or right or holding left and right and not holding up
         // Basically just checks if the player should be idle
         } else if (((!this.left && !this.right) || (this.left && this.right)) && !this.up) {
@@ -183,44 +190,26 @@ class player {
         if (this.playerType == WATERGIRL) {
             this.Xoffset = 0;
             this.Yoffset = 26;
-            // this.animations[IDLE].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
         } else {
             this.Xoffset = 0;
             this.Yoffset = 1;
-            // this.animations[IDLE].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
         }
-        // if (this.state == IDLE && this.moving == IDLE) {
-        //     if (this.playerType == WATERGIRL) {
-        //         this.Xoffset = 0;
-        //         this.Yoffset = 26;
-        //         // this.animations[IDLE].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
-        //     } else {
-        //         this.Xoffset = 0;
-        //         this.Yoffset = 1;
-        //         // this.animations[IDLE].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
-        //     }
-        // Falling but not holding left or right
-        // } else 
         if (this.state == JUMPING && this.moving == IDLE) {
             if (this.playerType == WATERGIRL) {
                 this.Xoffset = 1;
                 this.Yoffset = 31;
-                // this.animations[FALLING].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
             } else {
                 this.Xoffset = 2;
                 this.Yoffset = 35;
-                // this.animations[FALLING].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
             }
         // Running to the right    
         } else if (this.state == RUNNING && this.moving == RIGHT) {
             if (this.playerType == WATERGIRL) {
                 this.Xoffset = -45;
                 this.Yoffset = 31;
-                // this.animations[RUNNING].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
             } else {
                 this.Xoffset = -35;
                 this.Yoffset = 35;
-                // this.animations[RUNNING].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
             }
         // Running to the left    
         } else if (this.state == RUNNING && this.moving == LEFT) {
@@ -240,10 +229,6 @@ class player {
                 this.Xoffset = 1;
                 this.Yoffset = 1;
             }                
-        }
-        if (this.playerType == WATERGIRL) {
-            console.log("State: " + this.state);
-            console.log("Moving: " + this.moving);
         }
         if (this.moving == IDLE || this.moving == RIGHT) {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
