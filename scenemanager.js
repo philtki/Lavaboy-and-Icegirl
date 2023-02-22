@@ -98,17 +98,16 @@ class sceneManager {
                 } else if (this.level.data[temp] == FIREBOY) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRL) {
-                    gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 2, WATERGIRL));
+                    gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 5, WATERGIRL));
                 } else if (this.level.data[temp] == LEVER) {
                     gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, myElevator))
                 } else if (this.level.data[temp] == FIREBOYDOOR) {
                     gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRLDOOR) {
                     gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, WATERGIRL));
+                } else if (this.level.data[temp] == BOX) {
+                    gameEngine.addEntity(new box(this.game, x * 48, y * 48 + 10));
                 }
-                //  else if (this.level.data[temp] == BOX) {
-                //     gameEngine.addEntity(new box(this.game, x * 47.5, y * 31, WATERGIRL));
-                // }
 
             }
         }

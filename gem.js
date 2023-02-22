@@ -5,15 +5,11 @@ class gem {
         this.w = 27;
         this.BB = new boundingbox(this.x, this.y, this.h, this.w, "White");
         const REDGEM = 4;
-        const BLUEGEM = 5;
         this.gemColor = gemColor;
-        switch (this.gemColor) {
-            case REDGEM:
-                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/redGem.png");
-                break;
-            case BLUEGEM:
-                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/blueGem.png");
-                break;
+        if (this.gemColor == REDGEM) {
+            this.spritesheet = ASSET_MANAGER.getAsset("./Assets/redGem.png");
+        } else {
+            this.spritesheet = ASSET_MANAGER.getAsset("./Assets/blueGem.png");
         }
         this.removeFromWorld = false;
     };

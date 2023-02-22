@@ -7,10 +7,11 @@ class ground {
         //this.spritesheet = ASSET_MANAGER.getAsset("./Assets/op.png");
 
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Red");
-        this.leftBB = new boundingbox(this.x, this.y, 2, this.h, "Green");
-        this.rightBB = new boundingbox(this.x + this.w - 2, this.y, 2, this.h, "Blue");
-        this.topBB = new boundingbox(this.x + 2, this.y, this.w - 4, 2, "Purple");
-        this.bottomBB = new boundingbox(this.x + 2, this.y + this.h, this.w - 4, 2, "Brown");
+        this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Yellow");
+        this.leftBB = new boundingbox(this.x, this.y + 2, 2, this.h - 4, "Green");
+        this.rightBB = new boundingbox(this.x + this.w - 2, this.y + 2, 2, this.h - 4, "Blue");
+        this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Purple");
+        this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
         this.removeFromWorld = false;
 
     };

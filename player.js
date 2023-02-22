@@ -12,6 +12,7 @@ class player {
         this.moving = 0; // 0 = idle, 1 = left, 2 = right
         this.dead = false;
         this.velocity = { x: 0, y: 0 };
+        this.maxHorizontal = 250;
         this.fallAcc = 562.5;
         this.grounded = true;
         this.animations = [];
@@ -26,8 +27,8 @@ class player {
         } else {
             this.name = "WG";
         }
-        this.BBx = this.x + 2;
-        this.BBy = this.y + 12;
+        this.BBx = this.x + 4;
+        this.BBy = this.y + 14;
         this.BB = new boundingbox(this.BBx, this.BBy, this.w, this.h, "Yellow");
         this.leftBB = new boundingbox(this.BBx, this.BBy, 2, this.h, "Green");
         this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy, 2, this.h, "Blue");
@@ -75,16 +76,12 @@ class player {
         const DEC_RUN = 40;
         const DEC_AIR = 40;
         const FALL = 10;
-        const MAX_JUMP = 400;   //500
+        const MAX_JUMP = 600;   //500
 
         this.left = this.game[this.name + "Left"];
         this.right = this.game[this.name + "Right"];
         this.up = this.game[this.name + "Up"];
         this.down = this.game[this.name + "Down"];
-        
-        if (this.grounded) {
-            this.velocity.y = 0;
-        }
         
         // Holding both left and right
         if((this.left && this.right) || (!this.left && !this.right)) {
@@ -99,19 +96,21 @@ class player {
         } else if (this.right) {
             this.state = RUNNING;
             this.moving = RIGHT;
-            this.velocity.x = MAX_RUN;
+            this.velocity.x = this.maxHorizontal;
         // Holding just left
         } else if (this.left) {
             this.state = RUNNING;
             this.moving = LEFT;
-            this.velocity.x = -MAX_RUN;
+            this.velocity.x = -this.maxHorizontal;
         }
         // Holding jump
-        if (this.up) {
+        if (this.grounded) {
             // On the ground
-            if (this.grounded) {
+            if (this.up) {
                 this.velocity.y = -MAX_JUMP;
                 this.grounded = false;
+            } else {
+                this.velocity.y = 0;
             }
             if((this.left && this.right) || (!this.left && !this.right)) {
                 if (this.velocity.y < 0) {
@@ -154,10 +153,13 @@ class player {
 
         // Set grounded to false, this makes the player begin to fall
         // If they are still on the ground, collisionCheck will correct the grounded's state
-        this.grounded = false;
         // Update bounding box
         this.updateBB();
+
+        
         // Check for collisions
+        this.maxHorizontal = 250;
+        this.grounded = false;
         this.collisionCheck();
         // Update horizontal and vertical position based on velocity
         this.x += this.velocity.x * TICK;
@@ -165,14 +167,14 @@ class player {
     };
 
     updateBB() {
-        this.BBx = this.x + 2;
-        this.BBy = this.y + 12;
         this.lastBB = this.BB;
+        this.BBx = this.x + 4;
+        this.BBy = this.y + 14;
         this.BB = new boundingbox(this.BBx, this.BBy, this.w, this.h, "Yellow");
-        this.leftBB = new boundingbox(this.BBx, this.BBy, 2, this.h, "Green");
-        this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy, 2, this.h, "Blue");
-        this.topBB = new boundingbox(this.BBx + 2, this.BBy, this.w - 4, 2, "Purple");
-        this.bottomBB = new boundingbox(this.BBx + 2, this.BBy + this.h, this.w - 4, 2, "Brown");
+        this.leftBB = new boundingbox(this.BBx, this.BBy + 2, 2, this.h - 4, "Green");
+        this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy + 2, 2, this.h - 4, "Blue");
+        this.topBB = new boundingbox(this.BBx, this.BBy, this.w, 2, "Purple");
+        this.bottomBB = new boundingbox(this.BBx, this.BBy + this.h, this.w, 2, "Brown");
     };
 
 
@@ -238,6 +240,10 @@ class player {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, -this.x - this.Xoffset, this.y + this.Yoffset, .25);
             ctx.restore();
         }
+        // this.leftBB.draw(ctx);
+        // this.rightBB.draw(ctx);
+        // this.topBB.draw(ctx);
+        // this.bottomBB.draw(ctx);
     }
 
     collisionCheck() {
@@ -253,34 +259,24 @@ class player {
             if (entity instanceof ground && entity.BB) {
                 if (this.bottomBB.collide(entity.topBB)) {
                     this.grounded = true;
-                    if (this.velocity.y > 0) {
-                        this.velocity.y = 0;
-                    }
-                    // console.log("Player is on top of a block");
-                }
-                if (this.rightBB.collide(entity.leftBB)) {
+                    this.y = entity.BB.top - this.h - 15;
+                } else if (this.rightBB.collide(entity.leftBB)) {
                     if (this.velocity.x > 0) {
                         this.velocity.x = 0;
-                        // console.log("Player has collided with the left side of a block");
                     }
-                }
-                if (this.leftBB.collide(entity.rightBB)) {
+                } else if (this.leftBB.collide(entity.rightBB)) {
                     if (this.velocity.x < 0) {
                         this.velocity.x = 0;
-                        // console.log("Player has collided with the right side of a block");
                     }
-                }
-                if (this.topBB.collide(entity.bottomBB)) {
+                } else if (this.topBB.collide(entity.bottomBB)) {
                     if (this.velocity.y < 0) {
                         this.velocity.y = 0;
-                        // console.log("Player has collided with the bottom of a block");
                     }
                 }
-            }
-
             // If the player is colliding with a liquid tile
             //TODO maybe when player is walking on liquid they are slower
             // Also ask nathan if he wants to do the liquid bb on level or lower
+            }
             if (entity instanceof liquid && entity.BB) {
                 if (this.bottomBB.collide(entity.BB)) {
                     if (entity.liquidType != GREENGOO) {
@@ -304,10 +300,9 @@ class player {
                     } else {
                         this.die();
                     }
-                    // console.log("Player collided with a liquid");
                 }
-            }
             //gem collision
+            }
             if (entity instanceof gem && entity.BB) {
                 if (this.BB.collide(entity.BB)) {
                     if (this.playerType == WATERGIRL) {
@@ -320,9 +315,8 @@ class player {
                         }
                     }
                 }
-            }
-
             //elevator collision
+            }
             if (entity instanceof elevator && entity.BB) {
                 if (this.bottomBB.collide(entity.BB)) {
                     this.grounded = true;
@@ -330,33 +324,28 @@ class player {
                         this.velocity.y = 0;
                     }
                     if (this.grounded && entity.isMoving) {
-                        this.y= entity.y - this.h - 10; //makes player move with the elevator
+                        this.y = entity.y - this.h - 10; //makes player move with the elevator
                     }
-                    //console.log("Player is on top of a block");
                 }
-            }
             //door collision
+            }
             if (entity instanceof door && entity.BB) {
                 if (this.BB.collide(entity.BB) && entity.doorType == WATERGIRL && this.playerType == WATERGIRL) {
                     this.game.camera.openDoor(this.playerType)
                     if (this.game.camera.redDoorIsOpen) {
                         this.die();
                     }
-                    //console.log("Player is on doorBlue" + " DB " + this.game.camera.DB + " DR " + this.game.camera.DR);
                 } else if (this.BB.collide(entity.BB) && entity.doorType == FIREBOY && this.playerType == FIREBOY) {
                     this.game.camera.openDoor(this.playerType)
                     if (this.game.camera.blueDoorIsOpen) {
                         this.die();
                     }
-                    //console.log("Player is on doorRed" + " DB " + this.game.camera.DB + " DR " + this.game.camera.DR);
                 } else {
                     this.game.camera.redDoorIsOpen = false;
                     this.game.camera.blueDoorIsOpen = false;
                 }
             }
-
             if (entity instanceof lever && entity.BB) {
-                // console.log("Entity is a lever");
                 if(this.leftBB.collide(entity.BB)) {
                     entity.rotateCounterClockwise();
                     if (this.velocity.x < 0) {
@@ -365,7 +354,6 @@ class player {
                     // if (this.velocity.x < -50) {
                     //     this.velocity.x = -50;
                     // }
-                    console.log("Player colliding with lever from the right");
                 } else if (this.rightBB.collide(entity.BB)) {
                     entity.rotateClockwise();
                     if (this.velocity.x > 0) {
@@ -374,9 +362,18 @@ class player {
                     // if (this.velocity.x > 50) {
                     //     this.velocity.x = 50;
                     // }
-                    console.log("Player colliding with lever from the left");
                 }
-
+            }
+            if (entity instanceof box && entity.BB) {
+                if (this.bottomBB.collide(entity.topBB)) {
+                    this.grounded = true;
+                } else if (this.leftBB.collide(entity.rightBB)) {
+                    entity.moveLeft();
+                    this.maxHorizontal = 100
+                } else if (this.rightBB.collide(entity.leftBB)) { 
+                    entity.moveRight();
+                    this.maxHorizontal = 100
+                }
             }
         });
     }
