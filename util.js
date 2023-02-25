@@ -56,6 +56,7 @@ const PARAMS = {
     RUNNING: 3,
     RIGHT: 4,
     LEFT: 5,
+    MAXGROUNDED: 10,
     BLOCKWIDTH: 48,
 }
 

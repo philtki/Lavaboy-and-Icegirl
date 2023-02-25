@@ -11,7 +11,7 @@ class player {
         this.dead = false;
         this.velocity = { x: 0, y: 0 };
         this.maxHorizontal = 250;
-        this.grounded = true;
+        this.grounded = PARAMS.MAXGROUNDED;
         this.animations = [];
         this.loadAnimations();
         this.removeFromWorld = false;
@@ -72,11 +72,10 @@ class player {
         } else if (!this.left && !this.right) {
             this.velocity.x = 0;
         }
-        if (this.up && this.grounded) {
+        if (this.up && this.grounded > 0) {
             this.velocity.y = -MAX_JUMP;
         }
 
-        this.updateBB();
         // this.maxHorizontal = 250;
         this.state = PARAMS.IDLE;
         this.moving = PARAMS.IDLE;
@@ -88,28 +87,32 @@ class player {
             this.state = PARAMS.RUNNING;
         }
         // TODO if on elevator, will be in jumping animation
-        if (!this.left && !this.right && !this.grounded) {
+        if (!this.left && !this.right && this.grounded <= 0) {
             if (this.velocity.y < 0) {
                 this.state = PARAMS.JUMPING;
-            } else if (this.velocity.y > 0) {
+            } else if (this.velocity.y > 30) {
                 this.state = PARAMS.FALLING;
             }
         }
-        this.grounded = false;
-        console.log("Y velocity: " + this.velocity.y);
+        console.log("Grounded: " + this.grounded);
         this.collisionCheck();
-        if (!this.grounded) {
-            if (this.velocity.y >= 0) {
+        
+        if (this.grounded <= 0) {
+            if (0 <= this.velocity.y < MAX_JUMP) {
+                if (this.velocity.y < MAX_JUMP) {
                 this.velocity.y += FALL_AIR;
+                }
             } else if (this.velocity.y < 0) {
                 this.velocity.y += FALL_AIR / 1.25;
             }
         }
+        if (this.grounded > 0) {
+            this.velocity.y = 0;
+        }
         // Update horizontal and vertical position based on velocity
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
-        // console.log("Current state: " + this.state);
-        // console.log("Y velocity: " + this.state);
+        this.updateBB();
     };
 
     updateBB() {
@@ -190,10 +193,11 @@ class player {
         const GREENGOO = 6;
         const FIREBOY = 8;
         const WATERGIRL = 9;
+        this.grounded = false;
         this.game.entities.forEach(entity => {
             // Falling
             if (this.velocity.y > 0) {
-                if (entity instanceof ground && this.BB.collide(entity.topBB) && this.BB.collide(entity.leftBB) && this.BB.collide(entity.rightBB)) {
+                if (entity instanceof ground && this.BB.collide(entity.BB) && this.lastBB.bottom <= entity.BB.top) {
                     this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
                     this.velocity.y === 0;
                     this.grounded = true;
@@ -230,7 +234,7 @@ class player {
                             if (this.velocity.y < 0) {
                                 this.velocity.y = 0;
                             }
-                            this.grounded = true;
+                            this.grounded = PARAMS.MAXGROUNDED;
                         } else {
                             if (entity.liquidType == WATER) {
                                 this.die();
@@ -238,7 +242,7 @@ class player {
                             if (this.velocity.y < 0) {
                                 this.velocity.y = 0;
                             }
-                            this.grounded = true;
+                            this.grounded = PARAMS.MAXGROUNDED;
                         }
                     } else {
                         this.die();
@@ -262,11 +266,11 @@ class player {
             }
             if (entity instanceof elevator && entity.BB) {
                 if (this.BB.collide(entity.BB)) {
-                    this.grounded = true;
+                    this.grounded = PARAMS.MAXGROUNDED;
                     if (this.velocity.y > 0) {
                         this.velocity.y = 0;
                     }
-                    if (this.grounded && entity.isMoving) {
+                    if (this.grounded > 0 && entity.isMoving) {
                         this.y = entity.y - this.h - 10; //makes player move with the elevator
                     }
                 }
@@ -311,7 +315,7 @@ class player {
             }
             // if (entity instanceof box && entity.BB) {
             //     if (this.BB.collide(entity.topBB) ) {
-            //         this.grounded = true;
+            //         d = true;
             //     } else if (this.leftBB.collide(entity.rightBB)) {
             //         entity.moveLeft();
             //         this.maxHorizontal = 100
