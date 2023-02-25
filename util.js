@@ -49,6 +49,16 @@ window.requestAnimFrame = (() => {
         });
 })();
 
+const PARAMS = {
+    IDLE: 0,
+    FALLING: 1,
+    JUMPING: 2,
+    RUNNING: 3,
+    RIGHT: 4,
+    LEFT: 5,
+    BLOCKWIDTH: 48,
+}
+
 /**
  * Returns distance from two points
  * @param {Number} p1, p2 Two objects with x and y coordinates
