@@ -32,7 +32,7 @@ class player {
         this.leftBB = new boundingbox(this.BBx, this.BBy, 2, this.h, "Green");
         this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy, 2, this.h, "Blue");
         this.topBB = new boundingbox(this.BBx, this.BBy, this.w, 2, "Purple");
-        this.bottomBB = new boundingbox(this.BBx, this.BBy + this.h, this.w, 2, "Brown");
+        this.bottomBB = new boundingbox(this.BBx, this.BBy + this.h, this.w, 1, "Brown");
         this.lastBB = this.BB;
         this.updateBB();
     };
@@ -125,6 +125,10 @@ class player {
         }
         this.BBy = this.y + 15;
         this.BB = new boundingbox(this.BBx, this.BBy, this.w, PARAMS.BLOCKWIDTH * 1.9, "Yellow");
+        this.leftBB = new boundingbox(this.BBx, this.BBy, 2, this.h, "Green");
+        this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy, 2, this.h, "Blue");
+        this.topBB = new boundingbox(this.BBx, this.BBy, this.w, 2, "Purple");
+        this.bottomBB = new boundingbox(this.BBx, this.BBy + this.h, this.w, 1, "Brown");
     };
 
 
@@ -184,7 +188,9 @@ class player {
         }
         this.BB.draw(ctx);
         // this.rightBB.draw(ctx);
-        // this.leftBB.draw(ctx);
+        this.leftBB.draw(ctx);
+        this.bottomBB.draw(ctx);
+        this.topBB.draw(ctx);
     }
 
     collisionCheck() {
@@ -251,7 +257,6 @@ class player {
                     }
                 }
             }
-            //gem collision
             if (entity instanceof gem && entity.BB) {
                 if (this.BB.collide(entity.BB)) {
                     if (this.playerType == WATERGIRL) {
@@ -268,15 +273,24 @@ class player {
             }
             if (entity instanceof elevator && entity.BB) {
                 if (this.bottomBB.collide(entity.BB)) {
-                    this.grounded = true;
+                    //this.grounded = true;
                     if (this.velocity.y > 0) {
-                        this.velocity.y = entity.velocity.y;
+                        this.velocity.y = entity.y;
+                        this.grounded = true;
                     }
                     if (this.grounded > 0 && entity.isMoving) {
                         this.y = entity.y - this.h - 10; //makes player move with the elevator
                     }
                 }
-            //door collision
+                if (this.BB.collide(entity.BB)) {
+                    if (this.velocity.x < 0) {
+                        this.velocity.x = 0;
+                    }
+                }
+                if (this.topBB.collide(entity.bottomBB)) {
+                    console.log("hi");
+                    //////hits head on top of elevator
+                }
             }
             if (entity instanceof door && entity.BB) {
                 if (this.BB.collide(entity.BB) && entity.doorType == WATERGIRL && this.playerType == WATERGIRL) {
@@ -315,7 +329,6 @@ class player {
                     // }
                 }
             }
-
             if (entity instanceof box && entity.BB) {
                 if (this.bottomBB.collide(entity.topBB)) {
                     this.velocity.y = entity.velocity.y;

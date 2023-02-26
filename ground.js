@@ -3,10 +3,6 @@ class ground {
         Object.assign(this, { game, x, y, side});
         this.h = 48
         this.w = 48
-        //this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/bricksOG.png");
-        // if (side == "0000") {
-        //     this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0000.png");
-        // }
         switch (side) {
             case "A":
                 this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0000.png");

@@ -2,6 +2,8 @@ class elevator {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y});
         this.BB = new boundingbox(this.x, this.y, 144, 32, "White");
+        this.topBB = new boundingbox(this.x, this.y, 144, 1, "Green");
+        this.bottomBB = new boundingbox(this.x, this.y + 32, 144, 1, "Brown");
         this.startingPosY = this.y;
         this.goDown = false;
         this.isMoving = false;
@@ -45,15 +47,20 @@ class elevator {
         //     this.speed = 100;
         // }
         // this.y += this.speed * this.game.clockTick;
+
         this.updateBB();
     };
 
     updateBB() {
         this.BB = new boundingbox(this.x, this.y, 144, 32, "White");
+        this.topBB = new boundingbox(this.x, this.y, 144, 1, "Green");
+        this.bottomBB = new boundingbox(this.x, this.y + 32, 144, 1, "Brown");
     }
 
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, 144, 32);
         this.BB.draw(ctx);
+        this.topBB.draw(ctx);
+        this.bottomBB.draw(ctx);
     };
 }
