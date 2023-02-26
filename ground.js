@@ -40,7 +40,6 @@ class ground {
                 break;
             case "K":
                 this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0101.png");
-                break;
         }
         this.BB = new boundingbox(this.x + PARAMS.BLOCKWIDTH / 8, this.y, PARAMS.BLOCKWIDTH * 3 / 4, PARAMS.BLOCKWIDTH, "Red");
         this.leftBB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, "Green");
