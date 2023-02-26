@@ -79,7 +79,7 @@ class lever {
 
         ctx.drawImage(offScreenCanvas, this.x + this.w / 2 - 30, this.y, this.handleH * 2, this.handleH * 2);
         ctx.drawImage(this.base, this.x, this.y + (42 - this.h), this.w, this.h);
-        // this.BB.draw(ctx);
+        //this.BB.draw(ctx);
         // console.log("Current angle: " + this.angle);
     }
 }

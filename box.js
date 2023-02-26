@@ -1,13 +1,13 @@
 class box {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
-        this.h = 38
-        this.w = 38
+        this.h = 48
+        this.w = 48
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Yellow");
-        // this.leftBB = new boundingbox(this.x, this.y + 2, 2, this.h - 4, "Green");
-        // this.rightBB = new boundingbox(this.x + this.w - 2, this.y + 2, 2, this.h - 4, "Blue");
-        // this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Purple");
-        // this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
+        this.leftBB = new boundingbox(this.x, this.y + 2, 2, this.h - 4, "Green");
+        this.rightBB = new boundingbox(this.x + this.w - 2, this.y + 2, 2, this.h - 4, "Blue");
+        this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Purple");
+        this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
         this.removeFromWorld = false; 
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/box.png");
         this.state = 0;
@@ -37,7 +37,7 @@ class box {
         }
         this.updateBB();
         this.grounded = false;
-        // this.collisionCheck();
+        this.collisionCheck();
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
         this.moving = IDLE;
@@ -53,26 +53,36 @@ class box {
 
     updateBB() {
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Yellow");
-        // this.leftBB = new boundingbox(this.x, this.y + 2, 2, this.h - 4, "Green");
-        // this.rightBB = new boundingbox(this.x + this.w - 2, this.y + 2, 2, this.h - 4, "Blue");
-        // this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Purple");
-        // this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
+        this.leftBB = new boundingbox(this.x, this.y + 2, 2, this.h - 4, "Green");
+        this.rightBB = new boundingbox(this.x + this.w - 2, this.y + 2, 2, this.h - 4, "Blue");
+        this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Purple");
+        this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
     };
 
-    // collisionCheck() {
-    //     this.game.entities.forEach(entity => {
-    //         if (entity instanceof ground && entity.BB) {
-    //             if (this.bottomBB.collide(entity.topBB)) {
-    //                 this.grounded = true;
-    //                 this.velocity.y = 0;
-    //             }
-    //         }
-    //     });
-    // }
+    collisionCheck() {
+        this.game.entities.forEach(entity => {
+            if (entity instanceof ground && entity.BB) {
+                if (this.bottomBB.collide(entity.topBB)) {
+                    this.grounded = true;
+                    this.velocity.y = 0;
+                }
+                if (this.rightBB.collide(entity.leftBB)) {
+                    if (this.velocity.x > 0) {
+                        this.velocity.x = 0;
+                    }
+                }
+                if (this.leftBB.collide(entity.rightBB)) {
+                    if (this.velocity.x < 0) {
+                        this.velocity.x = 0;
+                    }
+                }
+            }
+        });
+    }
 
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);
-        // this.BB.draw(ctx);
+        this.BB.draw(ctx);
         // this.leftBB.draw(ctx);
         // this.rightBB.draw(ctx);
         // this.topBB.draw(ctx);

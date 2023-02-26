@@ -63,7 +63,17 @@ class sceneManager {
             for (let x = 0; x < 23; x++) {
                 temp++;
                 //TODO change for loop value to size, change liquid pixels, try 50x40
-                const GROUND = 1;
+                const GROUND0000 = "A";
+                const GROUND1111 = "B";
+                const GROUND0110 = "C";
+                const GROUND0111 = "D";
+                const GROUND1110 = "E";
+                const GROUND0010 = "F";
+                const GROUND0100 = "G";
+                const GROUND1000 = "H";
+                const GROUND0001 = "I";
+                const GROUND1100 = "J";
+                const GROUND0101 = "K";
                 const LAVA = 2;
                 const WATER = 3;
                 const REDGEM = 4;
@@ -78,10 +88,30 @@ class sceneManager {
                 const BOX = 13;
 
 
-                if (this.level.data[temp] == GROUND) {
+                if (this.level.data[temp] == GROUND0000) {
                     //console.log("x:" + x + " y:" + y);
                     //fix pixel difference when scaling x and y with bricks.png
-                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48));
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0000));
+                } else if(this.level.data[temp] == GROUND1111) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1111));
+                } else if(this.level.data[temp] == GROUND0110) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0110));
+                } else if(this.level.data[temp] == GROUND0111) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0111));
+                } else if(this.level.data[temp] == GROUND1110) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1110));
+                } else if(this.level.data[temp] == GROUND0010) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0010));
+                } else if(this.level.data[temp] == GROUND0100) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0100));
+                } else if(this.level.data[temp] == GROUND1000) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1000));
+                } else if(this.level.data[temp] == GROUND0001) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0001));
+                } else if(this.level.data[temp] == GROUND1100) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1100));
+                } else if(this.level.data[temp] == GROUND0101) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0101));
                 } else if (this.level.data[temp] == LAVA) {
                     gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, LAVA));
                 } else if (this.level.data[temp] == WATER) {
@@ -96,7 +126,7 @@ class sceneManager {
                     myElevator = new elevator(this.game, x * 24, y * 50);
                     gameEngine.addEntity(myElevator);
                 } else if (this.level.data[temp] == FIREBOY) {
-                    gameEngine.addEntity(new player(this.game, x * 47, y * 47.5, FIREBOY));
+                    gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 4, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRL) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 5, WATERGIRL));
                 } else if (this.level.data[temp] == LEVER) {
@@ -106,7 +136,7 @@ class sceneManager {
                 } else if (this.level.data[temp] == WATERGIRLDOOR) {
                     gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, WATERGIRL));
                 } else if (this.level.data[temp] == BOX) {
-                    gameEngine.addEntity(new box(this.game, x * 48, y * 48 + 10));
+                    gameEngine.addEntity(new box(this.game, x * 48, y * 48));
                 }
 
             }

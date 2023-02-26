@@ -3,6 +3,8 @@ class gem {
         Object.assign(this, { game, x, y, gemColor});
         this.h = 31;
         this.w = 27;
+        this.startingPosY = this.y;
+        this.speed = 6;
         this.BB = new boundingbox(this.x, this.y, this.h, this.w, "White");
         const REDGEM = 4;
         this.gemColor = gemColor;
@@ -15,6 +17,13 @@ class gem {
     };
 
     update() {
+        this.y += this.speed * this.game.clockTick;
+        if (this.y >= this.startingPosY + 5) {
+            this.speed = -6;
+        } else if (this.y <= this.startingPosY - 5) {
+            this.speed = 6;
+        }
+        this.updateBB();
     };
 
     updateBB() {

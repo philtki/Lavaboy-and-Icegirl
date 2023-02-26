@@ -54,6 +54,6 @@ class elevator {
 
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, 144, 32);
-        //this.BB.draw(ctx);
+        this.BB.draw(ctx);
     };
 }

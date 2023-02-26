@@ -29,10 +29,10 @@ class player {
         this.BBy = this.y + 15;
         this.verticalOffset = 15;
         this.BB = new boundingbox(this.BBx, this.BBy, this.w, PARAMS.BLOCKWIDTH * 1.9, "Yellow");
-        // this.leftBB = new boundingbox(this.BBx, this.BBy, 2, this.h, "Green");
-        // this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy, 2, this.h, "Blue");
-        // this.topBB = new boundingbox(this.BBx, this.BBy, this.w, 2, "Purple");
-        // this.bottomBB = new boundingbox(this.BBx, this.BBy + this.h, this.w, 2, "Brown");
+        this.leftBB = new boundingbox(this.BBx, this.BBy, 2, this.h, "Green");
+        this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy, 2, this.h, "Blue");
+        this.topBB = new boundingbox(this.BBx, this.BBy, this.w, 2, "Purple");
+        this.bottomBB = new boundingbox(this.BBx, this.BBy + this.h, this.w, 2, "Brown");
         this.lastBB = this.BB;
         this.updateBB();
     };
@@ -183,6 +183,8 @@ class player {
             ctx.restore();
         }
         this.BB.draw(ctx);
+        // this.rightBB.draw(ctx);
+        // this.leftBB.draw(ctx);
     }
 
     collisionCheck() {
@@ -248,8 +250,8 @@ class player {
                         this.die();
                     }
                 }
-            //gem collision
             }
+            //gem collision
             if (entity instanceof gem && entity.BB) {
                 if (this.BB.collide(entity.BB)) {
                     if (this.playerType == WATERGIRL) {
@@ -265,10 +267,10 @@ class player {
             //elevator collision
             }
             if (entity instanceof elevator && entity.BB) {
-                if (this.BB.collide(entity.BB)) {
-                    this.grounded = PARAMS.MAXGROUNDED;
+                if (this.bottomBB.collide(entity.BB)) {
+                    this.grounded = true;
                     if (this.velocity.y > 0) {
-                        this.velocity.y = 0;
+                        this.velocity.y = entity.velocity.y;
                     }
                     if (this.grounded > 0 && entity.isMoving) {
                         this.y = entity.y - this.h - 10; //makes player move with the elevator
@@ -313,17 +315,27 @@ class player {
                     // }
                 }
             }
-            // if (entity instanceof box && entity.BB) {
-            //     if (this.BB.collide(entity.topBB) ) {
-            //         d = true;
-            //     } else if (this.leftBB.collide(entity.rightBB)) {
-            //         entity.moveLeft();
-            //         this.maxHorizontal = 100
-            //     } else if (this.rightBB.collide(entity.leftBB)) { 
-            //         entity.moveRight();
-            //         this.maxHorizontal = 100
-            //     }
-            // }
+
+            if (entity instanceof box && entity.BB) {
+                if (this.bottomBB.collide(entity.topBB)) {
+                    this.velocity.y = entity.velocity.y;
+                    this.grounded = true;
+                }
+                if (this.BB.collide(entity.rightBB)) {
+                    if (this.velocity.x < 0) {
+                        this.velocity.x = entity.velocity.x;
+                    }
+                    entity.moveLeft();
+                    this.maxHorizontal = 100
+                }
+                if (this.BB.collide(entity.leftBB)) {
+                    if (this.velocity.x > 0) {
+                        this.velocity.x = entity.velocity.x;
+                    }
+                    entity.moveRight();
+                    this.maxHorizontal = 100
+                }
+            }
         });
     }
 
