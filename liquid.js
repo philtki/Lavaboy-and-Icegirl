@@ -1,7 +1,7 @@
 class liquid {
     constructor(game, x, y, liquidType) {
         Object.assign(this, { game, x, y, liquidType});
-        this.BB = new boundingbox(this.x, this.y + 10, 31 * 1.6, 20, "White");
+        this.BB = new boundingbox(this.x, this.y + 20, 31 * 1.6, 20, "White");
         this.bottomBB = new boundingbox(this.x, this.y + 40, 31 * 1.6, 2, "Brown");
         const LAVA = 2;
         const WATER = 3;
@@ -18,7 +18,7 @@ class liquid {
                 break;
             case GREENGOO:
                 this.frames = 22;
-                this.animation = new animator(ASSET_MANAGER.getAsset("./Assets/liquid.png"), 165, 1460, 32, 21, 15, .04);
+                this.animation = new animator(ASSET_MANAGER.getAsset("./Assets/liquid.png"), 165, 1460, 32, 20, 15, .04);
 
         }
         this.removeFromWorld = false;

@@ -116,19 +116,19 @@ class sceneManager {
                     gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, LAVA));
                 } else if (this.level.data[temp] == WATER) {
                     gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, WATER));
+                } else if (this.level.data[temp] == GREENGOO) {
+                    gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, GREENGOO));
                 } else if (this.level.data[temp] == REDGEM) {
                     gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, REDGEM));
                 } else if (this.level.data[temp] == BLUEGEM) {
                     gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, BLUEGEM));
-                } else if (this.level.data[temp] == GREENGOO) {
-                    gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, GREENGOO));
                 } else if (this.level.data[temp] == ELEVATOR) {
                     myElevator = new elevator(this.game, x * 24, y * 50);
                     gameEngine.addEntity(myElevator);
                 } else if (this.level.data[temp] == FIREBOY) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 4, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRL) {
-                    gameEngine.addEntity(new player(this.game, x * 47, y * 27.5 - 5, WATERGIRL));
+                    gameEngine.addEntity(new player(this.game, x * 47, y * 57.5 - 5, WATERGIRL));
                 } else if (this.level.data[temp] == LEVER) {
                     gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, myElevator))
                 } else if (this.level.data[temp] == FIREBOYDOOR) {

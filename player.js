@@ -64,7 +64,7 @@ class player {
         this.right = this.game[this.name + "Right"];
         this.up = this.game[this.name + "Up"];
         this.down = this.game[this.name + "Down"];
-        
+
         if (this.left && !this.right) {
             this.velocity.x = -MAX_RUN;
         } else if (!this.left && this.right) {
@@ -96,7 +96,7 @@ class player {
         }
         console.log("Grounded: " + this.grounded);
         this.collisionCheck();
-        
+
         if (this.grounded <= 0) {
             if (0 <= this.velocity.y < MAX_JUMP) {
                 if (this.velocity.y < MAX_JUMP) {
@@ -150,7 +150,7 @@ class player {
                 this.Xoffset = 2;
                 this.Yoffset = 35;
             }
-        // Running to the right    
+        // Running to the right
         } else if (this.state == PARAMS.RUNNING && this.moving == PARAMS.RIGHT) {
             if (this.playerType == WATERGIRL) {
                 this.Xoffset = -45;
@@ -159,7 +159,7 @@ class player {
                 this.Xoffset = -35;
                 this.Yoffset = 35;
             }
-        // Running to the left    
+        // Running to the left
         } else if (this.state == PARAMS.RUNNING && this.moving == PARAMS.LEFT) {
             if (this.playerType == WATERGIRL) {
                 this.Xoffset = 93;
@@ -168,7 +168,7 @@ class player {
                 this.Xoffset = 88;
                 this.Yoffset = 35;
             }
-        // Jumping but not holding left or right    
+        // Jumping but not holding left or right
         } else if (this.state == PARAMS.FALLING && this.moving == PARAMS.IDLE) {
             if (this.playerType == WATERGIRL) {
                 this.Xoffset = 1;
@@ -176,7 +176,7 @@ class player {
             } else {
                 this.Xoffset = 1;
                 this.Yoffset = 1;
-            }                
+            }
         }
         if (this.moving == PARAMS.IDLE || this.moving == PARAMS.RIGHT) {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, this.x + this.Xoffset, this.y + this.Yoffset, .25);
@@ -218,6 +218,7 @@ class player {
                 }
             }
             if (entity instanceof ground && this.BB.collide(entity.topBB) && this.BB.collide(entity.bottomBB)) {
+                console.log("hi");
                 if (this.BB.collide(entity.leftBB)) {
                     if (this.velocity.x > 0) {
                         this.velocity.x = 0;
@@ -227,22 +228,23 @@ class player {
                     if (this.velocity.x < 0) {
                         this.velocity.x = 0;
                     }
-                }  
+                }
             }
             // If the player is colliding with a liquid tile
             //TODO maybe when player is walking on liquid they are slower
             // Also ask nathan if he wants to do the liquid bb on level or lower
             if (entity instanceof liquid && entity.BB) {
-                if (this.BB.collide(entity.BB)) {
+                if (this.bottomBB.collide(entity.BB)) {
                     if (entity.liquidType != GREENGOO) {
                         if (this.playerType == WATERGIRL) {
                             if (entity.liquidType == LAVA) {
                                 this.die();
                             }
-                            if (this.velocity.y < 0) {
-                                this.velocity.y = 0;
+                            if (this.velocity.y > 0) {
+                                this.velocity.y = entity.y;
+                                this.grounded = true;
                             }
-                            this.grounded = PARAMS.MAXGROUNDED;
+                            //this.grounded = true;
                         } else {
                             if (entity.liquidType == WATER) {
                                 this.die();
@@ -250,7 +252,7 @@ class player {
                             if (this.velocity.y < 0) {
                                 this.velocity.y = 0;
                             }
-                            this.grounded = PARAMS.MAXGROUNDED;
+                            this.grounded = true;
                         }
                     } else {
                         this.die();
@@ -273,10 +275,10 @@ class player {
             }
             if (entity instanceof elevator && entity.BB) {
                 if (this.bottomBB.collide(entity.BB)) {
-                    //this.grounded = true;
+                    this.grounded = true;
                     if (this.velocity.y > 0) {
-                        this.velocity.y = entity.y;
-                        this.grounded = true;
+                        this.velocity.y = 0;
+                        //this.grounded = true;
                     }
                     if (this.grounded > 0 && entity.isMoving) {
                         this.y = entity.y - this.h - 10; //makes player move with the elevator
@@ -318,7 +320,7 @@ class player {
                     // if (this.velocity.x < -50) {
                     //     this.velocity.x = -50;
                     // }
-                // RightBB    
+                // RightBB
                 } else if (this.BB.collide(entity.BB)) {
                     entity.rotateClockwise();
                     if (this.velocity.x > 0) {
