@@ -216,7 +216,7 @@ class player {
         this.game.entities.forEach(entity => {
             if (entity instanceof ground && this.BB.collide(entity.BB)) {
                 // Falling
-                if (entity.BB.left + 5 <= this.BB.left + this.w / 2 <= entity.BB.right) {
+                if (entity.BB.left <= this.BB.left + this.w / 2 && this.BB.left + this.w / 2 <= entity.BB.right && this.BB.bottom - 5 <= entity.BB.top) {
                     this.grounded = true;
                     if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
                         this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
