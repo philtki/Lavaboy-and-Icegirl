@@ -86,12 +86,12 @@ class playerOld {
         if(this.left && this.right) {
             this.state = IDLE;
             this.moving = IDLE;
-        } else if (this.right) {
+        } else if (!this.left && this.right) {
             this.state = RUNNING;
             this.moving = RIGHT;
             this.velocity.x = MAX_RUN;
             // Running Left
-        } else if (this.left) {
+        } else if (this.left && !this.right) {
             this.state = RUNNING;
             this.moving = LEFT;
             this.velocity.x = -MAX_RUN;
@@ -149,7 +149,7 @@ class playerOld {
         this.collisionCheck();
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
-        console.log("Y: " + this.y);
+        // console.log("Y: " + this.y);
     };
 
     updateBB() {
@@ -226,8 +226,11 @@ class playerOld {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, -this.x - this.Xoffset, this.y + this.Yoffset, .25);
             ctx.restore();
         }
-        // console.log("Player state: " + this.state);
-        // console.log("Player moving: " + this.moving);
+        if (this.isIceGirl) {
+            console.log("Player state: " + this.state);
+            console.log("Player moving: " + this.moving);
+        }
+        
         //TODO idle position is diff from running
         //to draw bounding box
         // this.BB.draw(ctx);

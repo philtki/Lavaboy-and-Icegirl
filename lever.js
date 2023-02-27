@@ -12,7 +12,6 @@ class lever {
         this.removeFromWorld = false;
         this.currentAngle = 0;
         this.angle = (7 * Math.PI) / 4;
-        console.log("Math.PI / 4: " + Math.PI / 4);
         this.lastRotate = 0; // 0 for clockwise, 1 for counterclockwise
         // this.angle = 0;
     };

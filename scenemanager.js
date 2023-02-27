@@ -129,6 +129,10 @@ class sceneManager {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 4, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRL) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 57.5 - 5, WATERGIRL));
+                // } else if (this.level.data[temp] == FIREBOY) {
+                //     gameEngine.addEntity(new playerOld(this.game, x * 47, y * 47.5 - 4, false));
+                // } else if (this.level.data[temp] == WATERGIRL) {
+                // gameEngine.addEntity(new playerOld(this.game, x * 47, y * 57.5 - 5, true));
                 } else if (this.level.data[temp] == LEVER) {
                     gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, myElevator))
                 } else if (this.level.data[temp] == FIREBOYDOOR) {

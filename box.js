@@ -4,10 +4,7 @@ class box {
         this.h = 48
         this.w = 48
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Yellow");
-        this.leftBB = new boundingbox(this.x, this.y + 2, 2, this.h - 4, "Green");
-        this.rightBB = new boundingbox(this.x + this.w - 2, this.y + 2, 2, this.h - 4, "Blue");
-        this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Purple");
-        this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
+        this.lastBB = this.BB;
         this.removeFromWorld = false; 
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/box.png");
         this.state = 0;
@@ -52,29 +49,28 @@ class box {
     };
 
     updateBB() {
+        this.lastBB = this.BB;
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Yellow");
-        this.leftBB = new boundingbox(this.x, this.y + 2, 2, this.h - 4, "Green");
-        this.rightBB = new boundingbox(this.x + this.w - 2, this.y + 2, 2, this.h - 4, "Blue");
-        this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Purple");
-        this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
     };
 
     collisionCheck() {
         this.game.entities.forEach(entity => {
             if (entity instanceof ground && entity.BB) {
-                if (this.bottomBB.collide(entity.topBB)) {
+                if (entity.BB.left - 5 <= this.BB.left + this.w / 2 <= entity.BB.right + 5 && this.lastBB.bottom <= entity.BB.top) {
+                    this.y = entity.BB.top - this.h;
+                    this.velocity.y === 0;
                     this.grounded = true;
-                    this.velocity.y = 0;
                 }
-                if (this.rightBB.collide(entity.leftBB)) {
-                    if (this.velocity.x > 0) {
+                // Box should never collide with the underside of a block unless maybe it's on an elevator?
+                if (this.velocity.x > 0) {
+                    if (entity.BB.bottom <= this.BB.bottom <= entity.BB.top && this.lastBB.right <= entity.BB.left) {
                         this.velocity.x = 0;
                     }
                 }
-                if (this.leftBB.collide(entity.rightBB)) {
-                    if (this.velocity.x < 0) {
+                if (this.velocity.x < 0) {
+                    if (entity.BB.bottom <= this.BB.bottom <= entity.BB.top && this.lastBB.left >= entity.BB.right) {
                         this.velocity.x = 0;
-                    }
+                    }  
                 }
             }
         });
@@ -83,9 +79,5 @@ class box {
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);
         this.BB.draw(ctx);
-        // this.leftBB.draw(ctx);
-        // this.rightBB.draw(ctx);
-        // this.topBB.draw(ctx);
-        // this.bottomBB.draw(ctx);
     };
 }    

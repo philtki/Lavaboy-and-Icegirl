@@ -1,8 +1,8 @@
 class ground {
     constructor(game, x, y, side) {
         Object.assign(this, { game, x, y, side});
-        this.h = 48
-        this.w = 48
+        this.h = PARAMS.BLOCKWIDTH;
+        this.w = PARAMS.BLOCKWIDTH;
         switch (side) {
             case "A":
                 this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0000.png");
@@ -37,10 +37,10 @@ class ground {
             case "K":
                 this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0101.png");
         }
-        this.BB = new boundingbox(this.x + PARAMS.BLOCKWIDTH / 8, this.y, PARAMS.BLOCKWIDTH * 3 / 4, PARAMS.BLOCKWIDTH, "Red");
+        this.BB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH, "Red");
         this.leftBB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, "Green");
         this.rightBB = new boundingbox(this.x + PARAMS.BLOCKWIDTH / 2, this.y, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, "Blue");
-        this.topBB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH / 2, "Blue");
+        this.topBB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH / 2, "Yellow");
         this.bottomBB = new boundingbox(this.x, this.y + PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH / 2, "brown");
         this.removeFromWorld = false;
 
@@ -52,10 +52,10 @@ class ground {
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);
         ctx.draw
-        // this.BB.draw(ctx);
-        // this.leftBB.draw(ctx);
-        // this.rightBB.draw(ctx);
-        //this.topBB.draw(ctx);
-        // this.bottomBB.draw(ctx);
+        this.BB.draw(ctx);
+        this.leftBB.draw(ctx);
+        this.rightBB.draw(ctx);
+        this.topBB.draw(ctx);
+        this.bottomBB.draw(ctx);
     };
 }
