@@ -3,6 +3,7 @@ const gameEngine = new GameEngine();
 const ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./Assets/background.png");
+ASSET_MANAGER.queueDownload("./Assets/titleBackground.png");
 ASSET_MANAGER.queueDownload("./Assets/FireboySpriteSheet.png");
 ASSET_MANAGER.queueDownload("./Assets/WatergirlSpriteSheet.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks/bricksOG.png");
@@ -32,9 +33,7 @@ ASSET_MANAGER.downloadAll(() => {
 	const ctx = canvas.getContext("2d");
 	ctx.imageSmoothingEnabled = false;
 
-	new sceneManager(gameEngine);
-
 	gameEngine.init(ctx);
-
+	gameEngine.addEntity(new sceneManager(gameEngine));
 	gameEngine.start();
 });

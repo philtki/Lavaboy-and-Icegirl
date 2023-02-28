@@ -2,15 +2,15 @@ class sceneManager {
     constructor(game) {
         this.game = game;
         this.game.camera = this;
-        //this.loadLevel(levelOne)
-        this.loadTestLevel(levelOne2);  //23x20
+        this.title = true;
+        //this.loadLevel(levelOne)      //old
+        //this.loadTestLevel(levelOne2);  //23x20 also uncomment to skip title screen
     };
 
     clearEntities() {
         this.game.entities.forEach(function (entity) {
             entity.removeFromWorld = true;
         });
-
     };
 
     openDoor(characterType) {
@@ -26,32 +26,6 @@ class sceneManager {
         }
     };
 
-    loadLevel(level) {
-        this.level = level;
-        let temp = -1;
-        for (let y = 0; y < 20; y++) {
-            for (let x = 0; x < 20; x++) {
-                temp++;
-                if (this.level.data[temp] == 5) {
-                    gameEngine.addEntity(new player(this.game, x * 46.9, y * 38.2 - 2, false));
-                    gameEngine.addEntity(new player(this.game, x * 46.9 + 300, y * 38.2 - 2, true));
-                }
-                if (this.level.data[temp] == 1) {
-                    //console.log("x:" + x + " y:" + y);
-                    //fix pixel difference when scaling x and y with bricks.png
-                    gameEngine.addEntity(new ground(this.game, x * 50, y * 40, 51, 51));
-                }
-                if (this.level.data[temp] == 2) {
-                    gameEngine.addEntity(new liquid(this.game, x * 50, y * 40, true));
-                }
-                if (this.level.data[temp] == 3) {
-                    gameEngine.addEntity(new liquid(this.game, x * 50, y * 40, false));
-                }
-            }
-        }
-        gameEngine.addEntity(new background());
-    }
-
     loadTestLevel(level) {
         this.level = level;
         let temp = -1;
@@ -59,6 +33,7 @@ class sceneManager {
         this.blueDoorIsOpen = false;
         let myElevator = new elevator(this.game, -100, -100);
         this.clearEntities();
+
         for (let y = 0; y < 20; y++) {
             for (let x = 0; x < 23; x++) {
                 temp++;
@@ -128,7 +103,7 @@ class sceneManager {
                 } else if (this.level.data[temp] == FIREBOY) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 4, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRL) {
-                    gameEngine.addEntity(new player(this.game, x * 47, y * 57.5 - 5, WATERGIRL));
+                    gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 5, WATERGIRL));
                 // } else if (this.level.data[temp] == FIREBOY) {
                 //     gameEngine.addEntity(new playerOld(this.game, x * 47, y * 47.5 - 4, false));
                 // } else if (this.level.data[temp] == WATERGIRL) {
@@ -147,4 +122,39 @@ class sceneManager {
         }
         gameEngine.addEntity(new background());
     };
+
+    update() {
+        this.startGame = this.game["startGame"];
+        if (this.startGame && this.title) {
+            this.title = false;
+            console.log("pressed Q");
+            this.loadTestLevel(levelOne2);
+        }
+    }
+
+    draw(ctx) {
+        if (this.title) {
+            ctx.drawImage(ASSET_MANAGER.getAsset("./Assets/titleBackground.png"), -397, 1, 1705, 960)
+            //gradient testing
+            var grd = ctx.createLinearGradient(0, 0, 0, 500);
+            grd.addColorStop(0, "red");
+            grd.addColorStop(1, rgb(237, 161, 14));
+            ctx.fillStyle = grd;
+            //lavaboy & icegirl text
+            ctx.font = '170px "Thayer-Street-NDP-Regular"';
+            //ctx.fillStyle = "rgb(255, 0, 0)";
+            ctx.fillText("lavaboy", 130, 290);
+            ctx.font = '90px "Trajan-Pro-Regular"';
+            ctx.fillStyle = "rgb(237, 161, 14)";
+            ctx.fillText("&", 525, 290);
+            ctx.font = '150px "Thayer-Street-NDP-Regular"';
+            ctx.fillStyle = "rgb(102, 204, 255)";
+            ctx.fillText("icegirl", 600, 290);
+
+            //press q to play
+            ctx.font = '90px "Trajan-Pro-Regular"';
+            ctx.fillStyle = "rgb(237, 161, 14)";
+            ctx.fillText("Press Q to Play", 275, 650);
+        }
+    }
 }

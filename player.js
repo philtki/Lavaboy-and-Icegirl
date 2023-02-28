@@ -66,7 +66,12 @@ class player {
         this.right = this.game[this.name + "Right"];
         this.up = this.game[this.name + "Up"];
         this.down = this.game[this.name + "Down"];
-        
+        // this.gameStart = this.game["gameStart"];
+        //
+        // if (this.gameStart) {
+        //     console.log("pressed Q");
+        // }
+
         if (this.left && !this.right) {
             this.velocity.x = -MAX_RUN;
         } else if (!this.left && this.right) {
@@ -194,6 +199,27 @@ class player {
             this.animations[this.state].drawFrame(this.game.clockTick, ctx, -this.x - this.Xoffset, this.y + this.Yoffset, .25);
             ctx.restore();
         }
+        ///////////instruction text////////////////
+        //ctx.clearRect(20, 550, 450, 250);
+        if (this.x > 20 && this.x < 400 && this.y > 550) {
+            ctx.font = '22px "Trajan-Pro-Regular"';
+            ctx.fillStyle = "rgb(241, 211, 41)";
+            ctx.fillText("USE A,W,D TO MOVE", 100, 610);
+            ctx.fillText("USE ARROW KEYS TO MOVE", 100, 800);
+        }
+        if(this.x > 400 && this.y > 520) {
+            ctx.font = '22px "Trajan-Pro-Regular"';
+            ctx.fillStyle = "rgb(241, 211, 41)";
+            ctx.fillText("NEVER MIX LAVA AND WATER!", 600, 860);
+        }
+        //ctx.clearRect(600, 300, 270, 350);
+        if(this.x > 600 && this.x < 870 && this.y > 300 && this.y < 650) {
+            ctx.font = '22px "Trajan-Pro-Regular"';
+            ctx.fillStyle = "rgb(241, 211, 41)";
+            ctx.fillText("NEVER MIX ANYTHING", 640, 540);
+            ctx.fillText("WITH GREEN GO!", 660, 570);
+        }
+        //////////////////////////////////////////////
         this.BB.draw(ctx);
         this.lastBB.draw(ctx);
     }

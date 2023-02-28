@@ -73,6 +73,9 @@ class GameEngine {
                 case "KeyS" :
                     that.WGDown = true;
                     break;
+                case "KeyQ" :
+                    that.startGame = true;
+                    break;
             }
         })
 
@@ -101,6 +104,9 @@ class GameEngine {
                     break;
                 case "KeyS" :
                     that.WGDown = false;
+                    break;
+                case "KeyQ" :
+                    that.startGame = false;
                     break;
             }
         })
