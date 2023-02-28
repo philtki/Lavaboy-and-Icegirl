@@ -115,7 +115,7 @@ class player {
             this.velocity.y = 0;
         }
         // Update horizontal and vertical position based on velocity
-        if (this.playerType == 9) {console.log(this.velocity.x);}
+        // if (this.playerType == 9) {console.log(this.velocity.x);}
         if (this.noLeft) {
             if (this.velocity.x < 0) {
                 this.velocity.x = 0
@@ -225,10 +225,6 @@ class player {
     }
 
     collisionCheck() {
-        if (this.playerType == 9) {
-            console.log(this.grounded);
-        }
-        
         const LAVA = 2;
         const WATER = 3;
         const REDGEM = 4;
@@ -240,39 +236,39 @@ class player {
         this.leftIndex = 0;
         this.rightIndex = 0;
         this.game.entities.forEach(entity => {
-            if (entity instanceof ground && this.BB.collide(entity.BB)) {
-                // Falling
-                if (entity.BB.left <= this.BB.left + this.w / 2 && this.BB.left + this.w / 2 <= entity.BB.right && this.BB.bottom - 5 <= entity.BB.top) {
-                    this.grounded = true;
-                    if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
-                        this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
-                        this.velocity.y === 0;
-                    }
-                }
-                // Jumping
-                if (this.velocity.y < 0) {
-                    if (entity.BB.left - 5 <= this.BB.left + this.w / 2 <= entity.BB.right + 5 && this.lastBB.top <= entity.BB.bottom) {
-                        this.velocity.y = 0;
-                    }
-                }
-                if (this.BB.collide(entity.topBB) && this.BB.collide(entity.bottomBB)) {
-                    if (this.BB.collide(entity.leftBB)) {
-                        this.x = entity.leftBB.left - PARAMS.BLOCKWIDTH;
-                        if (this.velocity.x > 0) {
-                            this.velocity.x = 0;
+            if (entity.hasBB && this.BB.collide(entity.BB)) {
+                if (entity instanceof ground) {
+                    // Falling
+                    if (entity.topBB && ((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.BB.bottom - 5 <= entity.BB.top) {
+                        this.grounded = true;
+                        console.log("Passed check 1");
+                        if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
+                            this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
+                            this.velocity.y === 0;
                         }
-                        this.noRight = true;
-                        this.rightIndex++;
-                    }
-                    if (this.BB.collide(entity.rightBB)) {
-                        this.x = entity.rightBB.right;
-                        if (this.velocity.x < 0) {
-                            this.velocity.x = 0;
+                    // Jumping
+                    } else if (this.velocity.y < 0 && entity.hasBottomBB) {
+                        console.log("Passed check 1");
+                        if (((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right))) { // && this.lastBB.top <= entity.BB.bottom
+                            console.log("Passed check 2");
+                            this.velocity.y = 0;
                         }
-                        this.noLeft = true;
-                        this.leftIndex++;
+                    } else if (entity.BB.top < this.BB.top + (this.h - PARAMS.BLOCKWIDTH) && this.BB.top < entity.BB.bottom - 2) {
+                        if (entity.hasLeftBB && this.BB.collide(entity.leftBB)) {
+                            this.x = entity.leftBB.left - PARAMS.BLOCKWIDTH;
+                            if (this.velocity.x > 0) {
+                                this.velocity.x = 0;
+                            }
+                        } else if (entity.hasRightBB && this.BB.collide(entity.rightBB)) {
+                            this.x = entity.rightBB.right;
+                            if (this.velocity.x < 0) {
+                                this.velocity.x = 0;
+                            }
+                        }
                     }
+                    
                 }
+                
             }
             // // If the player is colliding with a liquid tile
             // //TODO maybe when player is walking on liquid they are slower
