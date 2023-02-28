@@ -217,7 +217,7 @@ class player {
             ctx.font = '22px "Trajan-Pro-Regular"';
             ctx.fillStyle = "rgb(241, 211, 41)";
             ctx.fillText("NEVER MIX ANYTHING", 640, 540);
-            ctx.fillText("WITH GREEN GO!", 660, 570);
+            ctx.fillText("WITH GREEN GOO!", 660, 570);
         }
         //////////////////////////////////////////////
         this.BB.draw(ctx);
@@ -237,23 +237,51 @@ class player {
         this.rightIndex = 0;
         this.game.entities.forEach(entity => {
             if (entity.hasBB && this.BB.collide(entity.BB)) {
-                if (entity instanceof ground) {
-                    // Falling
-                    if (entity.topBB && ((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.BB.bottom - 5 <= entity.BB.top) {
+                // Falling
+                if (entity.hasTopBB && ((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.BB.bottom - 5 <= entity.BB.top) {
+                    if (entity instanceof ground) {
                         this.grounded = true;
-                        console.log("Passed check 1");
                         if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
                             this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
                             this.velocity.y === 0;
                         }
-                    // Jumping
-                    } else if (this.velocity.y < 0 && entity.hasBottomBB) {
-                        console.log("Passed check 1");
-                        if (((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right))) { // && this.lastBB.top <= entity.BB.bottom
-                            console.log("Passed check 2");
-                            this.velocity.y = 0;
+                    }
+                    if (entity instanceof liquid && entity.BB) {
+                        if (entity.liquidType != GREENGOO) {
+                            if (this.playerType == WATERGIRL) {
+                                if (entity.liquidType == LAVA) {
+                                    this.die();
+                                } else if (this.velocity.y < 0) {
+                                    this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
+                                    this.velocity.y = 0;
+                                }
+                                this.grounded = true;
+                            } else {
+                                if (entity.liquidType == WATER) {
+                                    this.die();
+                                } else if (this.velocity.y < 0) {
+                                    this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
+                                    this.velocity.y = 0;
+                                }
+                                this.grounded = true;
+                            }
+                        } else {
+                            this.die();
                         }
-                    } else if (entity.BB.top < this.BB.top + (this.h - PARAMS.BLOCKWIDTH) && this.BB.top < entity.BB.bottom - 2) {
+                    }
+                // Jumping
+                }
+                if (this.velocity.y < 0 && entity.hasBottomBB) {
+                    if (entity instanceof ground) {
+                        if (((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.lastBB.top >= entity.BB.bottom ) {
+                            this.velocity.y = 0;
+                            console.log("Player has collided with the underside of a block");
+                        }
+                    }
+                }
+                // Left Right
+                if ((entity.BB.top - (this.h - entity.h) < this.BB.top && this.BB.top < entity.BB.bottom - 5) || (entity.BB.top + 5 < this.BB.bottom && this.BB.bottom < entity.BB.bottom + (this.h - entity.h))) {
+                    if (entity instanceof ground) {
                         if (entity.hasLeftBB && this.BB.collide(entity.leftBB)) {
                             this.x = entity.leftBB.left - PARAMS.BLOCKWIDTH;
                             if (this.velocity.x > 0) {
@@ -266,9 +294,7 @@ class player {
                             }
                         }
                     }
-                    
-                }
-                
+                } 
             }
             // // If the player is colliding with a liquid tile
             // //TODO maybe when player is walking on liquid they are slower

@@ -1,8 +1,8 @@
 class box {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y });
-        this.h = 48
-        this.w = 48
+        this.h = PARAMS.BLOCKWIDTH;
+        this.w = PARAMS.BLOCKWIDTH;
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Yellow");
         this.lastBB = this.BB;
         this.removeFromWorld = false; 

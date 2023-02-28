@@ -1,11 +1,14 @@
 class liquid {
     constructor(game, x, y, liquidType) {
         Object.assign(this, { game, x, y, liquidType});
+        this.h = 31 * 1.6
         this.BB = new boundingbox(this.x, this.y + 20, 31 * 1.6, 20, "White");
         this.bottomBB = new boundingbox(this.x, this.y + 40, 31 * 1.6, 2, "Brown");
         const LAVA = 2;
         const WATER = 3;
         const GREENGOO = 6;
+        this.hasBB = true;
+        this.hasTopBB = true;
         this.liquidType = liquidType;
         switch(this.liquidType) {
             case LAVA: 
