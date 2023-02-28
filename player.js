@@ -10,7 +10,7 @@ class player {
         this.moving = 0; // 0 = idle, 1 = left, 2 = right
         this.dead = false;
         this.velocity = { x: 0, y: 0 };
-        this.maxHorizontal = 250;
+        this.maxHorizontal = 450;
         this.grounded = false;
         this.animations = [];
         this.loadAnimations();
@@ -114,17 +114,10 @@ class player {
         } else {
             this.velocity.y = 0;
         }
-        // Update horizontal and vertical position based on velocity
-        // if (this.playerType == 9) {console.log(this.velocity.x);}
-        if (this.noLeft) {
-            if (this.velocity.x < 0) {
-                this.velocity.x = 0
-            }
-        }
-        if (this.noLRight) {
-            if (this.velocity.x > 0) {
-                this.velocity.x = 0
-            }
+        if (this.velocity.x <= -this.maxHorizontal) {
+            this.velocity.x = -this.maxHorizontal;
+        } else if (this.velocity.x >= this.maxHorizontal) {
+            this.velocity.x = this.maxHorizontal;
         }
         this.x += this.velocity.x * TICK;
         this.y += this.velocity.y * TICK;
@@ -233,13 +226,14 @@ class player {
         const FIREBOY = 8;
         const WATERGIRL = 9;
         this.grounded = false;
+        this.maxHorizontal = 450;
         this.leftIndex = 0;
         this.rightIndex = 0;
         this.game.entities.forEach(entity => {
             if (entity.hasBB && this.BB.collide(entity.BB)) {
                 // Falling
                 if (entity.hasTopBB && ((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.BB.bottom - 5 <= entity.BB.top) {
-                    if (entity instanceof ground) {
+                    if (entity instanceof ground || entity instanceof box) {
                         this.grounded = true;
                         if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
                             this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
@@ -280,49 +274,33 @@ class player {
                     }
                 }
                 // Left Right
-                if ((entity.BB.top - (this.h - entity.h) < this.BB.top && this.BB.top < entity.BB.bottom - 5) || (entity.BB.top + 5 < this.BB.bottom && this.BB.bottom < entity.BB.bottom + (this.h - entity.h))) {
+                if ((entity.hasLeftBB || entity.hasRightBB) && (entity.BB.top - (this.h - entity.h) < this.BB.top && this.BB.top < entity.BB.bottom - 5) || (entity.BB.top + 5 < this.BB.bottom && this.BB.bottom < entity.BB.bottom + (this.h - entity.h))) {
                     if (entity instanceof ground) {
                         if (entity.hasLeftBB && this.BB.collide(entity.leftBB)) {
-                            this.x = entity.leftBB.left - PARAMS.BLOCKWIDTH;
+                            this.x = entity.BB.left - PARAMS.BLOCKWIDTH;
                             if (this.velocity.x > 0) {
                                 this.velocity.x = 0;
                             }
                         } else if (entity.hasRightBB && this.BB.collide(entity.rightBB)) {
-                            this.x = entity.rightBB.right;
+                            this.x = entity.BB.right;
                             if (this.velocity.x < 0) {
                                 this.velocity.x = 0;
                             }
                         }
                     }
+                    if (entity instanceof box && entity.BB) {
+                        if (this.BB.collide(entity.leftBB)) {
+                            this.maxHorizontal = 150;
+                            entity.moveRight();
+                            // this.x = entity.BB.left - PARAMS.BLOCKWIDTH;
+                        } else if (this.BB.collide(entity.rightBB)) {
+                            // this.x = entity.BB.right;
+                            this.maxHorizontal = -150;
+                            entity.moveLeft();
+                        }  
+                    }
                 } 
             }
-            // // If the player is colliding with a liquid tile
-            // //TODO maybe when player is walking on liquid they are slower
-            // // Also ask nathan if he wants to do the liquid bb on level or lower
-            // if (entity instanceof liquid && entity.BB) {
-            //     if (this.BB.collide(entity.BB)) {
-            //         if (entity.liquidType != GREENGOO) {
-            //             if (this.playerType == WATERGIRL) {
-            //                 if (entity.liquidType == LAVA) {
-            //                     this.die();
-            //                 }
-            //                 if (this.velocity.y < 0) {
-            //                     this.velocity.y = 0;
-            //                 }
-            //                 this.grounded = PARAMS.MAXGROUNDED;
-            //             } else {
-            //                 if (entity.liquidType == WATER) {
-            //                     this.die();
-            //                 }
-            //                 if (this.velocity.y < 0) {
-            //                     this.velocity.y = 0;
-            //                 }
-            //                 this.grounded = PARAMS.MAXGROUNDED;
-            //             }
-            //         } else {
-            //             this.die();
-            //         }
-            //     }
             // //gem collision
             // }
             // if (entity instanceof gem && entity.BB) {

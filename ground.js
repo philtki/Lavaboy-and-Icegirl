@@ -88,21 +88,21 @@ class ground {
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);
         ctx.draw
-        if (this.hasBB) {
-            this.BB.draw(ctx);
-        }
-        if (this.hasTopBB) {
-            this.topBB.draw(ctx);
-        }
-        if (this.hasBottomBB) {
-            this.bottomBB.draw(ctx);
-        }
-        if (this.hasLeftBB) {
-            this.leftBB.draw(ctx);
-        }
-        if (this.hasRightBB) {
-            this.rightBB.draw(ctx);
-        }
+        // if (this.hasBB) {
+        //     this.BB.draw(ctx);
+        // }
+        // if (this.hasTopBB) {
+        //     this.topBB.draw(ctx);
+        // }
+        // if (this.hasBottomBB) {
+        //     this.bottomBB.draw(ctx);
+        // }
+        // if (this.hasLeftBB) {
+        //     this.leftBB.draw(ctx);
+        // }
+        // if (this.hasRightBB) {
+        //     this.rightBB.draw(ctx);
+        // }
         // this.BB.draw(ctx);
         // this.leftBB.draw(ctx);
         // this.rightBB.draw(ctx);
