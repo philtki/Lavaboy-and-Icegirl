@@ -232,7 +232,7 @@ class player {
         this.game.entities.forEach(entity => {
             if (entity.hasBB && this.BB.collide(entity.BB)) {
                 // Falling
-                if (entity.hasTopBB && ((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.BB.bottom - 5 <= entity.BB.top) {
+                if (entity.hasTopBB && ((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) || (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.BB.bottom - 5 <= entity.BB.top) {
                     if (entity instanceof ground || entity instanceof box) {
                         this.grounded = true;
                         if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
@@ -263,11 +263,11 @@ class player {
                             this.die();
                         }
                     }
-                // Jumping
+                    // Jumping
                 }
                 if (this.velocity.y < 0 && entity.hasBottomBB) {
                     if (entity instanceof ground) {
-                        if (((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.lastBB.top >= entity.BB.bottom ) {
+                        if (((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) || (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.lastBB.top >= entity.BB.bottom) {
                             this.velocity.y = 0;
                             console.log("Player has collided with the underside of a block");
                         }
@@ -297,26 +297,28 @@ class player {
                             // this.x = entity.BB.right;
                             this.maxHorizontal = -150;
                             entity.moveLeft();
-                        }  
+                        }
                     }
-                } 
+                }
             }
-            // //gem collision
-            // }
-            // if (entity instanceof gem && entity.BB) {
-            //     if (this.BB.collide(entity.BB)) {
-            //         if (this.playerType == WATERGIRL) {
-            //             if (entity.gemColor == BLUEGEM) {
-            //                 entity.removeFromWorld = true;
-            //             }
-            //         } else {
-            //             if (entity.gemColor == REDGEM) {
-            //                 entity.removeFromWorld = true;
-            //             }
-            //         }
-            //     }
-            // //elevator collision
-            // }
+            //gem collision
+            if (entity instanceof gem && entity.BB) {
+                if (this.BB.collide(entity.BB)) {
+                    if (this.playerType == WATERGIRL) {
+                        if (entity.gemColor == BLUEGEM) {
+                            entity.removeFromWorld = true;
+                            this.game.camera.gems++;
+                        }
+                    } else {
+                        if (entity.gemColor == REDGEM) {
+                            entity.removeFromWorld = true;
+                            this.game.camera.gems++;
+                        }
+                    }
+                }
+
+            }
+            // elevator collision
             // if (entity instanceof elevator && entity.BB) {
             //     if (this.BB.collide(entity.BB)) {
             //         this.grounded = PARAMS.MAXGROUNDED;
@@ -394,6 +396,6 @@ class player {
         while (now - start < 200) { //waits .2 secs before dying
             now = Date.now();
         }
-        this.game.camera.loadTestLevel(levelOne2);
+        this.game.camera.loadTestLevel(levelOne2, true);
     }
 }

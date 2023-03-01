@@ -76,6 +76,9 @@ class GameEngine {
                 case "KeyQ" :
                     that.startGame = true;
                     break;
+                case "KeyR" :
+                    that.retryGame = true;
+                    break;
             }
         })
 
@@ -107,6 +110,9 @@ class GameEngine {
                     break;
                 case "KeyQ" :
                     that.startGame = false;
+                    break;
+                case "KeyR" :
+                    that.retryGame = false;
                     break;
             }
         })

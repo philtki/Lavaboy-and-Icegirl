@@ -3,6 +3,7 @@ class sceneManager {
         this.game = game;
         this.game.camera = this;
         this.title = true;
+        this.gems = 0;
         //this.loadLevel(levelOne)      //old
         //this.loadTestLevel(levelOne2);  //23x20 also uncomment to skip title screen
     };
@@ -26,14 +27,16 @@ class sceneManager {
         }
     };
 
-    loadTestLevel(level) {
+    loadTestLevel(level, gameOver) {
         this.level = level;
         let temp = -1;
         this.redDoorIsOpen = false;
         this.blueDoorIsOpen = false;
         let myElevator = new elevator(this.game, -100, -100);
         this.clearEntities();
-
+        if (gameOver) {
+            this.game.addEntity(new retryMenu(this.game, this.gems))
+        }
         for (let y = 0; y < 20; y++) {
             for (let x = 0; x < 23; x++) {
                 temp++;
@@ -125,6 +128,7 @@ class sceneManager {
 
     update() {
         this.startGame = this.game["startGame"];
+        //this.retryGame = this.game["retryGame"];
         if (this.startGame && this.title) {
             this.title = false;
             console.log("pressed Q");
@@ -134,7 +138,7 @@ class sceneManager {
 
     draw(ctx) {
         if (this.title) {
-            ctx.drawImage(ASSET_MANAGER.getAsset("./Assets/titleBackground.png"), -397, 1, 1705, 960)
+            ctx.drawImage(ASSET_MANAGER.getAsset("./Assets/titleBackground.png"), -397, 1, 1705, 960);
             //gradient testing
             var grd = ctx.createLinearGradient(0, 0, 0, 500);
             grd.addColorStop(0, "red");

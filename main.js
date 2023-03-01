@@ -4,6 +4,7 @@ const ASSET_MANAGER = new AssetManager();
 
 ASSET_MANAGER.queueDownload("./Assets/background.png");
 ASSET_MANAGER.queueDownload("./Assets/titleBackground.png");
+ASSET_MANAGER.queueDownload("./Assets/deathScreen.png");
 ASSET_MANAGER.queueDownload("./Assets/FireboySpriteSheet.png");
 ASSET_MANAGER.queueDownload("./Assets/WatergirlSpriteSheet.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks/bricksOG.png");
