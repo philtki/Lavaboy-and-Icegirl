@@ -33,13 +33,10 @@ class box {
 
         if ((!this.movingLeft && !this.movingRight) || (this.movingLeft && this.movingRight)) {
             this.velocity.x = 0;
-            console.log("Not moving");
         } else if (!this.movingLeft && this.movingRight) {
             this.velocity.x = 150;
-            console.log("Right: " + this.movingRight);
         } else if (this.movingLeft && !this.movingRight) {
             this.velocity.x = -150;
-            console.log("Left: " + this.movingLeft);
         }
         if (!this.grounded) {
             this.velocity.y += 10;

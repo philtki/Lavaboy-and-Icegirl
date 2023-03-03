@@ -23,8 +23,10 @@ class player {
         }
         if (this.playerType == FIREBOY) {
             this.BBx = this.x + 3;
+            this.horizontalOffset = 3;
         } else {
             this.BBx = this.x;
+            this.horizontalOffset = 0;
         }
         this.BBy = this.y + 15;
         this.verticalOffset = 15;
@@ -35,8 +37,10 @@ class player {
         // this.bottomBB = new boundingbox(this.BBx, this.BBy + this.h, this.w, 2, "Brown");
         this.lastBB = this.BB;
         this.lastlastBB = this.lastBB;
-        this.noLeft = false;
-        this.noRight = false;
+        this.passedCheckOne = false;
+        this.passedCheckTwo = false;
+        this.passedCheckThree = false;
+        this.passedCheckFour = false;
     };
 
     loadAnimations() {
@@ -102,7 +106,6 @@ class player {
                 this.state = PARAMS.FALLING;
             }
         }
-        // console.log("Grounded: " + this.grounded);
         if (!this.grounded) {
             if (0 <= this.velocity.y < MAX_JUMP) {
                 if (this.velocity.y < MAX_JUMP) {
@@ -240,7 +243,7 @@ class player {
                             this.velocity.y === 0;
                         }
                     }
-                    if (entity instanceof liquid && entity.BB) {
+                    if (entity instanceof liquid) {
                         if (entity.liquidType != GREENGOO) {
                             if (this.playerType == WATERGIRL) {
                                 if (entity.liquidType == LAVA) {
@@ -263,32 +266,47 @@ class player {
                             this.die();
                         }
                     }
-                    // Jumping
-                }
-                if (this.velocity.y < 0 && entity.hasBottomBB) {
-                    if (entity instanceof ground) {
-                        if (((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) || (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.lastBB.top >= entity.BB.bottom) {
+                    if (entity instanceof elevator) {
+                        this.grounded = true;
+                        if (this.velocity.y > 0) {
                             this.velocity.y = 0;
-                            console.log("Player has collided with the underside of a block");
+                        }
+                        if (entity.isMoving) {
+                            this.y = entity.BB.top - this.h - this.verticalOffset; //makes player move with the elevator
                         }
                     }
+                }
+                // Jumping
+                if (this.velocity.y < 0 && entity.hasBottomBB) {
+                    if (entity instanceof ground || entity instanceof elevator) {
+                        if (((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) || (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.lastBB.top >= entity.BB.bottom) {
+                            this.velocity.y = 0;
+                        }
+                    }
+                    
                 }
                 // Left Right
                 if ((entity.hasLeftBB || entity.hasRightBB) && (entity.BB.top - (this.h - entity.h) < this.BB.top && this.BB.top < entity.BB.bottom - 5) || (entity.BB.top + 5 < this.BB.bottom && this.BB.bottom < entity.BB.bottom + (this.h - entity.h))) {
-                    if (entity instanceof ground) {
+                    if (entity instanceof ground || entity instanceof elevator || entity instanceof lever) {
                         if (entity.hasLeftBB && this.BB.collide(entity.leftBB)) {
-                            this.x = entity.BB.left - PARAMS.BLOCKWIDTH;
                             if (this.velocity.x > 0) {
                                 this.velocity.x = 0;
+                                if (entity instanceof lever) {
+                                    entity.rotateClockwise();
+                                }
                             }
+                            this.x = (entity.BB.left - this.w) - this.horizontalOffset;
                         } else if (entity.hasRightBB && this.BB.collide(entity.rightBB)) {
-                            this.x = entity.BB.right;
                             if (this.velocity.x < 0) {
                                 this.velocity.x = 0;
+                                if (entity instanceof lever) {
+                                    entity.rotateCounterClockwise();
+                                }
                             }
+                            this.x = entity.BB.right;
                         }
                     }
-                    if (entity instanceof box && entity.BB) {
+                    if (entity instanceof box) {
                         if (this.BB.collide(entity.leftBB)) {
                             this.maxHorizontal = 150;
                             entity.moveRight();
@@ -299,93 +317,62 @@ class player {
                             entity.moveLeft();
                         }
                     }
+                    if (entity instanceof lever) {
+                        // console.log("Collided with lever");
+                        // LeftBB
+                        if (this.velocity.x < 0) {
+                            this.maxHorizontal = -25;
+                            entity.rotateCounterClockwise();
+                            // if (this.velocity.x < -50) {
+                        //     this.velocity.x = -50;
+                        // }
+                        // RightBB   
+                        } else if (this.velocity.x > 0) {
+                            this.maxHorizontal = 25;
+                            entity.rotateClockwise();
+                            // if (this.velocity.x > 50) {
+                            //     this.velocity.x = 50;
+                            // }
+                        }
+                    }
                 }
             }
             //gem collision
             if (entity instanceof gem && entity.BB) {
-                if (this.BB.collide(entity.BB)) {
-                    if (this.playerType == WATERGIRL) {
-                        if (entity.gemColor == BLUEGEM) {
-                            entity.removeFromWorld = true;
-                            this.game.camera.gems++;
-                        }
-                    } else {
-                        if (entity.gemColor == REDGEM) {
-                            entity.removeFromWorld = true;
-                            this.game.camera.gems++;
-                        }
+                if (this.playerType == WATERGIRL) {
+                    if (entity.gemColor == BLUEGEM) {
+                        entity.removeFromWorld = true;
+                        this.game.camera.gems++;
+                    }
+                } else {
+                    if (entity.gemColor == REDGEM) {
+                        entity.removeFromWorld = true;
+                        this.game.camera.gems++;
                     }
                 }
-
             }
-            // elevator collision
-            // if (entity instanceof elevator && entity.BB) {
-            //     if (this.BB.collide(entity.BB)) {
-            //         this.grounded = PARAMS.MAXGROUNDED;
-            //         if (this.velocity.y > 0) {
-            //             this.velocity.y = 0;
-            //         }
-            //         if (this.grounded > 0 && entity.isMoving) {
-            //             this.y = entity.y - this.h - 10; //makes player move with the elevator
-            //         }
-            //     }
-            // //door collision
-            // }
-            // if (entity instanceof door && entity.BB) {
-            //     if (this.BB.collide(entity.BB) && entity.doorType == WATERGIRL && this.playerType == WATERGIRL) {
-            //         this.game.camera.openDoor(this.playerType)
-            //         if (this.game.camera.redDoorIsOpen) {
-            //             this.die();
-            //         }
-            //     } else if (this.BB.collide(entity.BB) && entity.doorType == FIREBOY && this.playerType == FIREBOY) {
-            //         this.game.camera.openDoor(this.playerType)
-            //         if (this.game.camera.blueDoorIsOpen) {
-            //             this.die();
-            //         }
-            //     } else {
-            //         this.game.camera.redDoorIsOpen = false;
-            //         this.game.camera.blueDoorIsOpen = false;
-            //     }
-            // }
-            // if (entity instanceof lever && entity.BB) {
-            //     // LeftBB
-            //     if(this.BB.collide(entity.BB)) {
-            //         entity.rotateCounterClockwise();
-            //         if (this.velocity.x < 0) {
-            //             this.velocity.x = 0;
-            //         }
-            //         // if (this.velocity.x < -50) {
-            //         //     this.velocity.x = -50;
-            //         // }
-            //     // RightBB    
-            //     } else if (this.BB.collide(entity.BB)) {
-            //         entity.rotateClockwise();
-            //         if (this.velocity.x > 0) {
-            //             this.velocity.x = 0;
-            //         }
-            //         // if (this.velocity.x > 50) {
-            //         //     this.velocity.x = 50;
-            //         // }
-            //     }
-            // }
-            // if (entity instanceof box && entity.BB) {
-            //     if (this.BB.collide(entity.topBB) ) {
-            //         d = true;
-            //     } else if (this.leftBB.collide(entity.rightBB)) {
-            //         entity.moveLeft();
-            //         this.maxHorizontal = 100
-            //     } else if (this.rightBB.collide(entity.leftBB)) { 
-            //         entity.moveRight();
-            //         this.maxHorizontal = 100
-            //     }
-            // }
+
+            //door collision
+            if (entity instanceof door) {
+                if (entity.doorType == WATERGIRL && this.playerType == WATERGIRL) {
+                    this.game.camera.openDoor(WATERGIRL);
+                    if (this.game.camera.redDoorIsOpen) {
+                        // this.die();
+                        // this.loadNextLevel();
+                    }
+                } else if (this.BB.collide(entity.BB) && entity.doorType == FIREBOY && this.playerType == FIREBOY) {
+                    this.game.camera.openDoor(FIREBOY);
+                    if (this.game.camera.blueDoorIsOpen) {
+                        // this.die();
+                        // this.loadNextLevel();
+                    }
+                }
+                //  else {
+                //     this.game.camera.redDoorIsOpen = false;
+                //     this.game.camera.blueDoorIsOpen = false;
+                // }
+            }
         });
-        if (this.leftIndex == 0) {
-            this.noLeft = false;
-        }
-        if (this.rightIndex == 0) {
-            this.noRight = false;
-        }
     }
 
     //TODO add death animation smoke

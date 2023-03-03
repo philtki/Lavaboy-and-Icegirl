@@ -40,7 +40,6 @@ class sceneManager {
         for (let y = 0; y < 20; y++) {
             for (let x = 0; x < 23; x++) {
                 temp++;
-                //TODO change for loop value to size, change liquid pixels, try 50x40
                 const GROUND0000 = "A";
                 const GROUND1111 = "B";
                 const GROUND0110 = "C";
@@ -64,6 +63,7 @@ class sceneManager {
                 const FIREBOYDOOR = 11;
                 const WATERGIRLDOOR = 12;
                 const BOX = 13;
+                const BUTTON = 14;
 
 
                 if (this.level.data[temp] == GROUND0000) {
@@ -112,13 +112,15 @@ class sceneManager {
                 // } else if (this.level.data[temp] == WATERGIRL) {
                 // gameEngine.addEntity(new playerOld(this.game, x * 47, y * 57.5 - 5, true));
                 } else if (this.level.data[temp] == LEVER) {
-                    gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5, myElevator))
+                    gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5 + 5, myElevator))
                 } else if (this.level.data[temp] == FIREBOYDOOR) {
                     gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRLDOOR) {
                     gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, WATERGIRL));
                 } else if (this.level.data[temp] == BOX) {
                     gameEngine.addEntity(new box(this.game, x * 48, y * 48));
+                } else if (this.level.data[temp] == BUTTON) {
+                    gameEngine.addEntity(new button(this.game, x * 48, y * 48 + 32, myElevator));
                 }
 
             }

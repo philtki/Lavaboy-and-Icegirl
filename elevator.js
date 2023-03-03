@@ -1,12 +1,21 @@
 class elevator {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y});
-        this.BB = new boundingbox(this.x, this.y, 144, 32, "White");
-        this.topBB = new boundingbox(this.x, this.y, 144, 1, "Green");
-        this.bottomBB = new boundingbox(this.x, this.y + 32, 144, 1, "Brown");
+        this.h = 32;
+        this.w = 144;
+        this.BB = new boundingbox(this.x, this.y, this.w, this.h, "White");
+        this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Green");
+        this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
+        this.leftBB = new boundingbox(this.x, this.y, 2, this.h, "Yellow");
+        this.rightBB = new boundingbox(this.x + this.w - 2, this.y, 2, 32, "Red");
         this.startingPosY = this.y;
         this.goDown = false;
         this.isMoving = false;
+        this.hasBB = true;
+        this.hasTopBB = true;
+        this.hasBottomBB = true;
+        this.hasLeftBB = true;
+        this.hasRightBB = true;
         this.speed = 100;
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/elevator.png");
     };
@@ -52,15 +61,19 @@ class elevator {
     };
 
     updateBB() {
-        this.BB = new boundingbox(this.x, this.y, 144, 32, "White");
-        this.topBB = new boundingbox(this.x, this.y, 144, 1, "Green");
-        this.bottomBB = new boundingbox(this.x, this.y + 32, 144, 1, "Brown");
+        this.BB = new boundingbox(this.x, this.y, this.w, this.h, "White");
+        this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Green");
+        this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
+        this.leftBB = new boundingbox(this.x, this.y, 2, this.h, "Yellow");
+        this.rightBB = new boundingbox(this.x + this.w - 2, this.y, 2, 32, "Red");
     }
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.x, this.y, 144, 32);
+        ctx.drawImage(this.spritesheet, this.x, this.y, this.w, this.h);
         this.BB.draw(ctx);
         this.topBB.draw(ctx);
         this.bottomBB.draw(ctx);
+        this.leftBB.draw(ctx);
+        this.rightBB.draw(ctx);
     };
 }

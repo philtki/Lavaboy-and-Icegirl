@@ -19,6 +19,7 @@ ASSET_MANAGER.queueDownload("./Assets/bricks/brick1000.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks/brick0001.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks/brick1100.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks/brick0101.png");
+ASSET_MANAGER.queueDownload("./Assets/button.png");
 ASSET_MANAGER.queueDownload("./Assets/leverBase.png");
 ASSET_MANAGER.queueDownload("./Assets/leverHandle.png");
 ASSET_MANAGER.queueDownload("./Assets/box.png");
