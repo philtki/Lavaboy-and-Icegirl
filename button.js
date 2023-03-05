@@ -67,7 +67,7 @@ class button {
         offScreenCtx.restore();
         // console.log(this.h - this.depressedAmount);
         ctx.drawImage(offScreenCanvas, this.x, this.y + this.depressedAmount, this.w, this.h - this.depressedAmount);
-        this.BB.draw(ctx);
+        // this.BB.draw(ctx);
         // console.log("Current angle: " + this.angle);
     };
 }

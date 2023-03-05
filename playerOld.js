@@ -394,6 +394,6 @@ class playerOld {
         while (now - start < 200) { //waits .2 secs before dying
             now = Date.now();
         }
-        this.game.camera.loadTestLevel(levelOne2);
+        this.game.camera.loadLevel(levelOne2);
     }
 }

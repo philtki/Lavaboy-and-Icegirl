@@ -8,7 +8,7 @@ class retryMenu {
         this.retryGame = this.game["retryGame"];
         if (this.retryGame) {
             //console.log("pessed r");
-            this.game.camera.loadTestLevel(levelOne2, false);
+            this.game.camera.loadLevel(levelOne2, false);
             //this.game.clockTick = true;
             //this.dead = false;
             //this.loadTestLevel(levelOne2);

@@ -5,7 +5,7 @@ class sceneManager {
         this.title = true;
         this.gems = 0;
         //this.loadLevel(levelOne)      //old
-        this.loadTestLevel(levelOne2);  //23x20 also uncomment to skip title screen
+        this.loadLevel(levelOne2);  //23x20 also uncomment to skip title screen
     };
 
     clearEntities() {
@@ -27,12 +27,13 @@ class sceneManager {
         }
     };
 
-    loadTestLevel(level, gameOver) {
+    loadLevel(level, gameOver) {
         this.level = level;
         let temp = -1;
         this.redDoorIsOpen = false;
         this.blueDoorIsOpen = false;
         let myElevator = new elevator(this.game, -100, -100);
+        let myElevator2 = new elevator(this.game, -100, -100);
         this.clearEntities();
         if (gameOver) {
             this.game.addEntity(new retryMenu(this.game, this.gems))
@@ -103,6 +104,8 @@ class sceneManager {
                 } else if (this.level.data[temp] == ELEVATOR) {
                     myElevator = new elevator(this.game, x * 24, y * 50);
                     gameEngine.addEntity(myElevator);
+                    myElevator2 = new elevator(this.game, x * 224, y * 50);
+                    gameEngine.addEntity(myElevator2);
                 } else if (this.level.data[temp] == FIREBOY) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 4, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRL) {
@@ -112,7 +115,7 @@ class sceneManager {
                 // } else if (this.level.data[temp] == WATERGIRL) {
                 // gameEngine.addEntity(new playerOld(this.game, x * 47, y * 57.5 - 5, true));
                 } else if (this.level.data[temp] == LEVER) {
-                    gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5 + 5, myElevator))
+                    gameEngine.addEntity(new lever(this.game, x * 48.5, y * 48.5 + 5, myElevator2))
                 } else if (this.level.data[temp] == FIREBOYDOOR) {
                     gameEngine.addEntity(new door(this.game, x * 47.5, y * 31, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRLDOOR) {
@@ -137,7 +140,7 @@ class sceneManager {
         if (this.startGame && this.title) {
             this.title = false;
             console.log("pressed Q");
-            this.loadTestLevel(levelOne2);
+            this.loadLevel(levelOne2);
         }
     }
 

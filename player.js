@@ -137,7 +137,7 @@ class player {
             this.BBx = this.x;
         }
         this.BBy = this.y + 15;
-        this.BB = new boundingbox(this.BBx, this.BBy, this.w, PARAMS.BLOCKWIDTH * 1.9, "Yellow");
+        this.BB = new boundingbox(this.BBx, this.BBy, this.w, this.h, "Yellow");
     };
 
 
@@ -217,7 +217,7 @@ class player {
         }
         //////////////////////////////////////////////
         this.BB.draw(ctx);
-        this.lastBB.draw(ctx);
+        //this.lastBB.draw(ctx);
     }
 
     collisionCheck() {
@@ -338,7 +338,7 @@ class player {
                 }
             }
             //gem collision
-            if (entity instanceof gem && entity.BB) {
+            if (entity instanceof gem && this.BB.collide(entity.BB)) {
                 if (this.playerType == WATERGIRL) {
                     if (entity.gemColor == BLUEGEM) {
                         entity.removeFromWorld = true;
@@ -383,6 +383,6 @@ class player {
         while (now - start < 200) { //waits .2 secs before dying
             now = Date.now();
         }
-        this.game.camera.loadTestLevel(levelOne2, true);
+        this.game.camera.loadLevel(levelOne2, true);
     }
 }
