@@ -1,6 +1,6 @@
 class button {
-    constructor (game, x, y, ele) {
-        Object.assign(this, { game, x, y, ele});
+    constructor (game, x, y, ele, num) {
+        Object.assign(this, { game, x, y, ele, num});
         this.h = 15;
         this.w = 40;
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/button.png");
@@ -9,6 +9,7 @@ class button {
         this.removeFromWorld = false;
         this.playerStanding = false;
         this.depressedAmount = 0;
+        this.ele.isLever = false;
     };
 
     update() {
@@ -19,11 +20,27 @@ class button {
             this.raise();
         }
         if (this.depressedAmount == 14) {
-            this.ele.setDown(true);
+            if (this.num == 1) {
+                this.ele.buttonPressed = true;
+                this.ele.setDown(this.playerStanding);
+                //this.ele.button(this.playerStanding);
+            }
+            if (this.num == 2) {
+                this.ele.setDown(this.playerStanding);
+                //this.ele.button(this.playerStanding);
+            }
         }
         if (this.depressedAmount == 0) {
-            this.ele.setDown(false);
+            if (this.num == 2 && this.ele.buttonPressed) {
+
+            } else {
+                this.ele.setDown(this.playerStanding);
+            }
+            //this.ele.setDown(this.playerStanding);
+            //this.ele.buttonPressed = this.playerStanding;
+            //this.ele.button(this.playerStanding);
         }
+        console.log(this.playerStanding)
     };
 
     collisionCheck() {
@@ -55,7 +72,7 @@ class button {
         offScreenCtx.save();
         offScreenCtx.drawImage(this.spritesheet, 0, 0, this.w, this.h);
         offScreenCtx.restore();
-        console.log(this.h - this.depressedAmount);
+        // console.log(this.h - this.depressedAmount);
         ctx.drawImage(offScreenCanvas, this.x, this.y + this.depressedAmount, this.w, this.h - this.depressedAmount);
         this.BB.draw(ctx);
         // console.log("Current angle: " + this.angle);

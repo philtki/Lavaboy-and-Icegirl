@@ -17,6 +17,8 @@ class elevator {
         this.hasLeftBB = true;
         this.hasRightBB = true;
         this.speed = 100;
+        this.isLever = true;
+        this.buttonPressed = false;
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/elevator.png");
     };
 
@@ -25,17 +27,28 @@ class elevator {
     }
 
     update() {
-        // console.log("Elevator goes down: " + this.goDown + " isMoving: " + this.isMoving);
-        // TODO uncomment this for switch type up and down mechanics
-        if (this.goDown) {
-            if (this.y <= this.startingPosY) {
-                this.isMoving = true;
-                this.speed = 100;
+        if (this.isLever) {
+            // console.log("Elevator goes down: " + this.goDown + " isMoving: " + this.isMoving);
+            // TODO uncomment this for switch type up and down mechanics
+            if (this.goDown) {
+                if (this.y <= this.startingPosY) {
+                    this.isMoving = true;
+                    this.speed = 100;
 
-            } else if (this.y >= this.startingPosY + 144) {
-                this.isMoving = false;
-                this.speed = 0;
+                } else if (this.y >= this.startingPosY + 144) {
+                    this.isMoving = false;
+                    this.speed = 0;
+                }
+            } else {
+                if (this.y >= this.startingPosY + 144) {
+                    this.isMoving = true;
+                    this.speed = -100;
+                } else if (this.y <= this.startingPosY) {
+                    this.isMoving = false;
+                    this.speed = 0;
+                }
             }
+            this.y += this.speed * this.game.clockTick;
         } else {
             if (this.y >= this.startingPosY + 144) {
                 this.isMoving = true;
@@ -44,19 +57,18 @@ class elevator {
                 this.isMoving = false;
                 this.speed = 0;
             }
+            if (this.goDown) {
+                if (this.y <= this.startingPosY + 144) {
+                    this.speed = 100;
+                }
+            } else {
+                if (this.y >= this.startingPosY) {
+                    this.speed = -150;
+                }
+
+            }
+            this.y += this.speed * this.game.clockTick;
         }
-        this.y += this.speed * this.game.clockTick;
-
-        // TODO this is for loop up and down for win and lose scenario
-        // if (this.y > this.startingPosY + 144) {
-        //     this.isMoving = true;
-        //     this.speed = -100;
-        // } else if (this.y <= this.startingPosY) {
-        //     this.isMoving = true;
-        //     this.speed = 100;
-        // }
-        // this.y += this.speed * this.game.clockTick;
-
         this.updateBB();
     };
 

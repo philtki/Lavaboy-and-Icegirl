@@ -5,7 +5,7 @@ class sceneManager {
         this.title = true;
         this.gems = 0;
         //this.loadLevel(levelOne)      //old
-        //this.loadTestLevel(levelOne2);  //23x20 also uncomment to skip title screen
+        this.loadTestLevel(levelOne2);  //23x20 also uncomment to skip title screen
     };
 
     clearEntities() {
@@ -120,7 +120,8 @@ class sceneManager {
                 } else if (this.level.data[temp] == BOX) {
                     gameEngine.addEntity(new box(this.game, x * 48, y * 48));
                 } else if (this.level.data[temp] == BUTTON) {
-                    gameEngine.addEntity(new button(this.game, x * 48, y * 48 + 32, myElevator));
+                    gameEngine.addEntity(new button(this.game, x * 48, y * 48 + 32, myElevator, 1));
+                    gameEngine.addEntity(new button(this.game, x * 58, y * 48 + 32, myElevator, 2));
                 }
 
             }
