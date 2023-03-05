@@ -18,7 +18,7 @@ class elevator {
         this.hasRightBB = true;
         this.speed = 100;
         this.isLever = true;
-        this.buttonPressed = false;
+        this.buttonPressed = false; //if the first tick button is pressed
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/elevator.png");
     };
 
@@ -63,9 +63,8 @@ class elevator {
                 }
             } else {
                 if (this.y >= this.startingPosY) {
-                    this.speed = -150;
+                    this.speed = -175;
                 }
-
             }
             this.y += this.speed * this.game.clockTick;
         }

@@ -120,8 +120,10 @@ class sceneManager {
                 } else if (this.level.data[temp] == BOX) {
                     gameEngine.addEntity(new box(this.game, x * 48, y * 48));
                 } else if (this.level.data[temp] == BUTTON) {
+                    //always add connected elevator first before adding buttons
+                    //buttons different elevator reference than lever
                     gameEngine.addEntity(new button(this.game, x * 48, y * 48 + 32, myElevator, 1));
-                    gameEngine.addEntity(new button(this.game, x * 58, y * 48 + 32, myElevator, 2));
+                    gameEngine.addEntity(new button(this.game, x * 48, y * 87 + 32, myElevator, 2));
                 }
 
             }

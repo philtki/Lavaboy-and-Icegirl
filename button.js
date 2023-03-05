@@ -23,22 +23,15 @@ class button {
             if (this.num == 1) {
                 this.ele.buttonPressed = true;
                 this.ele.setDown(this.playerStanding);
-                //this.ele.button(this.playerStanding);
             }
             if (this.num == 2) {
                 this.ele.setDown(this.playerStanding);
-                //this.ele.button(this.playerStanding);
             }
         }
         if (this.depressedAmount == 0) {
-            if (this.num == 2 && this.ele.buttonPressed) {
-
-            } else {
+            if (!(this.num === 2 && this.ele.buttonPressed)) {
                 this.ele.setDown(this.playerStanding);
             }
-            //this.ele.setDown(this.playerStanding);
-            //this.ele.buttonPressed = this.playerStanding;
-            //this.ele.button(this.playerStanding);
         }
         console.log(this.playerStanding)
     };
