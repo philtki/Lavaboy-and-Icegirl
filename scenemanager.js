@@ -4,7 +4,7 @@ class sceneManager {
         this.game.camera = this;
         this.title = true;
         this.gems = 0;
-        //this.loadLevel(levelOne)      //old
+        //this.loadLevel(levelOne)      //olde
         this.loadLevel(levelOne2);  //23x20 also uncomment to skip title screen
     };
 
