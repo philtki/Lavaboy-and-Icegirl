@@ -10,7 +10,7 @@ class elevator {
         this.leftBB = new boundingbox(this.x, this.y, 2, this.h, "Yellow");
         this.rightBB = new boundingbox(this.x + this.w - 2, this.y, 2, 32, "Red");
         this.startingPosY = this.y;
-        this.goDown = false;
+        this.goDown = [false, false, false, false];
         this.isMoving = false;
         this.hasBB = true;
         this.hasTopBB = true;
@@ -22,24 +22,27 @@ class elevator {
         this.isLever = true;
         this.buttonPressed = false; //if the first tick button is pressed
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/elevator.png");
-        this.maxLowered = 180;
+        this.maxLowered = 195;
     };
 
-    setDown(pos) {
-        this.goDown = pos;
+    setDown(pos, num) {
+        this.goDown[num] = pos
     }
 
+
     update() {
+        console.log("this.goDown[1] = " + this.goDown[1]);
+        console.log("this.goDown[2] = " + this.goDown[2]);
+
         if (this.canMove) {
             if (this.isLever) {
                 // console.log("Elevator goes down: " + this.goDown + " isMoving: " + this.isMoving);
                 // TODO uncomment this for switch type up and down mechanics
-                if (this.goDown) {
-                    if (this.y <= this.startingPosY) {
+                if (this.goDown[3]) {
+                    if (this.y <= this.startingPosY + this.maxLowered) {
                         this.isMoving = true;
                         this.speed = 100;
-    
-                    } else if (this.y >= this.startingPosY + this.maxLowered) {
+                    } else {
                         this.isMoving = false;
                         this.speed = 0;
                     }
@@ -54,20 +57,28 @@ class elevator {
                 }
                 this.y += this.speed * this.game.clockTick;
             } else {
-                if (this.y >= this.startingPosY + this.maxLowered) {
-                    this.isMoving = true;
-                    this.speed = -100;
-                } else if (this.y <= this.startingPosY) {
-                    this.isMoving = false;
-                    this.speed = 0;
-                }
-                if (this.goDown) {
+                // if (this.y >= this.startingPosY + this.maxLowered) {
+                //     this.isMoving = true;
+                //     this.speed = -100;
+                // } else if (this.y <= this.startingPosY) {
+                //     this.isMoving = false;
+                //     this.speed = 0;
+                // }
+                if (this.goDown[1] || this.goDown[2]) {
                     if (this.y <= this.startingPosY + this.maxLowered) {
                         this.speed = 100;
+                        this.moving = true;
+                    } else {
+                        this.speed = 0;
+                        this.moving = false;
                     }
                 } else {
                     if (this.y >= this.startingPosY) {
-                        this.speed = -175;
+                        this.speed = -100;
+                        this.moving = true;
+                    } else {
+                        this.speed = 0;
+                        this.moving = false;
                     }
                 }
                 this.y += this.speed * this.game.clockTick;
@@ -90,7 +101,7 @@ class elevator {
         this.canMove = true;
         this.game.entities.forEach(entity => {
             if (entity.hasBB && this.BB.collide(entity.BB)) {    
-                if (entity instanceof player && this.bottomBB.collide(entity.BB) && this.goDown) {
+                if (entity instanceof player && this.bottomBB.collide(entity.BB) && this.isMoving) {
                     this.y = this.lastBB.top;
                     this.canMove = false;
                 }

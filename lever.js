@@ -32,10 +32,10 @@ class lever {
         }
         if (this.angle == Math.PI / 4) {
             // console.log("Lever is all the way to the right");
-            this.ele.setDown(true);
+            this.ele.setDown(true, 3);
         } else if (this.angle == (7 * Math.PI) / 4) {
             // console.log("Lever is all the way to the left");
-            this.ele.setDown(false);
+            this.ele.setDown(false, 3);
         }
         this.updateBB();
     };
@@ -49,10 +49,6 @@ class lever {
     };
 
     rotateClockwise() {
-        console.log("Rotating clockwise");
-        console.log("angle + 0.01: " + this.angle + 0.01);
-        console.log("Math.PI / 4: " + Math.PI / 4);
-        console.log("7 * Math.PI) / 4: " + (7 * Math.PI) / 4);
         if (this.angle + 0.01 <= Math.PI / 4 || this.angle + 0.01 >= (7 * Math.PI) / 4) {
             this.angle += 0.01;
             if (this.angle > 2 * Math.PI) {
@@ -65,11 +61,6 @@ class lever {
     };
 
     rotateCounterClockwise() {
-        console.log("Rotating counterclockwise");
-        this.temp = (this.angle - 0.01);
-        console.log("angle - 0.01: " + this.temp);
-        console.log("Math.PI / 4: " + Math.PI / 4);
-        console.log("7 * Math.PI) / 4: " + (7 * Math.PI) / 4);
         if (this.angle - 0.01 <= Math.PI / 4 || this.angle - 0.01 >= (7 * Math.PI) / 4) {
             this.angle -= 0.01;
             if (this.angle < 0) {

@@ -17,7 +17,7 @@ class box {
         this.hasLeftBB = true;
         this.hasRightBB = true;
         this.movingLeft = false;
-        this.movingLeft = false;
+        this.movingRight = false;
         this.state = 0;
         this.moving = 0;
         this.grounded = true;
@@ -114,10 +114,10 @@ class box {
 
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);
-        this.BB.draw(ctx);
-        this.topBB.draw(ctx);
-        this.bottomBB.draw(ctx);
-        this.leftBB.draw(ctx);
-        this.rightBB.draw(ctx);
+        // this.BB.draw(ctx);
+        // this.topBB.draw(ctx);
+        // this.bottomBB.draw(ctx);
+        // this.leftBB.draw(ctx);
+        // this.rightBB.draw(ctx);
     };
 }    

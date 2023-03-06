@@ -3,6 +3,7 @@ class button {
         Object.assign(this, { game, x, y, ele, num});
         this.h = 15;
         this.w = 40;
+        this.index = num;
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/button.png");
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Red");
         this.hasBB = true;
@@ -14,26 +15,11 @@ class button {
 
     update() {
         this.collisionCheck();
-        if (this.isPressed) {
-            this.depress();
-        } else {
-            this.raise();
-        }
         if (this.depressedAmount == 14) {
-            if (this.num == 1) {
-                this.ele.buttonPressed = true;
-                this.ele.setDown(this.isPressed);
-            }
-            if (this.num == 2) {
-                this.ele.setDown(this.isPressed);
-            }
+            this.ele.setDown(true, this.index);
+        } else if (this.depressedAmount == 0) {
+            this.ele.setDown(false, this.index);
         }
-        if (this.depressedAmount == 0) {
-            if (!(this.num === 2 && this.ele.buttonPressed)) {
-                this.ele.setDown(this.isPressed);
-            }
-        }
-        console.log(this.isPressed)
     };
 
     collisionCheck() {
@@ -41,8 +27,12 @@ class button {
         this.game.entities.forEach(entity => {
             if ((entity instanceof player || entity instanceof box) && this.BB.collide(entity.BB)) {
                 this.isPressed = true;
+                this.depress();
             }
         });
+        if (!this.isPressed) {
+            this.raise();
+        }
     };
 
     depress() {
