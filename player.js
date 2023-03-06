@@ -55,9 +55,9 @@ class player {
 
     update() {
         const TICK = this.game.clockTick;
-        const MAX_RUN = 450; //450
+        const MAX_RUN = 200; //450
         const FALL_AIR = 5;
-        const MAX_JUMP = 475;   //500
+        const MAX_JUMP = 525;   //500
 
         this.left = this.game[this.name + "Left"];
         this.right = this.game[this.name + "Right"];
@@ -209,7 +209,7 @@ class player {
             ctx.fillText("WITH GREEN GOO!", 660, 570);
         }
         //////////////////////////////////////////////
-        this.BB.draw(ctx);
+        // this.BB.draw(ctx);
         //this.lastBB.draw(ctx);
     }
 
@@ -264,9 +264,7 @@ class player {
                         if (this.velocity.y > 0) {
                             this.velocity.y = 0;
                         }
-                        if (entity.isMoving) {
-                            this.y = entity.BB.top - this.h - this.verticalOffset; //makes player move with the elevator
-                        }
+                        this.y = entity.BB.top - this.h - this.verticalOffset; //makes player move with the elevator
                     }
                 }
                 // Jumping
@@ -303,9 +301,15 @@ class player {
                         if (this.BB.collide(entity.leftBB)) {
                             this.maxHorizontal = 150;
                             entity.moveRight();
+                            if (entity.velocity.x == 0) {
+                                this.maxHorizontal = 0;
+                            }
                         } else if (this.BB.collide(entity.rightBB)) {
                             this.maxHorizontal = -150;
                             entity.moveLeft();
+                            if (entity.velocity.x == 0) {
+                                this.maxHorizontal = 0;
+                            }
                         }
                     }
                     if (entity instanceof lever) {
@@ -335,31 +339,29 @@ class player {
             }
 
             //door collision
-            if (entity instanceof door) {
+            if (entity instanceof door && this.BB.collide(entity.BB)) {
                 if (entity.doorType == WATERGIRL && this.playerType == WATERGIRL) {
                     this.game.camera.openDoor(WATERGIRL);
                     if (this.game.camera.redDoorIsOpen) {
-                        // this.die();
-                        // this.loadNextLevel();
+                        this.die();
+                    } else {
+                        this.removeFromWorld = true;
                     }
-                } else if (this.BB.collide(entity.BB) && entity.doorType == FIREBOY && this.playerType == FIREBOY) {
+                } else if (entity.doorType == FIREBOY && this.playerType == FIREBOY) {
                     this.game.camera.openDoor(FIREBOY);
                     if (this.game.camera.blueDoorIsOpen) {
-                        // this.die();
-                        // this.loadNextLevel();
+                        this.die();
+                    } else {
+                        this.removeFromWorld = true;
                     }
                 }
-                //  else {
-                //     this.game.camera.redDoorIsOpen = false;
-                //     this.game.camera.blueDoorIsOpen = false;
-                // }
             }
         });
     }
 
     //TODO add death animation smoke
     die() {
-        // this.removeFromWorld = true;
+        // this.wmoveFromWorld = true;
         const start = Date.now();
         let now = start;
         while (now - start < 200) { //waits .2 secs before dying
