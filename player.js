@@ -110,9 +110,9 @@ class player {
         } else {
             this.velocity.y = 0;
         }
-        if (this.velocity.x <= -this.maxHorizontal) {
+        if (this.velocity.x < -this.maxHorizontal) {
             this.velocity.x = -this.maxHorizontal;
-        } else if (this.velocity.x >= this.maxHorizontal) {
+        } else if (this.velocity.x > this.maxHorizontal) {
             this.velocity.x = this.maxHorizontal;
         }
         this.x += this.velocity.x * TICK;
@@ -233,7 +233,7 @@ class player {
                         this.grounded = true;
                         if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
                             this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
-                            this.velocity.y === 0;
+                            this.velocity.y = 0;
                         }
                     }
                     if (entity instanceof liquid) {
@@ -303,29 +303,18 @@ class player {
                         if (this.BB.collide(entity.leftBB)) {
                             this.maxHorizontal = 150;
                             entity.moveRight();
-                            // this.x = entity.BB.left - PARAMS.BLOCKWIDTH;
                         } else if (this.BB.collide(entity.rightBB)) {
-                            // this.x = entity.BB.right;
                             this.maxHorizontal = -150;
                             entity.moveLeft();
                         }
                     }
                     if (entity instanceof lever) {
-                        // console.log("Collided with lever");
-                        // LeftBB
                         if (this.velocity.x < 0) {
                             this.maxHorizontal = -25;
                             entity.rotateCounterClockwise();
-                            // if (this.velocity.x < -50) {
-                        //     this.velocity.x = -50;
-                        // }
-                        // RightBB   
                         } else if (this.velocity.x > 0) {
                             this.maxHorizontal = 25;
                             entity.rotateClockwise();
-                            // if (this.velocity.x > 50) {
-                            //     this.velocity.x = 50;
-                            // }
                         }
                     }
                 }

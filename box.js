@@ -78,7 +78,7 @@ class box {
                         this.grounded = true;
                         if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
                             this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
-                            this.velocity.y === 0;
+                            this.velocity.y = 0;
                         }
                     }
                 }

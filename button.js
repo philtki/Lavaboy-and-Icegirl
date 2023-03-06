@@ -7,14 +7,14 @@ class button {
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Red");
         this.hasBB = true;
         this.removeFromWorld = false;
-        this.playerStanding = false;
+        this.isPressed = false;
         this.depressedAmount = 0;
         this.ele.isLever = false;
     };
 
     update() {
         this.collisionCheck();
-        if (this.playerStanding) {
+        if (this.isPressed) {
             this.depress();
         } else {
             this.raise();
@@ -22,25 +22,25 @@ class button {
         if (this.depressedAmount == 14) {
             if (this.num == 1) {
                 this.ele.buttonPressed = true;
-                this.ele.setDown(this.playerStanding);
+                this.ele.setDown(this.isPressed);
             }
             if (this.num == 2) {
-                this.ele.setDown(this.playerStanding);
+                this.ele.setDown(this.isPressed);
             }
         }
         if (this.depressedAmount == 0) {
             if (!(this.num === 2 && this.ele.buttonPressed)) {
-                this.ele.setDown(this.playerStanding);
+                this.ele.setDown(this.isPressed);
             }
         }
-        console.log(this.playerStanding)
+        console.log(this.isPressed)
     };
 
     collisionCheck() {
-        this.playerStanding = false;
+        this.isPressed = false;
         this.game.entities.forEach(entity => {
-            if (entity instanceof player && this.BB.collide(entity.BB)) {
-                this.playerStanding = true;
+            if ((entity instanceof player || entity instanceof box) && this.BB.collide(entity.BB)) {
+                this.isPressed = true;
             }
         });
     };
