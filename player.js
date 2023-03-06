@@ -31,16 +31,9 @@ class player {
         this.BBy = this.y + 15;
         this.verticalOffset = 15;
         this.BB = new boundingbox(this.BBx, this.BBy, this.w, this.h, "Yellow");
-        // this.leftBB = new boundingbox(this.BBx, this.BBy, 2, this.h, "Green");
-        // this.rightBB = new boundingbox(this.BBx + this.w - 2, this.BBy, 2, this.h, "Blue");
-        // this.topBB = new boundingbox(this.BBx, this.BBy, this.w, 2, "Purple");
-        // this.bottomBB = new boundingbox(this.BBx, this.BBy + this.h, this.w, 2, "Brown");
         this.lastBB = this.BB;
-        this.lastlastBB = this.lastBB;
-        this.passedCheckOne = false;
-        this.passedCheckTwo = false;
-        this.passedCheckThree = false;
-        this.passedCheckFour = false;
+        this.hasBB = true;
+        
     };
 
     loadAnimations() {
@@ -64,7 +57,7 @@ class player {
         const TICK = this.game.clockTick;
         const MAX_RUN = 450; //450
         const FALL_AIR = 5;
-        const MAX_JUMP = 400;   //500
+        const MAX_JUMP = 475;   //500
 
         this.left = this.game[this.name + "Left"];
         this.right = this.game[this.name + "Right"];
