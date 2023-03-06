@@ -3,6 +3,7 @@ class ground {
         Object.assign(this, { game, x, y, side});
         this.h = PARAMS.BLOCKWIDTH;
         this.w = PARAMS.BLOCKWIDTH;
+        this.underLiquid = false;
         this.hasBB = true;
         this.hasTopBB = false;
         this.hasBottomBB = false;
@@ -41,6 +42,11 @@ class ground {
                 this.hasBottomBB = true;
                 this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0010.png");
                 break;
+            case "F2":
+                this.underLiquid = true;
+                this.hasBottomBB = true;
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0010.png");
+                break;
             case "G":
                 this.hasTopBB = true;
                 this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0100.png");
@@ -64,13 +70,21 @@ class ground {
                 this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0101.png");
         }
         if (this.hasBB) {
-            this.BB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH, "Red");
+            if (this.underLiquid) {
+                this.BB = new boundingbox(this.x, this.y + PARAMS.BLOCKWIDTH * 2, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH, "Red");
+            } else {
+                this.BB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH, "Red");
+            }
         }
         if (this.hasTopBB) {
             this.topBB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH / 2, "Yellow");
         }
         if (this.hasBottomBB) {
-            this.bottomBB = new boundingbox(this.x, this.y + PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH / 2, "brown");
+            if (this.underLiquid) {
+                this.bottomBB = new boundingbox(this.x, this.y + PARAMS.BLOCKWIDTH * 2.6, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH / 2.8, "Black");
+            } else {
+                this.bottomBB = new boundingbox(this.x, this.y + PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, PARAMS.BLOCKWIDTH / 2, "brown");
+            }
         }
         if (this.hasLeftBB) {
             this.leftBB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, "Green");
@@ -86,8 +100,23 @@ class ground {
     };
 
     draw(ctx) {
-        ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);
-        ctx.draw
+        if (this.underLiquid) {
+            ctx.drawImage(this.spritesheet, this.x, this.y + 48 * 2.6, this.w, this.h / 2.8);
+            ctx.strokeStyle = "Black";
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y + 48 * 2.6);
+            ctx.lineTo(this.x + this.w, this.y + 48 * 2.6);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(this.x, this.y + 48 * 2.96);
+            ctx.lineTo(this.x + this.w, this.y + 48 * 2.96);
+            ctx.stroke();
+        } else {
+            ctx.drawImage(this.spritesheet, this.x, this.y, this.w, this.h);
+            ctx.draw;
+        }
+
         // if (this.hasBB) {
         //     this.BB.draw(ctx);
         // }

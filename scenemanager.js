@@ -52,6 +52,7 @@ class sceneManager {
                 const GROUND0001 = "I";
                 const GROUND1100 = "J";
                 const GROUND0101 = "K";
+                const GROUND0010_liquid = "F2";
                 const LAVA = 2;
                 const WATER = 3;
                 const REDGEM = 4;
@@ -91,6 +92,8 @@ class sceneManager {
                     gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1100));
                 } else if(this.level.data[temp] == GROUND0101) {
                     gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0101));
+                } else if(this.level.data[temp] == GROUND0010_liquid) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0010_liquid));
                 } else if (this.level.data[temp] == LAVA) {
                     gameEngine.addEntity(new liquid(this.game, x * 48, y * 47.6, LAVA));
                 } else if (this.level.data[temp] == WATER) {
