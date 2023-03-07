@@ -57,7 +57,7 @@ class player {
         const TICK = this.game.clockTick;
         const MAX_RUN = 200; //450
         const FALL_AIR = 5;
-        const MAX_JUMP = 525;   //500
+        const MAX_JUMP = 340;   //500
 
         this.left = this.game[this.name + "Left"];
         this.right = this.game[this.name + "Right"];

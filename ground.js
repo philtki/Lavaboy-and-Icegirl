@@ -68,6 +68,33 @@ class ground {
                 this.hasTopBB = true;
                 this.hasRightBB = true;
                 this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0101.png");
+                break;
+            case "L":
+                this.hasLeftBB = true;
+                this.hasBottomBB = true;
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick1010.png");
+                break;
+            case "M":
+                this.hasRightBB = true;
+                this.hasBottomBB = true;
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0011.png");
+                break;
+            case "N":
+                this.hasLeftBB = true;
+                this.hasRightBB = true;
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick1001.png");
+                break;
+            case "O":
+                this.hasLeftBB = true;
+                this.hasBottomBB = true;
+                this.hasRightBB = true;
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick1011.png");
+                break;
+            case "P":
+                this.hasLeftBB = true;
+                this.hasTopBB = true;
+                this.hasRightBB = true;
+                this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick1101.png");
         }
         if (this.hasBB) {
             if (this.underLiquid) {

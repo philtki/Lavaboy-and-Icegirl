@@ -5,7 +5,7 @@ class sceneManager {
         this.title = true;
         this.gems = 0;
         //this.loadLevel(levelOne)      //old
-        this.loadLevel(levelOne2);  //23x20 also uncomment to skip title screen
+        //this.loadLevel(levelOne2);  //23x20 also uncomment to skip title screen
     };
 
     clearEntities() {
@@ -48,6 +48,11 @@ class sceneManager {
         const GROUND0001 = "I";
         const GROUND1100 = "J";
         const GROUND0101 = "K";
+        const GROUND1010 = "L";
+        const GROUND0011 = "M";
+        const GROUND1001 = "N";
+        const GROUND1011 = "O";
+        const GROUND1101 = "P";
         const GROUND0010_liquid = "F2";
         const LAVA = 2;
         const WATER = 3;
@@ -92,6 +97,16 @@ class sceneManager {
                     gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1100));
                 } else if(this.level.data[temp] == GROUND0101) {
                     gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0101));
+                } else if(this.level.data[temp] == GROUND1010) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1010));
+                } else if(this.level.data[temp] == GROUND0011) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0011));
+                } else if(this.level.data[temp] == GROUND1001) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1001));
+                } else if(this.level.data[temp] == GROUND1011) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1011));
+                } else if(this.level.data[temp] == GROUND1101) {
+                    gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND1101));
                 } else if(this.level.data[temp] == GROUND0010_liquid) {
                     gameEngine.addEntity(new ground(this.game, x * 48, y * 48, GROUND0010_liquid));
                 } else if (this.level.data[temp] == LAVA) {
@@ -179,6 +194,12 @@ class sceneManager {
             ctx.font = '90px "Trajan-Pro-Regular"';
             ctx.fillStyle = "rgb(237, 161, 14)";
             ctx.fillText("Press Q to Play", 275, 650);
+            //FB and WG
+            this.FB = new animator(ASSET_MANAGER.getAsset("./Assets/FireboySpriteSheet.png"), 0, 410, 214, 410, 5, 0.08);
+            this.FB.drawFrame(this.game.clockTick, ctx, 280, 710, 0.31);
+            this.WG = new animator(ASSET_MANAGER.getAsset("./Assets/WatergirlSpriteSheet.png"), 0, 471, 205, 310, 11, 0.08);
+            this.WG.drawFrame(this.game.clockTick, ctx, 750, 725, 0.35);
         }
+
     }
 }

@@ -18,7 +18,12 @@ ASSET_MANAGER.queueDownload("./Assets/bricks/brick0100.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks/brick1000.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks/brick0001.png");
 ASSET_MANAGER.queueDownload("./Assets/bricks/brick1100.png");
-ASSET_MANAGER.queueDownload("./Assets/bricks/brick0101.png");
+ASSET_MANAGER.queueDownload("./Assets/bricks/brick0101.png");//
+ASSET_MANAGER.queueDownload("./Assets/bricks/brick1010.png");
+ASSET_MANAGER.queueDownload("./Assets/bricks/brick0011.png");
+ASSET_MANAGER.queueDownload("./Assets/bricks/brick1001.png");
+ASSET_MANAGER.queueDownload("./Assets/bricks/brick1011.png");
+ASSET_MANAGER.queueDownload("./Assets/bricks/brick1101.png");
 ASSET_MANAGER.queueDownload("./Assets/button.png");
 ASSET_MANAGER.queueDownload("./Assets/leverBase.png");
 ASSET_MANAGER.queueDownload("./Assets/leverHandle.png");
