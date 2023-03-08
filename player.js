@@ -56,7 +56,7 @@ class player {
     update() {
         const TICK = this.game.clockTick;
         const MAX_RUN = 200; //450
-        const FALL_AIR = 5;
+        const FALL_AIR = 300;
         const MAX_JUMP = 340;   //500
 
         this.left = this.game[this.name + "Left"];
@@ -100,13 +100,14 @@ class player {
             }
         }
         if (!this.grounded) {
-            if (0 <= this.velocity.y < MAX_JUMP) {
-                if (this.velocity.y < MAX_JUMP) {
-                    this.velocity.y += FALL_AIR;
-                }
-            } else if (this.velocity.y < 0) {
-                this.velocity.y += FALL_AIR / 1.25;
-            }
+            // if (0 <= this.velocity.y < MAX_JUMP) {
+            //     if (this.velocity.y < MAX_JUMP) {
+            this.velocity.y += FALL_AIR * TICK;
+            //     }
+            // } else if (this.velocity.y < 0) {
+            //     this.velocity.y += FALL_AIR / 1.25;
+            // } else {
+            // this.velocity.y = 0;
         } else {
             this.velocity.y = 0;
         }

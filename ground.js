@@ -162,7 +162,7 @@ class ground {
         // this.BB.draw(ctx);
         // this.leftBB.draw(ctx);
         // this.rightBB.draw(ctx);
-        // this.topBB.draw(ctx);
+        //this.topBB.draw(ctx);
         // this.bottomBB.draw(ctx);
     };
 }
