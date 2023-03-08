@@ -1,14 +1,14 @@
-class elevator {
+class elevatorWall {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y});
-        this.h = 32;
-        this.w = 144;
+        this.h = 144;
+        this.w = 32;
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "White");
         this.lastBB = this.BB;
         this.topBB = new boundingbox(this.x, this.y, this.w, 2, "Green");
         this.bottomBB = new boundingbox(this.x, this.y + this.h, this.w, 2, "Brown");
         this.leftBB = new boundingbox(this.x, this.y, 2, this.h, "Yellow");
-        this.rightBB = new boundingbox(this.x + this.w - 2, this.y, 2, 32, "Red");
+        this.rightBB = new boundingbox(this.x + this.w - 2, this.y, 2, 144, "Red");
         this.startingPosY = this.y;
         this.goDown = [false, false, false, false];
         this.isMoving = false;
@@ -21,7 +21,7 @@ class elevator {
         this.speed = 100;
         this.isLever = true;
         this.buttonPressed = false; //if the first tick button is pressed
-        this.spritesheet = ASSET_MANAGER.getAsset("./Assets/elevator.png");
+        this.spritesheet = ASSET_MANAGER.getAsset("./Assets/elevatorWall.png");
         this.maxLowered = 195;
     };
 
@@ -86,20 +86,20 @@ class elevator {
             this.updateBB();
         }
 
-        // if (this.game.camera.currentLevel === level2) {
-        //     this.lowest = 950;
-        //     if (this.y > this.lowest) {
-        //         console.log(this.startingPosY);
-        //         this.isMoving = true;
-        //         this.speed = -100;
-        //     }
-        //     if (this.y <= this.startingPosY) {
-        //         this.isMoving = true;
-        //         this.speed = 100;
-        //     }
-        //     this.y += this.speed * this.game.clockTick;
-        //     this.updateBB();
-        // }
+        if (this.game.camera.currentLevel === level2) {
+            // this.lowest = 950;
+            // if (this.y > this.lowest) {
+            //     console.log(this.startingPosY);
+            //     this.isMoving = true;
+            //     this.speed = -100;
+            // }
+            // if (this.y <= this.startingPosY) {
+            //     this.isMoving = true;
+            //     this.speed = 100;
+            // }
+            // this.y += this.speed * this.game.clockTick;
+            // this.updateBB();
+        }
 
         this.collisionCheck();
     };
@@ -116,18 +116,18 @@ class elevator {
     collisionCheck() {
         this.canMove = true;
         this.game.entities.forEach(entity => {
-            if (entity.hasBB && this.BB.collide(entity.BB)) {    
+            if (entity.hasBB && this.BB.collide(entity.BB)) {
                 if (entity instanceof player && this.bottomBB.collide(entity.BB) && this.isMoving) {
                     this.y = this.lastBB.top;
                     this.canMove = false;
                 }
-            }    
+            }
         });
     }
 
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, this.w, this.h);
-        // this.BB.draw(ctx);
+        //this.BB.draw(ctx);
         // this.topBB.draw(ctx);
         // this.bottomBB.draw(ctx);
         // this.leftBB.draw(ctx);

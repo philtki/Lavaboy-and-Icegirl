@@ -34,6 +34,7 @@ ASSET_MANAGER.queueDownload("./Assets/redGem.png");
 ASSET_MANAGER.queueDownload("./Assets/doorRed.png");
 ASSET_MANAGER.queueDownload("./Assets/doorBlue.png");
 ASSET_MANAGER.queueDownload("./Assets/elevator.png");
+ASSET_MANAGER.queueDownload("./Assets/elevatorWall.png");
 
 ASSET_MANAGER.downloadAll(() => {
 	const canvas = document.getElementById("gameWorld");

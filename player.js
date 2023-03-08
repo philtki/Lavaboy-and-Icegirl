@@ -191,27 +191,28 @@ class player {
             ctx.restore();
         }
         ///////////instruction text////////////////
-        //ctx.clearRect(20, 550, 450, 250);
-        if (this.x > 20 && this.x < 400 && this.y > 550) {
-            ctx.font = '22px "Trajan-Pro-Regular"';
-            ctx.fillStyle = "rgb(241, 211, 41)";
-            ctx.fillText("USE A,W,D TO MOVE", 100, 610);
-            ctx.fillText("USE ARROW KEYS TO MOVE", 100, 800);
-        }
-        if(this.x > 400 && this.y > 520) {
-            ctx.font = '22px "Trajan-Pro-Regular"';
-            ctx.fillStyle = "rgb(241, 211, 41)";
-            ctx.fillText("NEVER MIX LAVA AND WATER!", 600, 860);
-        }
-        //ctx.clearRect(600, 300, 270, 350);
-        if(this.x > 600 && this.x < 870 && this.y > 300 && this.y < 650) {
-            ctx.font = '22px "Trajan-Pro-Regular"';
-            ctx.fillStyle = "rgb(241, 211, 41)";
-            ctx.fillText("NEVER MIX ANYTHING", 640, 540);
-            ctx.fillText("WITH GREEN GOO!", 660, 570);
+        if (this.game.camera.currentLevel == level1) {
+            if (this.x > 20 && this.x < 400 && this.y > 550) {
+                ctx.font = '22px "Trajan-Pro-Regular"';
+                ctx.fillStyle = "rgb(241, 211, 41)";
+                ctx.fillText("USE A,W,D TO MOVE", 100, 610);
+                ctx.fillText("USE ARROW KEYS TO MOVE", 100, 800);
+            }
+            if (this.x > 400 && this.y > 520) {
+                ctx.font = '22px "Trajan-Pro-Regular"';
+                ctx.fillStyle = "rgb(241, 211, 41)";
+                ctx.fillText("NEVER MIX LAVA AND WATER!", 600, 860);
+            }
+            //ctx.clearRect(600, 300, 270, 350);
+            if (this.x > 600 && this.x < 870 && this.y > 300 && this.y < 650) {
+                ctx.font = '22px "Trajan-Pro-Regular"';
+                ctx.fillStyle = "rgb(241, 211, 41)";
+                ctx.fillText("NEVER MIX ANYTHING", 640, 540);
+                ctx.fillText("WITH GREEN GOO!", 660, 570);
+            }
         }
         //////////////////////////////////////////////
-        this.BB.draw(ctx);
+        // this.BB.draw(ctx);
         //this.lastBB.draw(ctx);
     }
 
@@ -261,12 +262,15 @@ class player {
                     //         this.die();
                     //     }
                     // }
-                    if (entity instanceof elevator) {
+                    if (entity instanceof elevator || entity instanceof elevatorWall) {
                         this.grounded = true;
                         if (this.velocity.y > 0) {
                             this.velocity.y = 0;
                         }
-                        this.y = entity.BB.top - this.h - this.verticalOffset; //makes player move with the elevator
+                        //this.y = entity.BB.top - this.h - this.verticalOffset; //makes player move with the elevator
+                        if (entity.isMoving) {
+                            this.y = entity.BB.top - this.h - 13; //makes player move with the elevator
+                        }
                     }
                 }
                 // Jumping
@@ -387,6 +391,21 @@ class player {
                     }
                 }
             }
+
+            //elevatorWall collision
+            if (entity instanceof elevatorWall && this.BB.collide(entity.BB)) {
+                if (entity.hasLeftBB && this.BB.collide(entity.leftBB)) {
+                    this.x = entity.BB.left - PARAMS.BLOCKWIDTH;
+                    if (this.velocity.x > 0) {
+                        this.velocity.x = 0;
+                    }
+                } else if (entity.hasRightBB && this.BB.collide(entity.rightBB)) {
+                    this.x = entity.BB.right;
+                    if (this.velocity.x < 0) {
+                        this.velocity.x = 0;
+                    }
+                }
+            }
         });
     }
 
@@ -398,6 +417,6 @@ class player {
         while (now - start < 200) { //waits .2 secs before dying
             now = Date.now();
         }
-        this.game.camera.loadLevel(levelOne2, true);
+        this.game.camera.loadLevel(this.game.camera.currentLevel, true);
     }
 }

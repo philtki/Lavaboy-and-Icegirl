@@ -6,6 +6,7 @@ class button {
         this.index = num;
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/button.png");
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "Red");
+        this.topBB = new boundingbox(this.x, this.y, this.w, 1, "Yellow");
         this.hasBB = true;
         this.removeFromWorld = false;
         this.isPressed = false;
@@ -25,9 +26,15 @@ class button {
     collisionCheck() {
         this.isPressed = false;
         this.game.entities.forEach(entity => {
-            if ((entity instanceof player || entity instanceof box) && this.BB.collide(entity.BB)) {
+            if ((entity instanceof player || entity instanceof box) && (this.BB.collide(entity.BB))) {
                 this.isPressed = true;
                 this.depress();
+            }
+            if (entity instanceof box) {
+                if (this.topBB.collide(entity.bottomBB)) {
+                    this.isPressed = true;
+                    this.depress();
+                }
             }
         });
         if (!this.isPressed) {
@@ -58,6 +65,7 @@ class button {
         // console.log(this.h - this.depressedAmount);
         ctx.drawImage(offScreenCanvas, this.x, this.y + this.depressedAmount, this.w, this.h - this.depressedAmount);
         // this.BB.draw(ctx);
+        // this.topBB.draw(ctx);
         // console.log("Current angle: " + this.angle);
     };
 }

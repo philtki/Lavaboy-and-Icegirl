@@ -1,4 +1,4 @@
-class elevator {
+class elevator2 {
     constructor(game, x, y) {
         Object.assign(this, { game, x, y});
         this.h = 32;
@@ -22,7 +22,7 @@ class elevator {
         this.isLever = true;
         this.buttonPressed = false; //if the first tick button is pressed
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/elevator.png");
-        this.maxLowered = 195;
+        this.maxLowered = 400;
     };
 
     setDown(pos, num) {
