@@ -31,8 +31,8 @@ class elevator {
 
 
     update() {
-        console.log("this.goDown[1] = " + this.goDown[1]);
-        console.log("this.goDown[2] = " + this.goDown[2]);
+        // console.log("this.goDown[1] = " + this.goDown[1]);
+        // console.log("this.goDown[2] = " + this.goDown[2]);
 
         if (this.canMove) {
             if (this.isLever) {

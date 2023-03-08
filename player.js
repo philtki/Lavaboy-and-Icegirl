@@ -57,7 +57,7 @@ class player {
         const TICK = this.game.clockTick;
         const MAX_RUN = 200; //450
         const FALL_AIR = 300;
-        const MAX_JUMP = 340;   //500
+        const MAX_JUMP = 340;   //340
 
         this.left = this.game[this.name + "Left"];
         this.right = this.game[this.name + "Right"];
@@ -77,7 +77,7 @@ class player {
             this.velocity.x = 0;
         }
         if (this.up && this.grounded) {
-            this.velocity.y = -MAX_JUMP;
+            this.velocity.y -= MAX_JUMP;
             this.grounded = false;
         }
 
@@ -92,11 +92,12 @@ class player {
             this.state = PARAMS.RUNNING;
         }
         // TODO if on elevator, will be in jumping animation
-        if (!this.left && !this.right && this.grounded) {
+        if (!this.left && !this.right && !this.grounded) {
             if (this.velocity.y < 0) {
                 this.state = PARAMS.JUMPING;
             } else if (this.velocity.y > 30) {
                 this.state = PARAMS.FALLING;
+                //console.log(this.y);
             }
         }
         if (!this.grounded) {
