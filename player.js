@@ -77,7 +77,7 @@ class player {
             this.velocity.x = 0;
         }
         if (this.up && this.grounded) {
-            this.velocity.y -= MAX_JUMP;
+            this.velocity.y = -MAX_JUMP;
             this.grounded = false;
         }
 
@@ -211,7 +211,7 @@ class player {
             ctx.fillText("WITH GREEN GOO!", 660, 570);
         }
         //////////////////////////////////////////////
-        // this.BB.draw(ctx);
+        this.BB.draw(ctx);
         //this.lastBB.draw(ctx);
     }
 
@@ -238,29 +238,29 @@ class player {
                             this.velocity.y = 0;
                         }
                     }
-                    if (entity instanceof liquid) {
-                        if (entity.liquidType != GREENGOO) {
-                            if (this.playerType == WATERGIRL) {
-                                if (entity.liquidType == LAVA) {
-                                    this.die();
-                                } else if (this.velocity.y < 0) {
-                                    this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
-                                    this.velocity.y = 0;
-                                }
-                                this.grounded = true;
-                            } else {
-                                if (entity.liquidType == WATER) {
-                                    this.die();
-                                } else if (this.velocity.y < 0) {
-                                    this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
-                                    this.velocity.y = 0;
-                                }
-                                this.grounded = true;
-                            }
-                        } else {
-                            this.die();
-                        }
-                    }
+                    // if (entity instanceof liquid) {
+                    //     if (entity.liquidType != GREENGOO) {
+                    //         if (this.playerType == WATERGIRL) {
+                    //             if (entity.liquidType == LAVA) {
+                    //                 this.die();
+                    //             } else if (this.velocity.y < 0) {
+                    //                 this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
+                    //                 this.velocity.y = 0;
+                    //             }
+                    //             this.grounded = true;
+                    //         } else {
+                    //             if (entity.liquidType == WATER) {
+                    //                 this.die();
+                    //             } else if (this.velocity.y < 0) {
+                    //                 this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
+                    //                 this.velocity.y = 0;
+                    //             }
+                    //             this.grounded = true;
+                    //         }
+                    //     } else {
+                    //         this.die();
+                    //     }
+                    // }
                     if (entity instanceof elevator) {
                         this.grounded = true;
                         if (this.velocity.y > 0) {
@@ -325,6 +325,35 @@ class player {
                     }
                 }
             }
+
+            //liquid collision
+            if (entity instanceof liquid && entity.BB) {
+                if (this.BB.collide(entity.BB)) {
+                    if (entity.liquidType != GREENGOO) {
+                        if (this.playerType == WATERGIRL) {
+                            if (entity.liquidType == LAVA) {
+                                this.die();
+                            }
+                            if (this.velocity.y > 0) {
+                                this.velocity.y = 0;
+                            }
+                            this.grounded = true;
+                        } else {
+                            if (entity.liquidType == WATER) {
+                                this.die();
+                            }
+                            if (this.velocity.y > 0) {
+                                this.velocity.y = 0;
+                            }
+                            this.grounded = true;
+                        }
+                    } else {
+                        this.die();
+                    }
+                    //console.log("Player collided with a liquid");
+                }
+            }
+
             //gem collision
             if (entity instanceof gem && this.BB.collide(entity.BB)) {
                 if (this.playerType == WATERGIRL) {
