@@ -83,11 +83,17 @@ class box {
                 //         }
                 //     }
                 // }
-
+                //falling
                 if (this.lastBB.bottom <= entity.BB.top) {
                     this.grounded = true;
                     this.velocity.y = 0;
                     this.y = entity.BB.top - PARAMS.BLOCKWIDTH;
+                }
+                //falling on button
+                if (this.lastBB.bottom <= entity.BB || entity instanceof button) {
+                    this.grounded = true;
+                    this.velocity.y = 0;
+                    this.y = entity.BB.bottom - PARAMS.BLOCKWIDTH;
                 }
 
                 // Jumping

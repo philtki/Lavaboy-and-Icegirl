@@ -191,7 +191,7 @@ class player {
             ctx.restore();
         }
         ///////////instruction text////////////////
-        if (this.game.camera.currentLevel == level1) {
+        if (this.game.camera.currentLevel === level1) {
             if (this.x > 20 && this.x < 400 && this.y > 550) {
                 ctx.font = '22px "Trajan-Pro-Regular"';
                 ctx.fillStyle = "rgb(241, 211, 41)";
@@ -267,10 +267,10 @@ class player {
                         if (this.velocity.y > 0) {
                             this.velocity.y = 0;
                         }
-                        //this.y = entity.BB.top - this.h - this.verticalOffset; //makes player move with the elevator
-                        if (entity.isMoving) {
-                            this.y = entity.BB.top - this.h - 13; //makes player move with the elevator
-                        }
+                        this.y = entity.BB.top - this.h - this.verticalOffset; //makes player move with the elevator
+                        // if (entity.isMoving) {
+                        //     this.y = entity.BB.top - this.h - 13; //makes player move with the elevator
+                        // }
                     }
                 }
                 // Jumping
@@ -378,14 +378,14 @@ class player {
                 if (entity.doorType == WATERGIRL && this.playerType == WATERGIRL) {
                     this.game.camera.openDoor(WATERGIRL);
                     if (this.game.camera.redDoorIsOpen) {
-                        this.die();
+                        this.nextLevel();
                     } else {
                         this.removeFromWorld = true;
                     }
                 } else if (entity.doorType == FIREBOY && this.playerType == FIREBOY) {
                     this.game.camera.openDoor(FIREBOY);
                     if (this.game.camera.blueDoorIsOpen) {
-                        this.die();
+                        this.nextLevel();
                     } else {
                         this.removeFromWorld = true;
                     }
@@ -418,5 +418,11 @@ class player {
             now = Date.now();
         }
         this.game.camera.loadLevel(this.game.camera.currentLevel, true);
+    }
+
+    nextLevel() {
+        if (this.game.camera.currentLevel === level1) {
+            this.game.camera.loadLevel(level2, false);
+        }
     }
 }

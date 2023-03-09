@@ -167,7 +167,7 @@ class sceneManager {
                 if (this.level.data[temp] == FIREBOY) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 4, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRL) {
-                    gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 10, WATERGIRL));
+                    gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 4, WATERGIRL));
                 }
             }
         }    
@@ -218,6 +218,7 @@ class sceneManager {
         const BUTTON = 14;
         this.buttonIndex = 1;
         this.ElevatorIndex = 1;
+        this.ElevatorMaxLowIndex = 1;
         // Round 1 : Blocks, elevators, player doors, liquids and gems
         for (let y = 0; y < 20; y++) {
             for (let x = 0; x < 23; x++) {
@@ -269,9 +270,15 @@ class sceneManager {
                 } else if (this.level.data[temp] == BLUEGEM) {
                     gameEngine.addEntity(new gem(this.game, x * 48.5, y * 48.5, BLUEGEM));
                 } else if (this.level.data[temp] == ELEVATOR) {
-                    window["myElevator" + this.ElevatorIndex] = new elevator(this.game, (x - 1) * 48, y * 48);
+                    this.maxLow = 0;
+                    switch (this.ElevatorMaxLowIndex) {
+                        case 1:
+                            this.maxLow = 190;
+                    }
+                    window["myElevator" + this.ElevatorIndex] = new elevator(this.game, (x - 1) * 48, y * 48, this.maxLow);
                     gameEngine.addEntity(window["myElevator" + this.ElevatorIndex]);
                     this.ElevatorIndex++;
+                    this.ElevatorMaxLowIndex++;
                 } else if (this.level.data[temp] == ELEVATORWALL) {
                     window["myElevator" + this.ElevatorIndex] = new elevatorWall(this.game, (x - 1) * 48, y * 48);
                     gameEngine.addEntity(window["myElevator" + this.ElevatorIndex]);
@@ -306,7 +313,7 @@ class sceneManager {
                 if (this.level.data[temp] == FIREBOY) {
                     gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 4, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRL) {
-                    gameEngine.addEntity(new player(this.game, x * 47, y * 47.5 - 10, WATERGIRL));
+                    gameEngine.addEntity(new player(this.game, x * 49, y * 45, WATERGIRL));
                 }
             }
         }

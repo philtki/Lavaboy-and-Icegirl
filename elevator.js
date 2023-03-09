@@ -1,6 +1,6 @@
 class elevator {
-    constructor(game, x, y) {
-        Object.assign(this, { game, x, y});
+    constructor(game, x, y, low) {
+        Object.assign(this, { game, x, y, low});
         this.h = 32;
         this.w = 144;
         this.BB = new boundingbox(this.x, this.y, this.w, this.h, "White");
@@ -23,6 +23,9 @@ class elevator {
         this.buttonPressed = false; //if the first tick button is pressed
         this.spritesheet = ASSET_MANAGER.getAsset("./Assets/elevator.png");
         this.maxLowered = 195;
+        if (this.game.camera.currentLevel === level2) {
+            this.maxLowered = low; // acting as max highest
+        }
     };
 
     setDown(pos, num) {
@@ -34,7 +37,7 @@ class elevator {
         // console.log("this.goDown[1] = " + this.goDown[1]);
         // console.log("this.goDown[2] = " + this.goDown[2]);
 
-        if (this.canMove) {
+        if (this.canMove && this.game.camera.currentLevel === level1) {
             if (this.isLever) {
                 // console.log("Elevator goes down: " + this.goDown + " isMoving: " + this.isMoving);
                 // TODO uncomment this for switch type up and down mechanics
@@ -86,20 +89,26 @@ class elevator {
             this.updateBB();
         }
 
-        // if (this.game.camera.currentLevel === level2) {
-        //     this.lowest = 950;
-        //     if (this.y > this.lowest) {
-        //         console.log(this.startingPosY);
-        //         this.isMoving = true;
-        //         this.speed = -100;
-        //     }
-        //     if (this.y <= this.startingPosY) {
-        //         this.isMoving = true;
-        //         this.speed = 100;
-        //     }
-        //     this.y += this.speed * this.game.clockTick;
-        //     this.updateBB();
-        // }
+        if (this.canMove && this.game.camera.currentLevel === level2) {
+            if (this.goDown[1] || this.goDown[2]) {
+                if (this.y >= this.maxLowered) {
+                    this.speed = -100;
+                    this.moving = true;
+                } else {
+                    this.speed = 0;
+                    this.moving = false;
+                }
+            } else {
+                if (this.y <= this.startingPosY) {
+                    this.speed = 100;
+                    this.moving = true;
+                } else {
+                    this.speed = 0;
+                    this.moving = false;
+                }
+            }
+            this.y += this.speed * this.game.clockTick;
+        }
 
         this.collisionCheck();
     };
