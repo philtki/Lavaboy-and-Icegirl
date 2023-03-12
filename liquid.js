@@ -2,7 +2,7 @@ class liquid {
     constructor(game, x, y, liquidType) {
         Object.assign(this, { game, x, y, liquidType});
         this.h = 31 * 1.6
-        this.BB = new boundingbox(this.x, this.y + 20, 31 * 1.6, 20, "White");
+        this.BB = new boundingbox(this.x, this.y + 25, 31 * 1.6, 20, "White");
         this.bottomBB = new boundingbox(this.x, this.y + 40, 31 * 1.6, 2, "Brown");
         const LAVA = 2;
         const WATER = 3;
@@ -33,6 +33,6 @@ class liquid {
     draw(ctx) {
         this.animation.drawFrame2(this.game.clockTick, ctx, this.x, this.y + 5, 1.57, this.frames);
         // this.BB.draw(ctx);
-        //this.bottomBB.draw(ctx);
+        // this.bottomBB.draw(ctx);
     };
 }

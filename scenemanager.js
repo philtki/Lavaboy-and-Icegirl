@@ -5,14 +5,19 @@ class sceneManager {
         this.title = true;
         this.gems = 0;
         this.currentLevel = level1;
-        this.loadLevel(this.currentLevel, false);  //23x20 also uncomment to skip title screen
+        //this.loadLevel(this.currentLevel, false);  //23x20 also uncomment to skip title screen
     };
 
-    loadLevel(level, gameOver) {
+    loadLevel(level, gameOver, end) {
+        if (end) {
+            this.game.addEntity(new endMenu(this.game, this.gems));
+            return;
+        }
         if (level === level1) {
             this.loadLevel1(level, gameOver);
         }
         if (level === level2) {
+            this.currentLevel = level2;
             this.loadLevel2(level, gameOver);
         }
     }
@@ -183,7 +188,7 @@ class sceneManager {
 
         this.clearEntities();
         if (gameOver) {
-            this.game.addEntity(new retryMenu(this.game, this.gems))
+            this.game.addEntity(new retryMenu(this.game, this.gems));
         }
         const GROUND0000 = "A";
         const GROUND1111 = "B";
@@ -284,9 +289,9 @@ class sceneManager {
                     gameEngine.addEntity(window["myElevator" + this.ElevatorIndex]);
                     this.ElevatorIndex++;
                 }else if (this.level.data[temp] == FIREBOYDOOR) {
-                    gameEngine.addEntity(new door(this.game, x * 47.5, y * 31 - 15, FIREBOY));
+                    gameEngine.addEntity(new door(this.game, x * 47.5, y * 45.2, FIREBOY));
                 } else if (this.level.data[temp] == WATERGIRLDOOR) {
-                    gameEngine.addEntity(new door(this.game, x * 47.5, y * 31 - 15, WATERGIRL));
+                    gameEngine.addEntity(new door(this.game, x * 47.5, y * 45.2, WATERGIRL));
                 }
             }
         }
@@ -317,7 +322,6 @@ class sceneManager {
                 }
             }
         }
-        console.log(this.buttonIndex);
         gameEngine.addEntity(new background());
     };
 
@@ -327,7 +331,7 @@ class sceneManager {
         if (this.startGame && this.title) {
             this.title = false;
             console.log("pressed Q");
-            this.loadLevel(this.currentLevel, false);
+            this.loadLevel(this.currentLevel, false, false);
         }
     }
 

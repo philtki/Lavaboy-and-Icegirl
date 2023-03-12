@@ -45,6 +45,8 @@ class ground {
             case "F2":
                 this.underLiquid = true;
                 this.hasBottomBB = true;
+                this.hasLeftBB = true;
+                this.hasRightBB = true;
                 this.spritesheet = ASSET_MANAGER.getAsset("./Assets/bricks/brick0010.png");
                 break;
             case "G":
@@ -114,10 +116,18 @@ class ground {
             }
         }
         if (this.hasLeftBB) {
-            this.leftBB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, "Green");
+            if (this.underLiquid) {
+                this.leftBB = new boundingbox(this.x, this.y + PARAMS.BLOCKWIDTH * 2.7, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH / 2.8, "green");
+            } else {
+                this.leftBB = new boundingbox(this.x, this.y, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, "Green");
+            }
         }
         if (this.hasRightBB) {
-            this.rightBB = new boundingbox(this.x + PARAMS.BLOCKWIDTH / 2, this.y, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, "Blue");
+            if (this.underLiquid) {
+                this.rightBB = new boundingbox(this.x + PARAMS.BLOCKWIDTH / 2, this.y + PARAMS.BLOCKWIDTH * 2.7, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH / 2.8, "Blue");
+            } else {
+                this.rightBB = new boundingbox(this.x + PARAMS.BLOCKWIDTH / 2, this.y, PARAMS.BLOCKWIDTH / 2, PARAMS.BLOCKWIDTH, "Blue");
+            }
         }
         this.removeFromWorld = false;
 

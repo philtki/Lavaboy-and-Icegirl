@@ -72,7 +72,7 @@ class box {
     collisionCheck() {
         this.grounded = false;
         this.game.entities.forEach(entity => {
-            if (entity.hasBB && this.BB.collide(entity.BB)) {    
+            if (entity.hasBB && this.BB.collide(entity.BB) && !entity.underLiquid) {
                 // if (entity.hasTopBB && ((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||
                 //     (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.BB.bottom - 5 <= entity.BB.top) {
                 //     if (entity instanceof ground) {

@@ -33,7 +33,6 @@ class player {
         this.BB = new boundingbox(this.BBx, this.BBy, this.w, this.h, "Yellow");
         this.lastBB = this.BB;
         this.hasBB = true;
-        
     };
 
     loadAnimations() {
@@ -210,6 +209,13 @@ class player {
                 ctx.fillText("NEVER MIX ANYTHING", 640, 540);
                 ctx.fillText("WITH GREEN GOO!", 660, 570);
             }
+            //ctx.clearRect(100, 100, 500, 300);
+            if (this.x > 100 && this.x < 600 && this.y > 100 && this.y < 400) {
+                ctx.font = '22px "Trajan-Pro-Regular"';
+                ctx.fillStyle = "rgb(241, 211, 41)";
+                ctx.fillText("TO DROP OR", 240, 220);
+                ctx.fillText("NOT TO DROP?", 240, 240);
+            }
         }
         //////////////////////////////////////////////
         // this.BB.draw(ctx);
@@ -354,7 +360,6 @@ class player {
                     } else {
                         this.die();
                     }
-                    //console.log("Player collided with a liquid");
                 }
             }
 
@@ -417,12 +422,15 @@ class player {
         while (now - start < 200) { //waits .2 secs before dying
             now = Date.now();
         }
-        this.game.camera.loadLevel(this.game.camera.currentLevel, true);
+        this.game.camera.loadLevel(this.game.camera.currentLevel, true, false);
     }
 
     nextLevel() {
+        this.game.camera.clearEntities();
         if (this.game.camera.currentLevel === level1) {
-            this.game.camera.loadLevel(level2, false);
+            this.game.camera.loadLevel(level2, false, false);
+        } else {
+            this.game.camera.loadLevel(level2, false, true);
         }
     }
 }

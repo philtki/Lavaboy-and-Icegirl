@@ -108,6 +108,7 @@ class elevator {
                 }
             }
             this.y += this.speed * this.game.clockTick;
+            this.updateBB();
         }
 
         this.collisionCheck();
