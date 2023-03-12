@@ -17,7 +17,7 @@ class box {
         this.hasLeftBB = true;
         this.hasRightBB = true;
         this.movingLeft = false;
-        this.movingLeft = false;
+        this.movingRight = false;
         this.state = 0;
         this.moving = 0;
         this.grounded = true;
@@ -39,7 +39,7 @@ class box {
             this.velocity.x = -150;
         }
         if (!this.grounded) {
-            this.velocity.y += 10;
+            this.velocity.y += 600 * TICK;
         } else {
             this.velocity.y = 0;
         }
@@ -72,16 +72,30 @@ class box {
     collisionCheck() {
         this.grounded = false;
         this.game.entities.forEach(entity => {
-            if (entity.hasBB && this.BB.collide(entity.BB)) {    
-                if (entity.hasTopBB && ((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||  (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.BB.bottom - 5 <= entity.BB.top) {
-                    if (entity instanceof ground) {
-                        this.grounded = true;
-                        if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
-                            this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
-                            this.velocity.y === 0;
-                        }
-                    }
+            if (entity.hasBB && this.BB.collide(entity.BB) && !entity.underLiquid) {
+                // if (entity.hasTopBB && ((entity.BB.left <= this.BB.left && this.BB.left <= entity.BB.right) ||
+                //     (entity.BB.left <= this.BB.right && this.BB.right <= entity.BB.right)) && this.BB.bottom - 5 <= entity.BB.top) {
+                //     if (entity instanceof ground) {
+                //         this.grounded = true;
+                //         if (this.velocity.y < 0 && this.lastBB.bottom <= entity.BB.top) {
+                //             this.y = entity.BB.top - PARAMS.BLOCKWIDTH * 1.9 - this.verticalOffset;
+                //             this.velocity.y = 0;
+                //         }
+                //     }
+                // }
+                //falling
+                if (this.lastBB.bottom <= entity.BB.top) {
+                    this.grounded = true;
+                    this.velocity.y = 0;
+                    this.y = entity.BB.top - PARAMS.BLOCKWIDTH;
                 }
+                //falling on button
+                if (this.lastBB.bottom <= entity.BB || entity instanceof button) {
+                    this.grounded = true;
+                    this.velocity.y = 0;
+                    this.y = entity.BB.bottom - PARAMS.BLOCKWIDTH;
+                }
+
                 // Jumping
                 if (this.velocity.y < 0 && entity.hasBottomBB) {
                     if (entity instanceof ground) {
@@ -114,10 +128,10 @@ class box {
 
     draw(ctx) {
         ctx.drawImage(this.spritesheet, this.x, this.y, this.h, this.w);
-        this.BB.draw(ctx);
-        this.topBB.draw(ctx);
-        this.bottomBB.draw(ctx);
-        this.leftBB.draw(ctx);
-        this.rightBB.draw(ctx);
+        //this.BB.draw(ctx);
+        // this.topBB.draw(ctx);
+        // this.bottomBB.draw(ctx);
+        // this.leftBB.draw(ctx);
+        // this.rightBB.draw(ctx);
     };
 }    
