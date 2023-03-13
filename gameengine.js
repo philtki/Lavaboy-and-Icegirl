@@ -17,6 +17,8 @@ class GameEngine {
         this.FBRight = false;
         this.FBUp = false;
         this.FBDown = false;
+        this.startGame = false;
+        this.retryGame = false;
 
         // Information on the input
         this.click = null;

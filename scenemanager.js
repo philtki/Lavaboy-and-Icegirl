@@ -5,6 +5,8 @@ class sceneManager {
         this.title = true;
         this.gems = 0;
         this.currentLevel = level1;
+        this.currentMaxGems = 2;
+        this.retryMenuOnScreen = false;
         //this.loadLevel(this.currentLevel, false);  //23x20 also uncomment to skip title screen
     };
 
@@ -48,8 +50,10 @@ class sceneManager {
         this.blueDoorIsOpen = false;
 
         this.clearEntities();
+        this.currentMaxGems = 2;
         if (gameOver) {
-            this.game.addEntity(new retryMenu(this.game, this.gems))
+            this.game.addEntity(new retryMenu(this.game, this.gems, this.currentMaxGems))
+            this.retryMenuOnScreen = true;
         }
         const GROUND0000 = "A";
         const GROUND1111 = "B";
@@ -187,8 +191,10 @@ class sceneManager {
         this.blueDoorIsOpen = false;
 
         this.clearEntities();
+        this.currentMaxGems = 8;
         if (gameOver) {
-            this.game.addEntity(new retryMenu(this.game, this.gems));
+            this.game.addEntity(new retryMenu(this.game, this.gems, this.currentMaxGems));
+            this.retryMenuOnScreen = true;
         }
         const GROUND0000 = "A";
         const GROUND1111 = "B";
@@ -325,15 +331,29 @@ class sceneManager {
         gameEngine.addEntity(new background());
     };
 
+    retryMenuRemoved() {
+        this.retryMenuOnScreen = false;
+    }
+
+    retry() {
+        if (this.game.retryGame && !this.retryMenuOnScreen) {
+            if (this.currentLevel === level1) {
+                this.loadLevel1(this.currentLevel, true);
+            }
+            if (this.currentLevel === level2) {
+                this.currentLevel = level2;
+                this.loadLevel2(this.currentLevel, true);
+            }
+        }
+    }
+
     update() {
-        this.startGame = this.game["startGame"];
-        //this.retryGame = this.game["retryGame"];
-        if (this.startGame && this.title) {
+        if (this.game.startGame && this.title) {
             this.title = false;
             console.log("pressed Q");
             this.loadLevel(this.currentLevel, false, false);
         }
-    }
+    };
 
     draw(ctx) {
         if (this.title) {
