@@ -53,6 +53,9 @@ class player {
     };
 
     update() {
+        if (this.game.retryGame) {
+            this.game.camera.retry();
+        }
         const TICK = this.game.clockTick;
         const MAX_RUN = 200; //450
         const FALL_AIR = 300;
@@ -424,6 +427,8 @@ class player {
         }
         this.game.camera.loadLevel(this.game.camera.currentLevel, true, false);
     }
+
+    
 
     nextLevel() {
         this.game.camera.clearEntities();
